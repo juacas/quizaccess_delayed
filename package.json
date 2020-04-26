@@ -1,0 +1,21 @@
+{
+	"name": "moodle-quizaccess_activatedelayedattempt",
+	"version": "1.1.0",
+	"description": "Modulate entry times to quizzes.",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/juacas/moodle-quizaccess_activatedelayedattempt"
+	},
+	"author": "Juan Pablo de Castro <jpdecastro@tel.uva.es>",
+	"contributor": "Juan Pablo de Castro <jpdecastro@tel.uva.es>",
+	"license": "GPL-3.0",
+	"devDependencies": {
+		"grunt": "^1.0.4",
+		"grunt-contrib-copy": "^1.0.0",
+		"grunt-contrib-jshint": "^2.1.0",
+		"grunt-contrib-less": "^2.0.0",
+		"grunt-contrib-uglify": "^4.0.1",
+		"grunt-contrib-watch": "^1.1.0",
+		"grunt-terser": "^1.0.0"
+	}
+}
