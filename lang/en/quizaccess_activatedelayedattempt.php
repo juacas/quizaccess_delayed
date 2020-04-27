@@ -16,7 +16,7 @@
 
 /**
  * Strings for the quizaccess_activatedelayedattempt plugin.
- * Based on quizaccess_activatedelayedattempt https://github.com/IITBombayWeb/moodle-quizaccess_activatedelayedattempt/tree/v1.0.3
+ * Based on quizaccess_activateattempt https://github.com/IITBombayWeb/moodle-quizaccess_activatedelayedattempt/tree/v1.0.3
  *
  * @package   quizaccess_activatedelayedattempt
  * @author    Juan Pablo de Castro
@@ -28,7 +28,9 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['attemptquiz'] = 'Attempt quiz now';
-$string['quizwillstartinabout'] = 'Quiz will start in about';
-$string['quizwillstartinless'] = 'Quiz will start in less than a minute';
+$string['quizwillstartinabout'] = 'Your turn for this quiz will start in about';
+$string['quizwillstartinless'] = 'Your turn for this quiz will start in less than a minute';
+$string['pleasewait'] = 'Please wait here';
+$string['noscriptwarning'] = 'This quiz requires a browser that supports JavaScript. If you have a Javascript blocker you will need to disable it.';
 $string['pluginname'] = 'Auto activate quiz attempt button with random delay access rule';
 

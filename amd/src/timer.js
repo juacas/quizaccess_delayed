@@ -1,3 +1,27 @@
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Implementaton of the quizaccess_activatedelayedattempt timer JScript.
+ * Based on quizaccess_activateattempt https://github.com/IITBombayWeb/moodle-quizaccess_activatedelayedattempt/tree/v1.0.3
+ *
+ * @package   quizaccess_activatedelayedattempt
+ * @author    Juan Pablo de Castro
+ * @copyright 2020 University of Valladolid, Spain
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 define('quizaccess_activatedelayedattempt/timer', ['jquery'], function ($, dyndate) {
     var strings;
     var quizOpenTime;
@@ -11,10 +35,8 @@ define('quizaccess_activatedelayedattempt/timer', ['jquery'], function ($, dynda
         },
         /**
          * Init function.
-         *
          */
-        init: function (actionlink, cmid, sessionkey, attemptquiz, diffmillisecs, langstrings,
-            quizwillstartinless, quizwillstartinabout) {
+        init: function (actionlink, cmid, sessionkey, attemptquiz, diffmillisecs, langstrings) {
             // Initialize strings to avoid json requests.
             this.set_strings(langstrings);
 
@@ -56,7 +78,10 @@ define('quizaccess_activatedelayedattempt/timer', ['jquery'], function ($, dynda
             var countDownTime = quizOpenTime - currentTime;
 
             var datetxt = this.get_nice_duration(countDownTime / 1000, false, false, 2);
-            document.getElementById('timer').innerHTML = this.get_string('quizwillstartinabout') + datetxt;
+            document.getElementById('timer').innerHTML = 
+                this.get_string('quizwillstartinabout') +
+                datetxt + ' ' +
+                this.get_string('pleasewait');
 
             if (countDownTime < 0) {
                 $('#timer').hide();
@@ -64,7 +89,7 @@ define('quizaccess_activatedelayedattempt/timer', ['jquery'], function ($, dynda
                 clearInterval(interval);
             }
         },
-        /**
+      /**
        * Format a human-readable format for a duration in months or days and below.
        * calculates from seconds to months.
        * trim the details to the two more significant units

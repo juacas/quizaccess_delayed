@@ -16,7 +16,7 @@
 
 /**
  * Strings for the quizaccess_activatedelayedattempt plugin.
- * Based on quizaccess_activatedelayedattempt https://github.com/IITBombayWeb/moodle-quizaccess_activatedelayedattempt/tree/v1.0.3
+ * Based on quizaccess_activateattempt https://github.com/IITBombayWeb/moodle-quizaccess_activatedelayedattempt/tree/v1.0.3
  *
  * @package   quizaccess_activatedelayedattempt
  * @author    Juan Pablo de Castro
@@ -24,11 +24,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-
 defined('MOODLE_INTERNAL') || die();
-
 $string['attemptquiz'] = 'Realizar el cuestionario ahora';
-$string['quizwillstartinabout'] = 'El cuestionario se abrirá en ';
-$string['quizwillstartinless'] = 'El cuestionario se abrirá en menos de un minuto';
+$string['pleasewait'] = 'Por favor, espere en esta página.';
+$string['quizwillstartinabout'] = 'Su turno para completar el cuestionario comenzará en ';
+$string['quizwillstartinless'] = 'Su turno para completar el cuestionario comenzará en menos de un minuto';
+$string['noscriptwarning'] = 'Este cuestionario necesita un navegador que soporte JavaScript. Si tiene un bloqueador de Javascript necesitará desactivarlo.';
 $string['pluginname'] = 'Auto activar el botón de inicio de cuestionario con un retardo aleatorio.';
 
