@@ -18,7 +18,7 @@ The page, by default, displays the time remaining (in minutes) to start the quiz
 
 ## Installation
 
-1) Download it into /mod/quiz/accessrule
+1) Download it into /mod/quiz/accessrule/activatedelayedattempt
 2) Log in into Moodle
 3) A notification will appear stating “Plugins requiring attention”.
 4) Complete the installation by clicking on “Upgrade Moodle database now”,click on continue after the success 
