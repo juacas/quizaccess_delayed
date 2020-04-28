@@ -87,6 +87,7 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
             $PAGE->requires->js_call_amd('quizaccess_activatedelayedattempt/timer', 'init',
 				[$actionlink, $this->quizobj->get_cmid(), $sessionkey, $attemptquiz, $diffmillisecs,
                 $langstrings]);
+            $PAGE->requires->css('/mod/quiz/activatedelayedattempt/css/timer.css');
         }
         return $result; // Used as a prevent message.
     }
