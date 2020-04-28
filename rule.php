@@ -51,6 +51,7 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
      * @param object $lastattempt information about the user's last completed attempt.
      */
     public function prevent_access() {
+        /** @var moodle_page $PAGE */
         global $PAGE, $CFG;
         
         $result = "";
@@ -87,7 +88,7 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
             $PAGE->requires->js_call_amd('quizaccess_activatedelayedattempt/timer', 'init',
 				[$actionlink, $this->quizobj->get_cmid(), $sessionkey, $attemptquiz, $diffmillisecs,
                 $langstrings]);
-            $PAGE->requires->css('/mod/quiz/activatedelayedattempt/css/timer.css');
+            $PAGE->requires->css('/mod/quiz/accessrule/activatedelayedattempt/styles.css'); // Discouraged.
         }
         return $result; // Used as a prevent message.
     }

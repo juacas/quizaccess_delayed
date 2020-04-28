@@ -63,7 +63,7 @@ define( ['jquery'], function ($) {
                         'value': attemptquiz
                     }),
                     $('<p>', {
-                        'id': 'timer'
+                        'id': 'activatedelayedtimer'
                     })
                 ),
                 $('</br>')
@@ -78,13 +78,13 @@ define( ['jquery'], function ($) {
             var countDownTime = quizOpenTime - currentTime;
 
             var datetxt = this.get_nice_duration(countDownTime / 1000, true, false, 2);
-            document.getElementById('timer').innerHTML = 
-                this.get_string('quizwillstartinabout') +
+            document.getElementById('activatedelayedtimer').innerHTML = 
+                this.get_string('quizwillstartinabout') + ' ' +
                 datetxt + ' ' +
                 this.get_string('pleasewait');
 
             if (countDownTime < 0) {
-                $('#timer').hide();
+                $('#activatedelayedtimer').hide();
                 $('#startAttemptButton').show();
                 clearInterval(interval);
             }
