@@ -84,7 +84,7 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
             $langstrings['debug_maxdelay'] = $maxdelay;
             $langstrings['debug_randomdebug'] = 'Random delay is ' . $randomdelay . ' seconds.';
             $result .= "<noscript>" . get_string('noscriptwarning', 'quizaccess_activatedelayedattempt') . "</noscript>";
-            $result .= $PAGE->requires->js_call_amd('quizaccess_activatedelayedattempt/timer', 'init',
+            $PAGE->requires->js_call_amd('quizaccess_activatedelayedattempt/timer', 'init',
 				[$actionlink, $this->quizobj->get_cmid(), $sessionkey, $attemptquiz, $diffmillisecs,
                 $langstrings]);
         }

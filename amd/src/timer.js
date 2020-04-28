@@ -22,7 +22,7 @@
  * @copyright 2020 University of Valladolid, Spain
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-define('quizaccess_activatedelayedattempt/timer', ['jquery'], function ($, dyndate) {
+define( ['jquery'], function ($) {
     var strings;
     var quizOpenTime;
     var interval;
@@ -77,7 +77,7 @@ define('quizaccess_activatedelayedattempt/timer', ['jquery'], function ($, dynda
             var currentTime = new Date().getTime();
             var countDownTime = quizOpenTime - currentTime;
 
-            var datetxt = this.get_nice_duration(countDownTime / 1000, false, false, 2);
+            var datetxt = this.get_nice_duration(countDownTime / 1000, true, false, 2);
             document.getElementById('timer').innerHTML = 
                 this.get_string('quizwillstartinabout') +
                 datetxt + ' ' +
