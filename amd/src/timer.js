@@ -39,7 +39,8 @@ define( ['jquery'], function ($) {
         init: function (actionlink, cmid, sessionkey, attemptquiz, diffmillisecs, langstrings) {
             // Initialize strings to avoid json requests.
             this.set_strings(langstrings);
-
+            // Clean previous message.
+            $('.continuebutton').siblings().remove();
             $('.continuebutton').prepend(
                 $('</br>'),
                 $('<form/>', {
@@ -56,20 +57,20 @@ define( ['jquery'], function ($) {
                         'name': 'sesskey',
                         'value': sessionkey
                     }),
+                    $('<p>', {
+                        'id': 'activatedelayedtimer'
+                    }),
                     $('<input>', {
                         'type': 'submit',
                         'class': 'btn btn-secondary',
                         'id': 'startAttemptButton',
                         'value': attemptquiz
-                    }),
-                    $('<p>', {
-                        'id': 'activatedelayedtimer'
                     })
                 ),
                 $('</br>')
             );
+            $('#startAttemptButton').prop('disabled', true);
 
-            $('#startAttemptButton').hide();
             quizOpenTime = new Date().getTime() + diffmillisecs;
             interval = setInterval(this.update_time.bind(this), 1000);
         },
@@ -85,7 +86,7 @@ define( ['jquery'], function ($) {
 
             if (countDownTime < 0) {
                 $('#activatedelayedtimer').hide();
-                $('#startAttemptButton').show();
+                $('#startAttemptButton').show().prop('disabled', false);
                 clearInterval(interval);
             }
         },
