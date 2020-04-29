@@ -55,7 +55,7 @@ define( ['jquery'], function ($) {
             $('.continuebutton').prepend(
                 $('<div id="activatedelayedattemptnotification"><center>' 
                     + langstrings.quizwillstartinabout 
-                    + '<div id="flipdown" class="flipdown">' 
+                    + '<div id="flipdown" class="flipdown"></div>' 
                     + langstrings.pleasewait 
                     +'</center></div><br/>'),
                 $('<form/>', {
@@ -89,7 +89,6 @@ define( ['jquery'], function ($) {
            
         },
         startCounter: function () {
-            quizOpenTime = new Date().getTime() + 5000;
             new FlipDown(quizOpenTime / 1000, {
                 theme: 'dark',
                 headings: ['', '', '', '']
