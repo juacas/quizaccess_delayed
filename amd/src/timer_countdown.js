@@ -48,9 +48,9 @@ define( ['jquery'], function ($) {
                 .attr({
                     type: 'text/css',
                     rel: 'stylesheet',
-                    href: 'accessrule/activatedelayedattempt/css/flipdown.css'
+                    href: 'accessrule/activatedelayedattempt/flipdown/flipdown.css'
                 });
-            jQuery.getScript('accessrule/activatedelayedattempt/js/flipdown.js', this.startCounter.bind(this));
+            jQuery.getScript('accessrule/activatedelayedattempt/flipdown/flipdown.js', this.startCounter.bind(this));
             
             $('.continuebutton').prepend(
                 $('<div id="activatedelayedattemptnotification"><center>' 
