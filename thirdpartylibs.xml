@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<libraries>
+	<library>
+		<location>js/flipdown.js</location>
+		<name>flipdown</name>
+		<version>0.3.2</version>
+		<license>MIT</license>
+		<licenseversion>2018</licenseversion>
+	</library>
+</libraries>

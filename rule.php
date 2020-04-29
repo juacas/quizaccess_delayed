@@ -85,10 +85,11 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
             $langstrings['debug_maxdelay'] = $maxdelay;
             $langstrings['debug_randomdebug'] = 'Random delay is ' . $randomdelay . ' seconds.';
             $result .= "<noscript>" . get_string('noscriptwarning', 'quizaccess_activatedelayedattempt') . "</noscript>";
-            $PAGE->requires->js_call_amd('quizaccess_activatedelayedattempt/timer', 'init',
+            $PAGE->requires->js_call_amd('quizaccess_activatedelayedattempt/timer_countdown', 'init',
 				[$actionlink, $this->quizobj->get_cmid(), $sessionkey, $attemptquiz, $diffmillisecs,
                 $langstrings]);
             $PAGE->requires->css('/mod/quiz/accessrule/activatedelayedattempt/styles.css'); // Discouraged.
+            // $PAGE->requires->css('/mod/quiz/accessrule/activatedelayedattempt/flipdown.css'); // Discouraged.
         }
         return $result; // Used as a prevent message.
     }
