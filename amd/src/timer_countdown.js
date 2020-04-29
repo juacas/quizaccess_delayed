@@ -95,6 +95,8 @@ define( ['jquery'], function ($) {
             })
                 .start()
                 .ifEnded(this.activateAttempt);
+            // Adjust div width.
+            $("#flipdown").width($("#flipdown").find(".rotor").length * 32);
         },
         activateAttempt: function () {
             var currentTime = new Date().getTime();
