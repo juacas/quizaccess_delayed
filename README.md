@@ -1,5 +1,5 @@
 # Quiz Access Rule quizaccess_activatedelayedattempt
-Auto Activate the Quiz Attempt Button with a randomized delay to reduce the load at the start of eht quizes.
+Auto Activate the Quiz Attempt Button with a randomized delay to reduce the load at the start of the quizes.
 
 ## Background and Need
 
@@ -15,6 +15,11 @@ without requiring to refresh the page.
 This is done by a client side countdown timer (javascript) which is initiated when the page is rendered in the browser. 
 The plugin is implemented as an access-rules plugin overriding the default page renderer.  
 The page, by default, displays the time remaining (in minutes) to start the quiz, and counts down to the last minute. 
+
+## Releases
+
+- v1.1.1 Animated countdown.
+- v1.1.0 Textual countdowmn.
 
 ## Installation
 
