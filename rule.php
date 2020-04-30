@@ -53,7 +53,9 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
     public function prevent_access() {
         /** @var moodle_page $PAGE */
         global $PAGE, $CFG;
-        
+        if (isset($CFG->disable_activatedelayedattempt)) {
+            return false;
+        }
         $result = "";
         if ($this->timenow < $this->quiz->timeopen) {
             $actionlink = "$CFG->wwwroot/mod/quiz/startattempt.php";

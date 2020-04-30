@@ -10,11 +10,12 @@ just to make sure if the attempt is available yet.
 
 ## Solution
 
-The “Activate Delayed Attempt” plugin makes the “Attempt quiz now” button auto-appear at quiz open timing,
+The “Activate Delayed Attempt” plugin makes the “Attempt quiz now” button auto-enable at quiz open timing plus a randomized delay,
 without requiring to refresh the page.
 This is done by a client side countdown timer (javascript) which is initiated when the page is rendered in the browser. 
 The plugin is implemented as an access-rules plugin overriding the default page renderer.  
-The page, by default, displays the time remaining (in minutes) to start the quiz, and counts down to the last minute. 
+The page, displays the time remaining to start the quiz using an animated countdown. 
+A pseudo-random delay is assigned to each student depending on the number of students and a fixed rate of starts.
 
 ## Releases
 
@@ -34,3 +35,7 @@ notification appears on the page.
 If you enable quiz open time in quiz settings, quiz students will no longer have to manually refresh the 
 page in order to get “Attempt Quiz Now” button at the quiz open timing.
 A random delay up to 10 minutes is assigned to each student for spreading the entry times.
+
+## Acknowledgements
+
+This plugin is based on previous quizaccess_activateattempt.
