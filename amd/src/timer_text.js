@@ -90,15 +90,15 @@ define( ['jquery'], function ($) {
                 clearInterval(interval);
             }
         },
-       /**
-       * Format a human-readable format for a duration in months or days and below.
-       * calculates from seconds to months.
-       * trim the details to the two more significant units
-       * @param int durationinseconds
-       * @param boolean usemonths if false render in days.
-       * @param boolean shortprecission if true only the most significative unit.
-       * @return string
-       */
+        /**
+         * Format a human-readable format for a duration in months or days and below.
+         * calculates from seconds to months.
+         * trim the details to the two more significant units
+         * @param int durationinseconds
+         * @param boolean usemonths if false render in days.
+         * @param boolean shortprecission if true only the most significative unit.
+         * @return string
+         */
         get_nice_duration: function (durationinseconds, usemonths = true, shortprecission = false, depth = 2) {
             var durationstring = '';
             var durationproms = [];

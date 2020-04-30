@@ -34,9 +34,9 @@ module.exports = function(grunt) {
         var root = grunt.option('root');
         if (grunt.file.exists(__dirname, root)) {
             cwd = path.join(__dirname, root);
-            grunt.log.ok('Setting root to '+cwd);
+            grunt.log.ok('Setting root to ' + cwd);
         } else {
-            grunt.fail.fatal('Setting root to '+root+' failed - path does not exist');
+            grunt.fail.fatal('Setting root to ' + root + ' failed - path does not exist');
         }
     }
 
@@ -238,7 +238,7 @@ module.exports = function(grunt) {
         // Are we in a YUI directory?
         if (path.basename(path.resolve(cwd, '../../')) == 'yui') {
             grunt.task.run('shifter');
-        // Are we in an AMD directory?
+            // Are we in an AMD directory?
         } else if (inAMD) {
             grunt.task.run('amd');
         } else {

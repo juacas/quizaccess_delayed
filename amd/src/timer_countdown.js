@@ -57,7 +57,7 @@ define( ['jquery'], function ($) {
                     + langstrings.quizwillstartinabout
                     + '<div id="flipdown" class="flipdown"></div>'
                     + langstrings.pleasewait
-                    +'</center></div><br/>'),
+                    + '</center></div><br/>'),
                 $('<form/>', {
                     'method': 'post',
                     'action': actionlink
