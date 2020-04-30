@@ -51,12 +51,12 @@ define( ['jquery'], function ($) {
                     href: 'accessrule/activatedelayedattempt/flipdown/flipdown.css'
                 });
             jQuery.getScript('accessrule/activatedelayedattempt/flipdown/flipdown.js', this.startCounter.bind(this));
-            
+
             $('.continuebutton').prepend(
-                $('<div id="activatedelayedattemptnotification"><center>' 
-                    + langstrings.quizwillstartinabout 
-                    + '<div id="flipdown" class="flipdown"></div>' 
-                    + langstrings.pleasewait 
+                $('<div id="activatedelayedattemptnotification"><center>'
+                    + langstrings.quizwillstartinabout
+                    + '<div id="flipdown" class="flipdown"></div>'
+                    + langstrings.pleasewait
                     +'</center></div><br/>'),
                 $('<form/>', {
                     'method': 'post',
@@ -86,7 +86,7 @@ define( ['jquery'], function ($) {
                 $('</br>')
             );
             $('#startAttemptButton').prop('disabled', true);
-           
+
         },
         startCounter: function () {
             new FlipDown(quizOpenTime / 1000, {

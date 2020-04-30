@@ -45,12 +45,12 @@ module.exports = function(grunt) {
     // Globbing pattern for matching all AMD JS source files.
     var amdSrc = [inAMD ? cwd + '/src/*.js' : '**/amd/src/*.js'];
     var pathprefix = inAMD ? cwd + '/src/' : '**/amd/src/';
-    var jshintfiles = [pathprefix+ 'edit.js',
-                        pathprefix+ 'play.js',
-                        pathprefix+ 'renewlock.js',
-                        pathprefix+ 'tutorial.js',
-                        pathprefix+ 'viewgpx.js'];
-     /*                   
+    var jshintfiles = [pathprefix + 'edit.js',
+                        pathprefix + 'play.js',
+                        pathprefix + 'renewlock.js',
+                        pathprefix + 'tutorial.js',
+                        pathprefix + 'viewgpx.js'];
+     /*
      * Function to generate the destination for the uglify task
      * (e.g. build/file.min.js). This function will be passed to
      * the rename property of files array when building dynamically:
@@ -94,7 +94,7 @@ module.exports = function(grunt) {
                 mangle: true,
                 compress: true,
                 beautify: false
-              },
+            },
             amd: {
                 files: [{
                     expand: true,
@@ -121,7 +121,7 @@ module.exports = function(grunt) {
                 options: {
                     compress: true
                 }
-           }
+            }
         },
         watch: {
             options: {
@@ -131,7 +131,7 @@ module.exports = function(grunt) {
                 files: ['**/amd/src/**/*.js'],
                 tasks: ['copy:js']
             },
-            
+
             yui: {
                 files: ['**/yui/src/**/*.js'],
                 tasks: ['shifter']
@@ -192,7 +192,7 @@ module.exports = function(grunt) {
                 grunt.fail.fatal('The --watch option has been removed, please use `grunt watch` instead');
             }
 
-            // Add the stderr option if appropriate
+            // Add the stderr option if appropriate.
             if (grunt.option('verbose')) {
                 args.push('--lint-stderr');
             }

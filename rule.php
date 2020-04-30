@@ -28,7 +28,7 @@ defined ( 'MOODLE_INTERNAL' ) || die ();
 require_once($CFG->dirroot . '/mod/quiz/accessrule/accessrulebase.php');
 
 /**
- * A rule implementing auto-appearance of “Attempt quiz now” button at quiz open timing 
+ * A rule implementing auto-appearance of “Attempt quiz now” button at quiz open timing
  * without requiring to refresh the page and with a randomized delay to spread user's starts.
  *
  * @copyright  2020 University of Valladolid, Spain
@@ -51,7 +51,7 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
      * @param object $lastattempt information about the user's last completed attempt.
      */
     public function prevent_access() {
-        /** @var moodle_page $PAGE */
+        /** @global moodle_page $PAGE */
         global $PAGE, $CFG;
         if (isset($CFG->disable_activatedelayedattempt)) {
             return false;
@@ -81,17 +81,16 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
             // The spread of delays is set from 1 to 10 minutes depending on number of students in the quiz.
             $maxdelay = min(600, max(60, $numalumns * 25 / 60));
             // Calculate a pseudorandom delay for the user.
-            $randomdelay = $this->calculate_random_delay($maxdelay); 
+            $randomdelay = $this->calculate_random_delay($maxdelay);
             $diff = ($this->quiz->timeopen) - ($this->timenow) + $randomdelay;
             $diffmillisecs = $diff * 1000;
             $langstrings['debug_maxdelay'] = $maxdelay;
             $langstrings['debug_randomdebug'] = 'Random delay is ' . $randomdelay . ' seconds.';
             $result .= "<noscript>" . get_string('noscriptwarning', 'quizaccess_activatedelayedattempt') . "</noscript>";
             $PAGE->requires->js_call_amd('quizaccess_activatedelayedattempt/timer_countdown', 'init',
-				[$actionlink, $this->quizobj->get_cmid(), $sessionkey, $attemptquiz, $diffmillisecs,
+                [$actionlink, $this->quizobj->get_cmid(), $sessionkey, $attemptquiz, $diffmillisecs,
                 $langstrings]);
             $PAGE->requires->css('/mod/quiz/accessrule/activatedelayedattempt/styles.css'); // Discouraged.
-            // $PAGE->requires->css('/mod/quiz/accessrule/activatedelayedattempt/flipdown.css'); // Discouraged.
         }
         return $result; // Used as a prevent message.
     }

@@ -79,7 +79,7 @@ define( ['jquery'], function ($) {
             var countDownTime = quizOpenTime - currentTime;
 
             var datetxt = this.get_nice_duration(countDownTime / 1000, true, false, 2);
-            document.getElementById('activatedelayedtimer').innerHTML = 
+            document.getElementById('activatedelayedtimer').innerHTML =
                 this.get_string('quizwillstartinabout') + ' ' +
                 datetxt + ' ' +
                 this.get_string('pleasewait');
@@ -90,7 +90,7 @@ define( ['jquery'], function ($) {
                 clearInterval(interval);
             }
         },
-      /**
+       /**
        * Format a human-readable format for a duration in months or days and below.
        * calculates from seconds to months.
        * trim the details to the two more significant units
