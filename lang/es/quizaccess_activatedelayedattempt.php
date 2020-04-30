@@ -29,6 +29,9 @@ $string['attemptquiz'] = 'Realizar el cuestionario ahora';
 $string['pleasewait'] = 'Por favor, espere en esta página.';
 $string['quizwillstartinabout'] = 'Su turno para completar el cuestionario comenzará en ';
 $string['quizwillstartinless'] = 'Su turno para completar el cuestionario comenzará en menos de un minuto';
+$string['quizaccess_activatedelayedattempt_enabled'] = 'Entrada retardada a los cuestionarios activada';
+$string['quizaccess_activatedelayedattempt_startrate'] = 'Tasa de entrada (alumnos por minuto)';
+$string['quizaccess_activatedelayedattempt_maxdelay'] = 'Máximo retardo (minutos)';
 $string['noscriptwarning'] = 'Este cuestionario necesita un navegador que soporte JavaScript. Si tiene un bloqueador de Javascript necesitará desactivarlo.';
-$string['pluginname'] = 'Auto activar el botón de inicio de cuestionario con un retardo aleatorio.';
-
+$string['pluginname_desc'] = 'Auto activa el botón de inicio de cuestionario con un retardo aleatorio.';
+$string['pluginname'] = 'Entrada con retardo aleatorio al cuestionario.';

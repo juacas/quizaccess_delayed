@@ -58,6 +58,8 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
         }
         $result = "";
         if ($this->timenow < $this->quiz->timeopen) {
+            $rate = get_config('quizaccess_activatedelayedattempt', 'startrate');
+            $maxalloweddelay = get_config('quizaccess_activatedelayedattempt', 'maxdelay');
             $actionlink = "$CFG->wwwroot/mod/quiz/startattempt.php";
             $sessionkey = sesskey();
             $attemptquiz = get_string('attemptquiz', 'quizaccess_activatedelayedattempt');
@@ -77,9 +79,9 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
             ];
             // Calculate a random delay to improve scalation of requests.
             $numalumns = count_enrolled_users($this->quizobj->get_context(), 'mod/quiz:attempt', 0, true);
-            // The delay is calculated as 25 students per minute in average with 10 minutes maximum.
+            // The delay is calculated as "startrate" students per minute in average with 10 minutes maximum.
             // The spread of delays is set from 1 to 10 minutes depending on number of students in the quiz.
-            $maxdelay = min(600, max(60, $numalumns * 25 / 60));
+            $maxdelay = min($maxalloweddelay * 10, max(60, $numalumns * $rate / 60));
             // Calculate a pseudorandom delay for the user.
             $randomdelay = $this->calculate_random_delay($maxdelay);
             $diff = ($this->quiz->timeopen) - ($this->timenow) + $randomdelay;
