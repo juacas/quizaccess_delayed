@@ -96,7 +96,17 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
                 $langstrings]);
             $PAGE->requires->css('/mod/quiz/accessrule/activatedelayedattempt/styles.css'); // Discouraged.
         }
+        
         return $result; // Used as a prevent message.
+    }
+
+    public function description()
+    {
+        if (get_config('quizaccess_activatedelayedattempt', 'enabled')) {
+            return  get_config('quizaccess_activatedelayedattempt', 'notice');
+        } else {
+            return '';
+        }
     }
     /**
      * Generates a pseudorandom delay for each user.

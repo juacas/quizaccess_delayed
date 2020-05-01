@@ -33,6 +33,7 @@ $string['quizwillstartinless'] = 'Your turn for this quiz will start in less tha
 $string['quizaccess_activatedelayedattempt_enabled'] = 'Delayed attempt enabled';
 $string['quizaccess_activatedelayedattempt_startrate'] = 'Entry rate (students per minute)';
 $string['quizaccess_activatedelayedattempt_maxdelay'] = 'Maximum delay (minutes)';
+$string['quizaccess_activatedelayedattempt_notice'] = 'Notice to students';
 $string['pleasewait'] = 'Please wait here';
 $string['noscriptwarning'] = 'This quiz requires a browser that supports JavaScript. If you have a Javascript blocker you will need to disable it.';
 $string['pluginname_desc'] = 'Auto activate quiz attempt button with random delay access rule';

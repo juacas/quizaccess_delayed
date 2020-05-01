@@ -51,4 +51,13 @@ if ($hassiteconfig) {
         '10',
         $vals
     ));
+    $settings->add(new admin_setting_confightmleditor(
+        'quizaccess_activatedelayedattempt/notice',
+        new lang_string('quizaccess_activatedelayedattempt_notice', 'quizaccess_activatedelayedattempt'),
+        '',
+        '',
+        PARAM_RAW,
+        '60',
+        '8'
+    ));
 }
