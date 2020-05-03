@@ -53,9 +53,7 @@ define( ['jquery'], function ($) {
                     href: 'accessrule/activatedelayedattempt/flipdown/flipdown.css'
                 });
             jQuery.getScript('accessrule/activatedelayedattempt/flipdown/flipdown.js', this.startCounter.bind(this));
-            // $(selector)
-            //     .siblings().remove(); // Clean previous messages.
-           
+          
             var divcounter = $('<center>'
                 + langstrings.quizwillstartinabout
                 + '<div id="flipdown" class="flipdown"></div>'
@@ -86,38 +84,9 @@ define( ['jquery'], function ($) {
                         'value': attemptquiz
                     }));
             var divsection = $('<div id="activatedelayedattemptnotification"/>')
-            .append(divcounter, form, $('</br>'));
-
-            $(selector).html(divsection);
-            // $(selector).append('<form/>', {
-            //         'method': 'post',
-            //         'action': actionlink
-            //     }).append(
-            //         $('<input>', {
-            //             'type': 'hidden',
-            //             'name': 'cmid',
-            //             'value': cmid
-            //         }),
-            //         $('<input>', {
-            //             'type': 'hidden',
-            //             'name': 'sesskey',
-            //             'value': sessionkey
-            //         }),
-            //         $('<p>', {
-            //             'id': 'activatedelayedtimer'
-            //         }),
-            //         $('<input>', {
-            //             'type': 'submit',
-            //             'class': 'btn btn-secondary',
-            //             'id': 'startAttemptButton',
-            //             'disabled': true,
-            //             'value': attemptquiz
-            //         })
-            //     )
-            //     .append($('</br></div>'));
-
+            .append(divcounter);
+            $(selector).html(divsection).append(form, $('</br>'));
             $('#startAttemptButton').prop('disabled', true);
-
         },
         startCounter: function () {
             new FlipDown(quizOpenTime / 1000, {

@@ -39,36 +39,34 @@ define( ['jquery'], function ($) {
         init: function (selector = '.continuebutton', actionlink, cmid, sessionkey, attemptquiz, diffmillisecs, langstrings) {
             // Initialize strings to avoid json requests.
             this.set_strings(langstrings);
-            var div = $('<div id="activatedelayedattemptnotification" />')          
+           
+            var form = $('<form/>', {
+                'method': 'post',
+                'action': actionlink
+            }).append(
+                $('<input>', {
+                    'type': 'hidden',
+                    'name': 'cmid',
+                    'value': cmid
+                }),
+                $('<input>', {
+                    'type': 'hidden',
+                    'name': 'sesskey',
+                    'value': sessionkey
+                }),
+                $('<input>', {
+                    'type': 'submit',
+                    'class': 'btn btn-secondary',
+                    'id': 'startAttemptButton',
+                    'value': attemptquiz
+                }));
+            var divsection = $('<div id="activatedelayedattemptnotification" />')
                 .append(
-                $('</br>'),
-                $('<form/>', {
-                    'method': 'post',
-                    'action': actionlink
-                }).append(
-                    $('<input>', {
-                        'type': 'hidden',
-                        'name': 'cmid',
-                        'value': cmid
-                    }),
-                    $('<input>', {
-                        'type': 'hidden',
-                        'name': 'sesskey',
-                        'value': sessionkey
-                    }),
                     $('<p>', {
                         'id': 'activatedelayedtimer'
                     }),
-                    $('<input>', {
-                        'type': 'submit',
-                        'class': 'btn btn-secondary',
-                        'id': 'startAttemptButton',
-                        'value': attemptquiz
-                    })
-                ),
-                $('</br>')
-            );
-            $(selector).html(div); // Clean previous message.
+                );
+            $(selector).html(divsection).append(form); // Clean previous message.
             $('#startAttemptButton').prop('disabled', true);
 
             quizOpenTime = new Date().getTime() + diffmillisecs;
