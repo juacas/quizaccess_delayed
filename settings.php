@@ -51,6 +51,13 @@ if ($hassiteconfig) {
         '10',
         $vals
     ));
+    $settings->add(new admin_setting_configselect(
+        'quizaccess_activatedelayedattempt/countertype',
+        new lang_string('quizaccess_activatedelayedattempt_countertype', 'quizaccess_activatedelayedattempt'),
+        '',
+        'flipdown',
+        ['flipdown' => 'Flipdown', 'text' => 'Plain text']
+    ));
     $settings->add(new admin_setting_confightmleditor(
         'quizaccess_activatedelayedattempt/notice',
         new lang_string('quizaccess_activatedelayedattempt_notice', 'quizaccess_activatedelayedattempt'),
@@ -60,4 +67,5 @@ if ($hassiteconfig) {
         '60',
         '8'
     ));
+   
 }

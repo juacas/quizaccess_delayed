@@ -25,7 +25,6 @@
 define( ['jquery'], function ($) {
     var strings;
     var quizOpenTime;
-    var interval;
     return {
         get_string: function (key, component, param = null) {
             return strings[key];
@@ -35,13 +34,16 @@ define( ['jquery'], function ($) {
         },
         /**
          * Init function.
+         * @param selector for inserting the counter. Defaults '.continuebutton'
          */
-        init: function (actionlink, cmid, sessionkey, attemptquiz, diffmillisecs, langstrings) {
+        init: function (selector = '.continuebutton', actionlink, cmid, sessionkey, attemptquiz, diffmillisecs, langstrings) {
+            if ($('.quizattempt #activatedelayedattemptnotification').length > 0) {
+                return false;
+            }
             // Initialize strings to avoid json requests.
             this.set_strings(langstrings);
             quizOpenTime = new Date().getTime() + diffmillisecs;
-            // Clean previous message.
-            $('.continuebutton').siblings().remove();
+            
             // Load flipboard.
             $('<link>')
                 .appendTo('head')
@@ -51,16 +53,17 @@ define( ['jquery'], function ($) {
                     href: 'accessrule/activatedelayedattempt/flipdown/flipdown.css'
                 });
             jQuery.getScript('accessrule/activatedelayedattempt/flipdown/flipdown.js', this.startCounter.bind(this));
-
-            $('.continuebutton').prepend(
-                $('<div id="activatedelayedattemptnotification"><center>'
-                    + langstrings.quizwillstartinabout
-                    + '<div id="flipdown" class="flipdown"></div>'
-                    + langstrings.pleasewait
-                    + '</center></div><br/>'),
-                $('<form/>', {
-                    'method': 'post',
-                    'action': actionlink
+            // $(selector)
+            //     .siblings().remove(); // Clean previous messages.
+           
+            var divcounter = $('<center>'
+                + langstrings.quizwillstartinabout
+                + '<div id="flipdown" class="flipdown"></div>'
+                + '<p>' + langstrings.pleasewait + '</p>'
+                + '</center>');
+            var form = $('<form/>', {
+                'method': 'post',
+                'action': actionlink
                 }).append(
                     $('<input>', {
                         'type': 'hidden',
@@ -81,10 +84,38 @@ define( ['jquery'], function ($) {
                         'id': 'startAttemptButton',
                         'disabled': true,
                         'value': attemptquiz
-                    })
-                ),
-                $('</br>')
-            );
+                    }));
+            var divsection = $('<div id="activatedelayedattemptnotification"/>')
+            .append(divcounter, form, $('</br>'));
+
+            $(selector).html(divsection);
+            // $(selector).append('<form/>', {
+            //         'method': 'post',
+            //         'action': actionlink
+            //     }).append(
+            //         $('<input>', {
+            //             'type': 'hidden',
+            //             'name': 'cmid',
+            //             'value': cmid
+            //         }),
+            //         $('<input>', {
+            //             'type': 'hidden',
+            //             'name': 'sesskey',
+            //             'value': sessionkey
+            //         }),
+            //         $('<p>', {
+            //             'id': 'activatedelayedtimer'
+            //         }),
+            //         $('<input>', {
+            //             'type': 'submit',
+            //             'class': 'btn btn-secondary',
+            //             'id': 'startAttemptButton',
+            //             'disabled': true,
+            //             'value': attemptquiz
+            //         })
+            //     )
+            //     .append($('</br></div>'));
+
             $('#startAttemptButton').prop('disabled', true);
 
         },

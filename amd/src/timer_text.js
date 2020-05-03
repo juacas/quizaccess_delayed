@@ -36,12 +36,11 @@ define( ['jquery'], function ($) {
         /**
          * Init function.
          */
-        init: function (actionlink, cmid, sessionkey, attemptquiz, diffmillisecs, langstrings) {
+        init: function (selector = '.continuebutton', actionlink, cmid, sessionkey, attemptquiz, diffmillisecs, langstrings) {
             // Initialize strings to avoid json requests.
             this.set_strings(langstrings);
-            // Clean previous message.
-            $('.continuebutton').siblings().remove();
-            $('.continuebutton').prepend(
+            var div = $('<div id="activatedelayedattemptnotification" />')          
+                .append(
                 $('</br>'),
                 $('<form/>', {
                     'method': 'post',
@@ -69,6 +68,7 @@ define( ['jquery'], function ($) {
                 ),
                 $('</br>')
             );
+            $(selector).html(div); // Clean previous message.
             $('#startAttemptButton').prop('disabled', true);
 
             quizOpenTime = new Date().getTime() + diffmillisecs;

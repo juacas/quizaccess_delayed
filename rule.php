@@ -51,62 +51,35 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
      * @param object $lastattempt information about the user's last completed attempt.
      */
     public function prevent_access() {
-        /** @global moodle_page $PAGE */
-        global $PAGE, $CFG;
+       
         $enabled = get_config('quizaccess_activatedelayedattempt', 'enabled');
 
-        if (!$enabled) {
-            return false;
-        }
         $result = "";
-        if ($this->timenow < $this->quiz->timeopen) {
-            $rate = get_config('quizaccess_activatedelayedattempt', 'startrate');
-            $maxalloweddelay = get_config('quizaccess_activatedelayedattempt', 'maxdelay');
-            $actionlink = "$CFG->wwwroot/mod/quiz/startattempt.php";
-            $sessionkey = sesskey();
-            $attemptquiz = get_string('attemptquiz', 'quizaccess_activatedelayedattempt');
-            // Pass strigns to JScript.
-            $langstrings = [
-                'months' => get_string('months'),
-                'month' => get_string('month'),
-                'days' => get_string('days'),
-                'day' => get_string('day'),
-                'hours' => get_string('hours'),
-                'hour' => get_string('hour'),
-                'minutes' => get_string('minutes'),
-                'minute' => get_string('minute'),
-                'seconds' => get_string('seconds'),
-                'pleasewait' => get_string('pleasewait', 'quizaccess_activatedelayedattempt'),
-                'quizwillstartinabout' => get_string('quizwillstartinabout', 'quizaccess_activatedelayedattempt')
-            ];
-            // Calculate a random delay to improve scalation of requests.
-            $numalumns = count_enrolled_users($this->quizobj->get_context(), 'mod/quiz:attempt', 0, true);
-            // The delay is calculated as "startrate" students per minute in average with 10 minutes maximum.
-            // The spread of delays is set from 1 to 10 minutes depending on number of students in the quiz.
-            $maxdelay = min($maxalloweddelay * 10, max(60, $numalumns * $rate / 60));
-            // Calculate a pseudorandom delay for the user.
-            $randomdelay = $this->calculate_random_delay($maxdelay);
-            $diff = ($this->quiz->timeopen) - ($this->timenow) + $randomdelay;
-            $diffmillisecs = $diff * 1000;
-            $langstrings['debug_maxdelay'] = $maxdelay;
-            $langstrings['debug_randomdebug'] = 'Random delay is ' . $randomdelay . ' seconds.';
+        if ($enabled && $this->timenow < $this->quiz->timeopen) {
+            $this->configure_timerscript('.quizattempt');
             $result .= "<noscript>" . get_string('noscriptwarning', 'quizaccess_activatedelayedattempt') . "</noscript>";
-            $PAGE->requires->js_call_amd('quizaccess_activatedelayedattempt/timer_countdown', 'init',
-                [$actionlink, $this->quizobj->get_cmid(), $sessionkey, $attemptquiz, $diffmillisecs,
-                $langstrings]);
-            $PAGE->requires->css('/mod/quiz/accessrule/activatedelayedattempt/styles.css'); // Discouraged.
         }
-        
         return $result; // Used as a prevent message.
     }
 
     public function description()
     {
-        if (get_config('quizaccess_activatedelayedattempt', 'enabled')) {
-            return  get_config('quizaccess_activatedelayedattempt', 'notice');
-        } else {
-            return '';
+        $message = '';
+        if ($this->is_pending() && get_config('quizaccess_activatedelayedattempt', 'enabled')) {
+            if (has_capability('mod/quiz:manage', $this->quizobj->get_context())) {
+                $message .= get_string('quizaccess_activatedelayedattempt_teachernotice',
+                                        'quizaccess_activatedelayedattempt',
+                                        ceil($this->calculate_max_delay()/60));
+                $message .= "<noscript>" . get_string('noscriptwarning', 'quizaccess_activatedelayedattempt') . "</noscript>";
+
+        //         // Show the counter to the teacher.
+                $this->configure_timerscript('.quizattempt');
+            }
+           if (has_capability('mod/quiz:attempt', $this->quizobj->get_context())) {
+               $message .=  format_text(get_config('quizaccess_activatedelayedattempt', 'notice'));
+           }
         }
+        return $message;
     }
     /**
      * Generates a pseudorandom delay for each user.
@@ -118,6 +91,68 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
         $pseudoidx = ($USER->id * $this->quizobj->get_cmid()) % 100;
         $random = $pseudoidx * $maxdelay / 100;
         return $random;
+    }
+    /**
+     * Gets an upper limit for the delay (in seconds).
+     */
+    protected function calculate_max_delay(){
+        $rate = get_config('quizaccess_activatedelayedattempt', 'startrate');
+        $maxalloweddelay = get_config('quizaccess_activatedelayedattempt', 'maxdelay');
+        $numalumns = count_enrolled_users($this->quizobj->get_context(), 'mod/quiz:attempt', 0, true);
+        // The delay is calculated as "startrate" students per minute in average with 10 minutes maximum.
+        // The spread of delays is set from 1 to 10 minutes depending on number of students in the quiz.
+        $maxdelay = min($maxalloweddelay * 60, max(60, $numalumns * $rate / 60));
+        return $maxdelay;
+    }
+    /**
+     * Wheter the quiz is waiting to start.
+     */
+    protected function is_pending() {
+         return ($this->timenow < $this->quiz->timeopen);   
+    }
+    /**
+     *  @global moodle_page $PAGE
+     */
+    protected function configure_timerscript($selector) {
+        global $PAGE, $CFG;
+        $countertype = get_config('quizaccess_activatedelayedattempt', 'countertype');
+
+        $actionlink = "$CFG->wwwroot/mod/quiz/startattempt.php";
+        $sessionkey = sesskey();
+        $attemptquiz = get_string('attemptquiz', 'quizaccess_activatedelayedattempt');
+        // Pass strigns to JScript.
+        $langstrings = [
+            'months' => get_string('months'),
+            'month' => get_string('month'),
+            'days' => get_string('days'),
+            'day' => get_string('day'),
+            'hours' => get_string('hours'),
+            'hour' => get_string('hour'),
+            'minutes' => get_string('minutes'),
+            'minute' => get_string('minute'),
+            'seconds' => get_string('seconds'),
+            'pleasewait' => get_string('pleasewait', 'quizaccess_activatedelayedattempt'),
+            'quizwillstartinabout' => get_string('quizwillstartinabout', 'quizaccess_activatedelayedattempt')
+        ];
+        // Calculate a random delay to improve scalation of requests.
+        $maxdelay = $this->calculate_max_delay();
+        // Calculate a pseudorandom delay for the user (seconds).
+        $randomdelay = $this->calculate_random_delay($maxdelay);
+        $diff = ($this->quiz->timeopen) - ($this->timenow) + $randomdelay;
+        $diffmillisecs = $diff * 1000;
+        // Inject some info for debugging and testing.
+        $langstrings['debug_maxdelay'] = $maxdelay;
+        $langstrings['debug_randomdebug'] = 'Random delay is ' . $randomdelay . ' seconds.';
+        $PAGE->requires->js_call_amd(
+            "quizaccess_activatedelayedattempt/timer_$countertype",
+            'init',
+            [
+                $selector,
+                $actionlink, $this->quizobj->get_cmid(), $sessionkey, $attemptquiz, $diffmillisecs,
+                $langstrings
+            ]
+        );
+        $PAGE->requires->css('/mod/quiz/accessrule/activatedelayedattempt/styles.css'); // Discouraged.
     }
 }
 
