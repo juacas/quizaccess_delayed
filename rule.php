@@ -99,9 +99,9 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
         $rate = get_config('quizaccess_activatedelayedattempt', 'startrate');
         $maxalloweddelay = get_config('quizaccess_activatedelayedattempt', 'maxdelay');
         $numalumns = count_enrolled_users($this->quizobj->get_context(), 'mod/quiz:attempt', 0, true);
-        // The delay is calculated as "startrate" students per minute in average with 10 minutes maximum.
-        // The spread of delays is set from 1 to 10 minutes depending on number of students in the quiz.
-        $maxdelay = min($maxalloweddelay * 60, max(60, $numalumns * $rate / 60));
+        // The delay is calculated as "startrate" students per minute in average with maxalloweddelay minutes maximum.
+        // The spread of delays is set from 1 to $maxalloweddelay minutes depending on number of students in the quiz.
+        $maxdelay = min($maxalloweddelay, max(1, $numalumns / $rate )) * 60;
         return $maxdelay;
     }
     /**
