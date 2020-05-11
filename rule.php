@@ -98,12 +98,12 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
     protected function calculate_max_delay(){
         // Entries per minute.
         $rate = get_config('quizaccess_activatedelayedattempt', 'startrate');
-        // Minutes.
+        /** @var real $maxalloweddelay in minutes.*/
         $maxalloweddelay = get_config('quizaccess_activatedelayedattempt', 'maxdelay');
         $numalumns = count_enrolled_users($this->quizobj->get_context(), 'mod/quiz:attempt', 0, true);
         if ($this->quiz->timelimit > 0 ) {
-            // Timelimit in seconds.
-            $maxalloweddelay = min($maxalloweddelay, $this->quiz->timelimit/60 * 0.1);
+            // Timelimit comes in seconds.
+            $maxalloweddelay = max(1, min($maxalloweddelay, $this->quiz->timelimit/60 * 0.1));
         } 
         // The maximum delay if 10% of quiz time.
         // The delay is calculated as "startrate" students per minute in average with maxalloweddelay minutes maximum.
