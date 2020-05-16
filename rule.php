@@ -20,6 +20,7 @@
  *
  * @package   quizaccess_activatedelayedattempt
  * @author    Juan Pablo de Castro
+ * @author	  Enrique Castro	
  * @copyright 2020 University of Valladolid, Spain
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -42,8 +43,25 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
      *  time limits by the mod/quiz:ignoretimelimits capability.
      */
     public static function make(quiz $quizobj, $timenow, $canignoretimelimits) {
-        // This rule is always used, even if the quiz has no open or close date.
+        
+        if (quizaccess_activatedelayedattempt::is_enabled_in_instance($quizobj) === false ) {
+            return null;
+        } 
+        
         return new self ( $quizobj, $timenow );
+    }
+    /**
+     * Determines if this instance should apply the rule.
+     */
+    protected static function is_enabled_in_instance(quiz $quizobj) {
+        if (
+            !get_config('quizaccess_activatedelayedattempt', 'enabled')
+            || !get_config('quizaccess_activatedelayedattempt', 'allowdisable')
+            || $quizobj->get_quiz()->activatedelayedattempt == false ) {
+            return false;
+        } else {
+            return true;
+        }
     }
     /**
      * Whether or not a user should be allowed to start a new attempt at this quiz now.
@@ -52,10 +70,10 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
      */
     public function prevent_access() {
        
-        $enabled = get_config('quizaccess_activatedelayedattempt', 'enabled');
+        $enabled = quizaccess_activatedelayedattempt::is_enabled_in_instance($this->quizobj);
 
         $result = "";
-        if ($enabled && $this->timenow < $this->quiz->timeopen) {
+        if ($enabled && $this->timenow < ($this->quiz->timeopen)) { 
             $this->configure_timerscript('.quizattempt');
             $result .= "<noscript>" . get_string('noscriptwarning', 'quizaccess_activatedelayedattempt') . "</noscript>";
         }
@@ -65,22 +83,103 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
     public function description()
     {
         $message = '';
-        if ($this->is_pending() && get_config('quizaccess_activatedelayedattempt', 'enabled')) {
+        if ($this->is_pending() && quizaccess_activatedelayedattempt::is_enabled_in_instance($this->quizobj)) {
             if (has_capability('mod/quiz:manage', $this->quizobj->get_context())) {
                 $message .= get_string('quizaccess_activatedelayedattempt_teachernotice',
                                         'quizaccess_activatedelayedattempt',
                                         ceil($this->calculate_max_delay()/60));
                 $message .= "<noscript>" . get_string('noscriptwarning', 'quizaccess_activatedelayedattempt') . "</noscript>";
 
-        //         // Show the counter to the teacher.
+        // Show also the counter to the teacher.
                 $this->configure_timerscript('.quizattempt');
             }
+        // Show the notice to the students.
            if (has_capability('mod/quiz:attempt', $this->quizobj->get_context())) {
                $message .=  format_text(get_config('quizaccess_activatedelayedattempt', 'notice'));
            }
         }
         return $message;
     }
+    
+    /**
+     * Add any fields that this rule requires to the quiz settings form. This
+     * method is called from {@link mod_quiz_mod_form::definition()}, while the
+     * security seciton is being built.
+     * @param mod_quiz_mod_form $quizform the quiz settings form that is being built.
+     * @param MoodleQuickForm $mform the wrapped MoodleQuickForm.
+     */
+    public static function add_settings_form_fields(
+            mod_quiz_mod_form $quizform, MoodleQuickForm $mform) {
+        
+        $enabled = get_config('quizaccess_activatedelayedattempt', 'enabled');
+        $allowdisable = get_config('quizaccess_activatedelayedattempt', 'allowdisable');
+        if($enabled && $allowdisable) {
+            $enabledbydefault = get_config('quizaccess_activatedelayedattempt', 'enabledbydefault');
+            $mform->addElement('advcheckbox', 'activatedelayedattempt',
+                    get_string('delayedattemptlock', 'quizaccess_activatedelayedattempt'),
+                    get_string('explaindelayedattempt', 'quizaccess_activatedelayedattempt'));
+            $mform->setDefault('activatedelayedattempt', $enabledbydefault);
+            $mform->addHelpButton('activatedelayedattempt',
+                    'delayedattemptlock', 'quizaccess_activatedelayedattempt');
+        }
+    }
+    
+    /**
+     * Save any submitted settings when the quiz settings form is submitted. This
+     * is called from {@link quiz_after_add_or_update()} in lib.php.
+     * @param object $quiz the data from the quiz form, including $quiz->id
+     *      which is the id of the quiz being saved.
+     * @global moodle_database $DB
+     */
+    public static function save_settings($quiz) {
+        global $DB;
+        $record = new stdClass();
+        $record->quizid = $quiz->id;
+        $record->activatedelayedattempt = $quiz->activatedelayedattempt;
+        $DB->delete_records('quizaccess_delayedattempt', ['quizid' => $record->quizid]);
+        $DB->insert_record('quizaccess_delayedattempt', $record);
+    }
+
+    /**
+     * Delete any rule-specific settings when the quiz is deleted. This is called
+     * from {@link quiz_delete_instance()} in lib.php.
+     * @param object $quiz the data from the database, including $quiz->id
+     *      which is the id of the quiz being deleted.
+     * @since Moodle 2.7.1, 2.6.4, 2.5.7
+     */
+    public static function delete_settings($quiz) {
+        global $DB;
+        $DB->delete_records('quizaccess_delayedattempt', array('quizid' => $quiz->id));
+    }
+
+    /**
+     * Return the bits of SQL needed to load all the settings from all the access
+     * plugins in one DB query. The easiest way to understand what you need to do
+     * here is probalby to read the code of {@link quiz_access_manager::load_settings()}.
+     *
+     * If you have some settings that cannot be loaded in this way, then you can
+     * use the {@link get_extra_settings()} method instead, but that has
+     * performance implications.
+     *
+     * @param int $quizid the id of the quiz we are loading settings for. This
+     *     can also be accessed as quiz.id in the SQL. (quiz is a table alisas for {quiz}.)
+     * @return array with three elements:
+     *     1. fields: any fields to add to the select list. These should be aliased
+     *        if neccessary so that the field name starts the name of the plugin.
+     *     2. joins: any joins (should probably be LEFT JOINS) with other tables that
+     *        are needed.
+     *     3. params: array of placeholder values that are needed by the SQL. You must
+     *        used named placeholders, and the placeholder names should start with the
+     *        plugin name, to avoid collisions.
+     */
+    public static function get_settings_sql($quizid) {
+        return array(
+            'activatedelayedattempt',
+            'LEFT JOIN {quizaccess_delayedattempt} delayedattempt ON delayedattempt.quizid = quiz.id',
+            array());
+    }    
+    
+    
     /**
      * Generates a pseudorandom delay for each user.
      * The delay should be the same every call for the same user and quiz instance.
@@ -109,6 +208,7 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
         // The delay is calculated as "startrate" students per minute in average with maxalloweddelay minutes maximum.
         // The spread of delays is set from 1 to $maxalloweddelay minutes depending on number of students in the quiz.
         $maxdelay = min($maxalloweddelay, max(1, $numalumns / $rate )) * 60;
+        
         return $maxdelay;
     }
     /**

@@ -33,6 +33,21 @@ if ($hassiteconfig) {
         '',
         1
     ));
+
+    // Allow disable the rule per instance.
+    $settings->add(new admin_setting_configcheckbox(
+        'quizaccess_activatedelayedattempt/allowdisable',
+        new lang_string('quizaccess_activatedelayedattempt_allowdisable', 'quizaccess_activatedelayedattempt'),
+        '',
+        1
+    ));
+    // Default enabled state in new instances.
+    $settings->add(new admin_setting_configcheckbox(
+        'quizaccess_activatedelayedattempt/enabledbydefault',
+        new lang_string('quizaccess_activatedelayedattempt_enabledbydefault', 'quizaccess_activatedelayedattempt'),
+        '',
+        1
+    ));
     $vals = [];
     foreach( range(1,100) as $val) {
         $vals[$val] =$val;

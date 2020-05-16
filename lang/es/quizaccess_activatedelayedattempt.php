@@ -19,9 +19,9 @@
  * Based on quizaccess_activateattempt https://github.com/IITBombayWeb/moodle-quizaccess_activatedelayedattempt/tree/v1.0.3
  *
  * @package   quizaccess_activatedelayedattempt
- * @author    Juan Pablo de Castro
- * @copyright 2020 University of Valladolid, Spain
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @author    Juan Pablo de Castro <juan.pablo.de.castro@gmail.com>
+ * @copyright 2020 Juan Pablo de Castro @University of Valladolid, Spain
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
@@ -30,6 +30,8 @@ $string['pleasewait'] = 'Por favor, espere en esta página.';
 $string['quizwillstartinabout'] = 'Su turno para completar el cuestionario comenzará en ';
 $string['quizwillstartinless'] = 'Su turno para completar el cuestionario comenzará en menos de un minuto';
 $string['quizaccess_activatedelayedattempt_enabled'] = 'Entrada retardada a los cuestionarios activada';
+$string['quizaccess_activatedelayedattempt_allowdisable'] = 'A los profesores se les permite desactivar la regla';
+$string['quizaccess_activatedelayedattempt_enabledbydefault'] = 'Los nuevos exámenes usarán esta regla por defecto';
 $string['quizaccess_activatedelayedattempt_startrate'] = 'Tasa de entrada (alumnos por minuto)';
 $string['quizaccess_activatedelayedattempt_maxdelay'] = 'Máximo retardo (minutos)';
 $string['quizaccess_activatedelayedattempt_notice'] = 'Aviso para los estudiantes';
@@ -38,3 +40,7 @@ $string['quizaccess_activatedelayedattempt_teachernotice'] = 'Este cuestionario 
 $string['noscriptwarning'] = 'Este cuestionario necesita un navegador que soporte JavaScript. Si tiene un bloqueador de Javascript necesitará desactivarlo.';
 $string['pluginname_desc'] = 'Auto activa el botón de inicio de cuestionario con un retardo aleatorio.';
 $string['pluginname'] = 'Entrada con retardo aleatorio al cuestionario.';
+$string['delayedattemptlock'] = 'Entrada gradual al cuestionario';
+$string['delayedattemptlock_help'] = 'Si se activa, al acceder a la página antes del momento de apertura del cuestionario se inhabilita transitoriamente el botón de comienzo.
+Se activa un contador de tiempo con un plazo aleatorio para cada estudiante (hasta un tiempo configurado por su institución). Solo cuando ese plazo termina el estudiante puede usar el botón de comienzo del cuestionario. ';
+$string['explaindelayedattempt'] = 'Establece una demora aleatoria para comenzar';
