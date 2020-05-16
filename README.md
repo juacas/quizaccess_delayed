@@ -39,3 +39,4 @@ A random delay up to 10 minutes is assigned to each student for spreading the en
 ## Acknowledgements
 
 This plugin is based on the previous work in the quizaccess_activateattempt plugin.
+Customization by quiz instance code was contributed by Enrique Castro @ULPGC.
