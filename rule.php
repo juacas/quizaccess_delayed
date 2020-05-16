@@ -54,14 +54,14 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
      * Determines if this instance should apply the rule.
      */
     protected static function is_enabled_in_instance(quiz $quizobj) {
-        if (
-            !get_config('quizaccess_activatedelayedattempt', 'enabled')
-            || !get_config('quizaccess_activatedelayedattempt', 'allowdisable')
-            || $quizobj->get_quiz()->activatedelayedattempt == false ) {
-            return false;
-        } else {
+        $enabled = get_config('quizaccess_activatedelayedattempt', 'enabled');
+        $allowdisable = get_config('quizaccess_activatedelayedattempt', 'allowdisable');
+        $locallyenabled = $quizobj->get_quiz()->activatedelayedattempt;
+
+        if ( $enabled == true && ($allowdisable == false || $locallyenabled == true)) {
             return true;
         }
+        return false;
     }
     /**
      * Whether or not a user should be allowed to start a new attempt at this quiz now.
