@@ -89,12 +89,13 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
                     foreach ($notices as $notice) {
                         $message .= $OUTPUT->notification( $notice, notification::WARNING); // TODO: DANGER message also!
                     }
+                    // Show institutional message.
+                    $message .= format_text(get_config('quizaccess_activatedelayedattempt', 'dangerousquiznotice'));
                 }
                 $message .= get_string('quizaccess_activatedelayedattempt_teachernotice',
                 'quizaccess_activatedelayedattempt',
                 ceil($this->calculate_max_delay()/60));
                 $message .= "<noscript>" . get_string('noscriptwarning', 'quizaccess_activatedelayedattempt') . "</noscript>";
-
         // Show also the counter to the teacher.
                 $this->configure_timerscript('.quizattempt');
             }
