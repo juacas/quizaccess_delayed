@@ -32,6 +32,7 @@ $string['quizwillstartinless'] = 'Su turno para completar el cuestionario comenz
 $string['quizaccess_activatedelayedattempt_enabled'] = 'Entrada retardada a los cuestionarios activada';
 $string['quizaccess_activatedelayedattempt_allowdisable'] = 'A los profesores se les permite desactivar la regla';
 $string['quizaccess_activatedelayedattempt_enabledbydefault'] = 'Los nuevos exámenes usarán esta regla por defecto';
+$string['quizaccess_activatedelayedattempt_showdangerousquznotice'] = 'Muestra al profesor un aviso si su cuestionario consume recursos intensamente';
 $string['quizaccess_activatedelayedattempt_startrate'] = 'Tasa de entrada (alumnos por minuto)';
 $string['quizaccess_activatedelayedattempt_maxdelay'] = 'Máximo retardo (minutos)';
 $string['quizaccess_activatedelayedattempt_notice'] = 'Aviso para los estudiantes';
@@ -44,3 +45,5 @@ $string['delayedattemptlock'] = 'Entrada gradual al cuestionario';
 $string['delayedattemptlock_help'] = 'Si se activa, al acceder a la página antes del momento de apertura del cuestionario se inhabilita transitoriamente el botón de comienzo.
 Se activa un contador de tiempo con un plazo aleatorio para cada estudiante (hasta un tiempo configurado por su institución). Solo cuando ese plazo termina el estudiante puede usar el botón de comienzo del cuestionario. ';
 $string['explaindelayedattempt'] = 'Establece una demora aleatoria para comenzar';
+$string['tooshortpagesadvice'] = 'El cuestionario tiene {$a->pages} páginas demasiado cortas. Esto aumenta la carga sobre el servidor gravemente. Considere poner más preguntas en cada página.';
+$string['tooshorttimeguardadvice'] = 'Un tiempo de disponibilidad de {$a->timespan} es demasiado ajustado. Tenga en cuenta que se aplicará a algunos estudiantes un retardo de espera de hasta {$a->maxdelay}, tiene {$a->timelimit} para realizar la prueba y conviene dejar un márgen de seguridad para otros retardos en el inicio del cuestionario.';

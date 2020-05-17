@@ -48,6 +48,15 @@ if ($hassiteconfig) {
         '',
         1
     ));
+
+    // Default enabled state in new instances.
+    $settings->add(new admin_setting_configcheckbox(
+        'quizaccess_activatedelayedattempt/showdangerousquiznotice',
+        new lang_string('quizaccess_activatedelayedattempt_showdangerousquiznotice', 'quizaccess_activatedelayedattempt'),
+        '',
+        1
+    ));
+
     $vals = [];
     foreach( range(1,100) as $val) {
         $vals[$val] =$val;

@@ -24,6 +24,11 @@
  * @copyright 2020 University of Valladolid, Spain
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+use core\notification;
+use core\output\notification as OutputNotification;
+use core\plugininfo\format;
+
 defined ( 'MOODLE_INTERNAL' ) || die ();
 
 require_once($CFG->dirroot . '/mod/quiz/accessrule/accessrulebase.php');
@@ -36,6 +41,10 @@ require_once($CFG->dirroot . '/mod/quiz/accessrule/accessrulebase.php');
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
+    // Cache maxdela.
+    var $maxdelay = null;
+    // Cache students count.
+    var $students = null;
     /** Return an appropriately configured instance of this rule
      * @param quiz $quizobj information about the quiz in question.
      * @param int $timenow the time that should be considered as 'now'.
@@ -50,19 +59,7 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
         
         return new self ( $quizobj, $timenow );
     }
-    /**
-     * Determines if this instance should apply the rule.
-     */
-    protected static function is_enabled_in_instance(quiz $quizobj) {
-        $enabled = get_config('quizaccess_activatedelayedattempt', 'enabled');
-        $allowdisable = get_config('quizaccess_activatedelayedattempt', 'allowdisable');
-        $locallyenabled = $quizobj->get_quiz()->activatedelayedattempt;
-
-        if ( $enabled == true && ($allowdisable == false || $locallyenabled == true)) {
-            return true;
-        }
-        return false;
-    }
+  
     /**
      * Whether or not a user should be allowed to start a new attempt at this quiz now.
      * @param int $numattempts the number of previous attempts this user has made.
@@ -71,9 +68,8 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
     public function prevent_access() {
        
         $enabled = quizaccess_activatedelayedattempt::is_enabled_in_instance($this->quizobj);
-
         $result = "";
-        if ($enabled && $this->timenow < ($this->quiz->timeopen)) { 
+        if ($enabled && $this->is_pending()) { 
             $this->configure_timerscript('.quizattempt');
             $result .= "<noscript>" . get_string('noscriptwarning', 'quizaccess_activatedelayedattempt') . "</noscript>";
         }
@@ -85,9 +81,18 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
         $message = '';
         if ($this->is_pending() && quizaccess_activatedelayedattempt::is_enabled_in_instance($this->quizobj)) {
             if (has_capability('mod/quiz:manage', $this->quizobj->get_context())) {
+                // Show a warning if the quiz is resource intensive.
+                $intensivequizdetection = get_config('quizaccess_activatedelayedattempt', 'showdangerousquiznotice');
+                if ($intensivequizdetection) {
+                    global $OUTPUT;
+                    $notices = $this->get_warning_messages($this->quizobj);
+                    foreach ($notices as $notice) {
+                        $message .= $OUTPUT->notification( $notice, notification::WARNING); // TODO: DANGER message also!
+                    }
+                }
                 $message .= get_string('quizaccess_activatedelayedattempt_teachernotice',
-                                        'quizaccess_activatedelayedattempt',
-                                        ceil($this->calculate_max_delay()/60));
+                'quizaccess_activatedelayedattempt',
+                ceil($this->calculate_max_delay()/60));
                 $message .= "<noscript>" . get_string('noscriptwarning', 'quizaccess_activatedelayedattempt') . "</noscript>";
 
         // Show also the counter to the teacher.
@@ -100,7 +105,71 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
         }
         return $message;
     }
-    
+    /**
+     * @param quiz $quizobj
+     * @return array(string) Messages to show.
+     */
+    protected function get_warning_messages(quiz $quizobj) {
+        $notices = [];
+        $sections = $quizobj->get_sections();
+        $hasquestions = $quizobj->has_questions();
+        // Get preloaded qustions just for counting them.
+        $reflection = new ReflectionClass($quizobj);
+        $property = $reflection->getProperty('questions');
+        $property->setAccessible(true);
+        $questions = $property->getValue($quizobj); // Sections are not pages?????????
+        // Count questions.
+        $questioncount = count($questions);
+        // count pages.
+        $pages = 1;
+        $hasrandom = false;
+        foreach ($questions as $question) {
+            if ($pages < $question->page) {
+                $pages = $question->page;
+            }
+            if ($question->qtype == 'random') {
+                $hasrandom = true;
+            }
+        }
+        $timelimit = $quizobj->get_quiz()->timelimit;
+        $timespan = $this->get_time_span($quizobj);
+        $maxdelay = $this->calculate_max_delay();
+        $students = $this->get_student_count($quizobj);
+        $randomdelay = $this->get_user_delay();
+        $isintensive = $timelimit; // TODO define the formula.
+        $timeperpage = $timespan / $pages; // if timeperpage < 10 minutes then warning!
+        // Data for messages.
+        $a = new stdClass();
+        $a->maxdelay = format_time($maxdelay);
+        $a->randomdelay = format_time($randomdelay);
+        $a->timespan = format_time($timespan);
+        $a->timelimit = format_time($timelimit);
+        $a->pages = $pages;
+        $a->students = $students;
+
+        if ($timeperpage < 600 ) {
+            $notices[] = get_string('tooshortpagesadvice', 'quizaccess_activatedelayedattempt', $a);
+        }
+        if (($timespan-$timelimit) < ($maxdelay + $timelimit * 0.2) ) {
+            $notices[] = get_string('tooshorttimeguardadvice', 'quizaccess_activatedelayedattempt', $a);
+        }
+        return $notices;
+    }
+
+    /**
+     * @return time span of the quiz in seconds.
+     */
+    protected function get_time_span($quizobj) {
+        $timeclose = $quizobj->get_quiz()->timeclose;
+        $timeopen = $quizobj->get_quiz()->timeopen;
+        if ($timeopen == 0) {
+            $timeopen = time();
+        }
+        if ($timeclose == 0) {
+            return PHP_INT_MAX;
+        }
+        return $timeclose - $timeopen;
+    }
     /**
      * Add any fields that this rule requires to the quiz settings form. This
      * method is called from {@link mod_quiz_mod_form::definition()}, while the
@@ -178,12 +247,21 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
             'LEFT JOIN {quizaccess_delayedattempt} delayedattempt ON delayedattempt.quizid = quiz.id',
             array());
     }    
-    
-    
+    /**
+     * Gets the delay associated to current user.
+     * @return int delay in seconds.
+     */
+    protected function get_user_delay() {
+        // Calculate a random delay to improve scalation of requests.
+        $maxdelay = $this->calculate_max_delay();
+        // Calculate a pseudorandom delay for the user (seconds).
+        return $this->calculate_random_delay($maxdelay);
+    }
     /**
      * Generates a pseudorandom delay for each user.
      * The delay should be the same every call for the same user and quiz instance.
      * @param int $maxdelay
+     * @global stdClass $USER
      */
     protected function calculate_random_delay($maxdelay) {
         global $USER;
@@ -195,27 +273,35 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
      * Gets an upper limit for the delay (in seconds).
      */
     protected function calculate_max_delay(){
-        // Entries per minute.
-        $rate = get_config('quizaccess_activatedelayedattempt', 'startrate');
-        /** @var real $maxalloweddelay in minutes.*/
-        $maxalloweddelay = get_config('quizaccess_activatedelayedattempt', 'maxdelay');
-        $numalumns = count_enrolled_users($this->quizobj->get_context(), 'mod/quiz:attempt', 0, true);
-        if ($this->quiz->timelimit > 0 ) {
-            // Timelimit comes in seconds.
-            $maxalloweddelay = max(1, min($maxalloweddelay, $this->quiz->timelimit/60 * 0.1));
-        } 
-        // The maximum delay if 10% of quiz time.
-        // The delay is calculated as "startrate" students per minute in average with maxalloweddelay minutes maximum.
-        // The spread of delays is set from 1 to $maxalloweddelay minutes depending on number of students in the quiz.
-        $maxdelay = min($maxalloweddelay, max(1, $numalumns / $rate )) * 60;
-        
-        return $maxdelay;
+        if ($this->maxdelay == null) {
+            // Entries per minute.
+            $rate = get_config('quizaccess_activatedelayedattempt', 'startrate');
+            /** @var real $maxalloweddelay in minutes.*/
+            $maxalloweddelay = get_config('quizaccess_activatedelayedattempt', 'maxdelay');
+            $numalumns = $this->get_student_count($this->quizobj);
+            if ($this->quiz->timelimit > 0 ) {
+                // Timelimit comes in seconds.
+                $maxalloweddelay = max(1, min($maxalloweddelay, $this->quiz->timelimit/60 * 0.1));
+            } 
+            // The maximum delay if 10% of quiz time.
+            // The delay is calculated as "startrate" students per minute in average with maxalloweddelay minutes maximum.
+            // The spread of delays is set from 1 to $maxalloweddelay minutes depending on number of students in the quiz.
+            $this->maxdelay = min($maxalloweddelay, max(1, $numalumns / $rate )) * 60;
+        }
+        return $this->maxdelay;
+    }
+    protected function get_student_count($quizobj) {
+        if ($this->students == null) {
+            $this->students = count_enrolled_users($quizobj->get_context(), 'mod/quiz:attempt', 0, true);
+        }
+        return $this->students;
     }
     /**
-     * Wheter the quiz is waiting to start.
+     * Wheter the quiz is waiting to start for the current user.
      */
     protected function is_pending() {
-         return ($this->timenow < $this->quiz->timeopen);   
+        $randomdelay = $this->get_user_delay();
+        return ($this->timenow < ($this->quiz->timeopen + $randomdelay));   
     }
     /**
      *  @global moodle_page $PAGE
@@ -241,14 +327,12 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
             'pleasewait' => get_string('pleasewait', 'quizaccess_activatedelayedattempt'),
             'quizwillstartinabout' => get_string('quizwillstartinabout', 'quizaccess_activatedelayedattempt')
         ];
-        // Calculate a random delay to improve scalation of requests.
-        $maxdelay = $this->calculate_max_delay();
-        // Calculate a pseudorandom delay for the user (seconds).
-        $randomdelay = $this->calculate_random_delay($maxdelay);
+        // Gets the delay associated to current user.
+        $randomdelay = $this->get_user_delay();
         $diff = ($this->quiz->timeopen) - ($this->timenow) + $randomdelay;
         $diffmillisecs = $diff * 1000;
         // Inject some info for debugging and testing.
-        $langstrings['debug_maxdelay'] = $maxdelay;
+        $langstrings['debug_maxdelay'] = $this->calculate_max_delay();
         $langstrings['debug_randomdebug'] = 'Random delay is ' . $randomdelay . ' seconds.';
         $PAGE->requires->js_call_amd(
             "quizaccess_activatedelayedattempt/timer_$countertype",
@@ -260,6 +344,20 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
             ]
         );
         $PAGE->requires->css('/mod/quiz/accessrule/activatedelayedattempt/styles.css'); // Discouraged.
+    }
+    /**
+     * Determines if this instance should apply the rule.
+     */
+    protected static function is_enabled_in_instance(quiz $quizobj)
+    {
+        $enabled = get_config('quizaccess_activatedelayedattempt', 'enabled');
+        $allowdisable = get_config('quizaccess_activatedelayedattempt', 'allowdisable');
+        $locallyenabled = $quizobj->get_quiz()->activatedelayedattempt;
+
+        if ($enabled == true && ($allowdisable == false || $locallyenabled == true)) {
+            return true;
+        }
+        return false;
     }
 }
 
