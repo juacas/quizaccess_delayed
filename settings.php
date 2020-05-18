@@ -49,22 +49,6 @@ if ($hassiteconfig) {
         1
     ));
 
-    // Default enabled state in new instances.
-    $settings->add(new admin_setting_configcheckbox(
-        'quizaccess_activatedelayedattempt/showdangerousquiznotice',
-        new lang_string('quizaccess_activatedelayedattempt_showdangerousquiznotice', 'quizaccess_activatedelayedattempt'),
-        '',
-        1
-    ));
-    $settings->add(new admin_setting_confightmleditor(
-        'quizaccess_activatedelayedattempt/dangerousquiznotice',
-        new lang_string('quizaccess_activatedelayedattempt_dangerousquiznotice', 'quizaccess_activatedelayedattempt'),
-        '',
-        '',
-        PARAM_RAW,
-        '60',
-        '8'
-    ));
     $vals = [];
     foreach( range(1,100) as $val) {
         $vals[$val] =$val;
@@ -89,6 +73,22 @@ if ($hassiteconfig) {
         '',
         'flipdown',
         ['flipdown' => 'Flipdown', 'text' => 'Plain text']
+    ));
+    // Show the teacher a warning in some circunstances.
+    $settings->add(new admin_setting_configcheckbox(
+        'quizaccess_activatedelayedattempt/showdangerousquiznotice',
+        new lang_string('quizaccess_activatedelayedattempt_showdangerousquiznotice', 'quizaccess_activatedelayedattempt'),
+        '',
+        1
+    ));
+    $settings->add(new admin_setting_confightmleditor(
+        'quizaccess_activatedelayedattempt/dangerousquiznotice',
+        new lang_string('quizaccess_activatedelayedattempt_dangerousquiznotice', 'quizaccess_activatedelayedattempt'),
+        '',
+        '',
+        PARAM_RAW,
+        '60',
+        '8'
     ));
     $settings->add(new admin_setting_confightmleditor(
         'quizaccess_activatedelayedattempt/notice',
