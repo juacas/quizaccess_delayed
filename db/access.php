@@ -15,21 +15,22 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version information for the quizaccess_activatedelayedattempt plugin.
+ * Capability definitions for the quiz makeexamlok access rule.
  *
- * Based on quizaccess_activatedelayedattempt https://github.com/IITBombayWeb/moodle-quizaccess_activatedelayedattempt/tree/v1.0.3
- *
- * @package   quizaccess_activatedelayedattempt
- * @author    Juan Pablo de Castro
- * @copyright 2020 University of Valladolid, Spain
+ * @package   quiz_activatedelayedattempt
+ * @copyright 2014 Enrique Castro @ ULPGC
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-
-defined ( 'MOODLE_INTERNAL' ) || die ();
-
-$plugin->version = 2020051701;
-$plugin->requires = 2017050500;
-$plugin->component = 'quizaccess_activatedelayedattempt';
-$plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = '1.2.0';
+defined('MOODLE_INTERNAL') || die();
+// TODO: this capability is not used!
+$capabilities = array(
+    'quiz/activatedelayedattempt:exempt' => array(
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_MODULE,
+        'archetypes' => array(
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW
+        ),
+    ),
+);
