@@ -6,6 +6,8 @@ Auto Activate the Quiz Attempt Button with a randomized delay to reduce the load
 1) In a quiz with strict time constraints students tend to refresh the page too often, just to make sure if the attempt is available yet.
 2) This unnecessarily increases the server load, and is a problem with large number of students.
 3) Synchronized start of many attempts places a heavy short-time load in the Quiz core engine. By phasing in access, the impact is minimized.
+4) Some questionnaire configurations generate particularly high server loads.
+5) Some quiz schedules generate problems for students.
 
 ## Solution
 
@@ -13,11 +15,13 @@ The “Activate Delayed Attempt” plugin makes the “Attempt quiz now” butto
 This is done by a client side countdown timer (javascript) which is initiated when the page is rendered in the browser. 
 The plugin is implemented as an access-rule plugin overriding the default activity page render.  
 The page, displays the time remaining to start the quiz using an animated countdown. 
-A pseudo-random delay is assigned to each student depending on the number of students and a fixed rate of starts.
-An optional message can be defined for all quizzes in the platform.
+A pseudo-random delay is assigned to each student depending on the number of students and a set of site-wide parameters as fixed rate of entry, maximum allowable delay.
+An optional message for the students can be defined for all quizzes in the platform.
+An optional check and advice message for teachers can be defined for all quizzes in the platform.
 
 ## Releases
-
+- v1.2.1 Place advices for the teacher for quizzes that are resource intensives of potentially problematic.
+- v1.2.0 Rule can be enabled/disabled in each instance.
 - v1.1.1b Management controls in system settings.
 - v1.1.1 Animated countdown.
 - v1.1.0 Textual countdowmn.
@@ -39,3 +43,4 @@ A random delay up to 10 minutes is assigned to each student for spreading the en
 ## Acknowledgements
 
 This plugin is based on the previous work in the quizaccess_activateattempt plugin.
+Customization by quiz instance code was contributed by Enrique Castro @ULPGC.
