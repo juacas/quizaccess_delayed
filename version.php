@@ -28,8 +28,8 @@
 
 defined ( 'MOODLE_INTERNAL' ) || die ();
 
-$plugin->version = 2020051701;
+$plugin->version = 2020051800;
 $plugin->requires = 2017050500;
 $plugin->component = 'quizaccess_activatedelayedattempt';
 $plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = '1.2.0';
+$plugin->release   = '1.2.1';
