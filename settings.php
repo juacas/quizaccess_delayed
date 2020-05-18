@@ -56,7 +56,15 @@ if ($hassiteconfig) {
         '',
         1
     ));
-
+    $settings->add(new admin_setting_confightmleditor(
+        'quizaccess_activatedelayedattempt/dangerousquiznotice',
+        new lang_string('quizaccess_activatedelayedattempt_dangerousquiznotice', 'quizaccess_activatedelayedattempt'),
+        '',
+        '',
+        PARAM_RAW,
+        '60',
+        '8'
+    ));
     $vals = [];
     foreach( range(1,100) as $val) {
         $vals[$val] =$val;

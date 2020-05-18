@@ -34,6 +34,7 @@ $string['quizaccess_activatedelayedattempt_enabled'] = 'Delayed attempt enabled'
 $string['quizaccess_activatedelayedattempt_allowdisable'] = 'The teachers are allowed to disable the rule';
 $string['quizaccess_activatedelayedattempt_enabledbydefault'] = 'New quizzes will use this rule by default';
 $string['quizaccess_activatedelayedattempt_showdangerousquiznotice'] = 'Shows the teacher a warning if their quiz is resource intensive';
+$string['quizaccess_activatedelayedattempt_dangerousquiznotice'] = 'Institutional message displayed if the quiz could be problematic';
 $string['quizaccess_activatedelayedattempt_startrate'] = 'Entry rate (students per minute)';
 $string['quizaccess_activatedelayedattempt_maxdelay'] = 'Maximum delay (minutes)';
 $string['quizaccess_activatedelayedattempt_notice'] = 'Notice to students';
@@ -49,4 +50,3 @@ A countdown period is started (random up to a time set up by your institution). 
 $string['explaindelayedattempt'] = 'Sets a random access delay';
 $string['tooshortpagesadvice'] = 'The questionnaire has {$a->pages} pages that are too short. This increases the load on the server severely. Consider putting more questions on each page.';
 $string['tooshorttimeguardadvice'] = 'An availability time of {$a->timespan} is too tight. Please note that some students will be delayed by up to {$a->maxdelay}, they have {$a->timelimit} to take the test and it is advisable to leave a safety margin for other delays at the start of the quiz.';
-

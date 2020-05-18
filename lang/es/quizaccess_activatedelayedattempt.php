@@ -33,6 +33,7 @@ $string['quizaccess_activatedelayedattempt_enabled'] = 'Entrada retardada a los 
 $string['quizaccess_activatedelayedattempt_allowdisable'] = 'A los profesores se les permite desactivar la regla';
 $string['quizaccess_activatedelayedattempt_enabledbydefault'] = 'Los nuevos exámenes usarán esta regla por defecto';
 $string['quizaccess_activatedelayedattempt_showdangerousquznotice'] = 'Muestra al profesor un aviso si su cuestionario consume recursos intensamente';
+$string['quizaccess_activatedelayedattempt_dangerousquiznotice'] = 'Mensaje institucional que se muestra si el cuestionario puede ser problemático';
 $string['quizaccess_activatedelayedattempt_startrate'] = 'Tasa de entrada (alumnos por minuto)';
 $string['quizaccess_activatedelayedattempt_maxdelay'] = 'Máximo retardo (minutos)';
 $string['quizaccess_activatedelayedattempt_notice'] = 'Aviso para los estudiantes';

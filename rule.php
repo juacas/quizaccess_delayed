@@ -85,12 +85,14 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
                 $intensivequizdetection = get_config('quizaccess_activatedelayedattempt', 'showdangerousquiznotice');
                 if ($intensivequizdetection) {
                     global $OUTPUT;
-                    $notices = $this->get_warning_messages($this->quizobj);
+                    list($isintensive, $notices) = $this->get_warning_messages($this->quizobj);
                     foreach ($notices as $notice) {
                         $message .= $OUTPUT->notification( $notice, notification::WARNING); // TODO: DANGER message also!
                     }
-                    // Show institutional message.
-                    $message .= format_text(get_config('quizaccess_activatedelayedattempt', 'dangerousquiznotice'));
+                    // Show institutional message if the quiz is marked as intensive.
+                    if ($isintensive) {
+                        $message .= format_text(get_config('quizaccess_activatedelayedattempt', 'dangerousquiznotice'));
+                    }
                 }
                 $message .= get_string('quizaccess_activatedelayedattempt_teachernotice',
                 'quizaccess_activatedelayedattempt',
@@ -137,7 +139,8 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
         $maxdelay = $this->calculate_max_delay();
         $students = $this->get_student_count($quizobj);
         $randomdelay = $this->get_user_delay();
-        $isintensive = $timelimit; // TODO define the formula.
+        $rate = get_config('quizaccess_activatedelayedattempt', 'startrate');
+
         $timeperpage = $timespan / $pages; // if timeperpage < 10 minutes then warning!
         // Data for messages.
         $a = new stdClass();
@@ -147,14 +150,17 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
         $a->timelimit = format_time($timelimit);
         $a->pages = $pages;
         $a->students = $students;
-
-        if ($timeperpage < 600 ) {
+        $tooshortpages = $timeperpage < 600 ;
+        if ($tooshortpages) {
             $notices[] = get_string('tooshortpagesadvice', 'quizaccess_activatedelayedattempt', $a);
         }
         if (($timespan-$timelimit) < ($maxdelay + $timelimit * 0.2) ) {
             $notices[] = get_string('tooshorttimeguardadvice', 'quizaccess_activatedelayedattempt', $a);
         }
-        return $notices;
+        
+        $isintensive = (($maxdelay/$students) > $rate) || $tooshortpages; // TODO define better the formula.
+        
+        return array($isintensive, $notices);
     }
 
     /**
