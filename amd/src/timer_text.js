@@ -37,6 +37,9 @@ define( ['jquery'], function ($) {
          * Init function.
          */
         init: function (selector = '.continuebutton', actionlink, cmid, sessionkey, attemptquiz, diffmillisecs, langstrings) {
+            if ($('.quizattempt #activatedelayedattemptnotification').length > 0) {
+                return false;
+            }
             // Initialize strings to avoid json requests.
             this.set_strings(langstrings);
            
@@ -66,8 +69,8 @@ define( ['jquery'], function ($) {
                         'id': 'activatedelayedtimer'
                     }),
                 );
-            $(selector).html(divsection).append(form); // Clean previous message.
-            $('#startAttemptButton').prop('disabled', true);
+            $(selector).prepend(divsection.append(form)); // Clean previous message.
+            $('[id=startAttemptButton]').prop('disabled', true);
 
             quizOpenTime = new Date().getTime() + diffmillisecs;
             interval = setInterval(this.update_time.bind(this), 1000);
