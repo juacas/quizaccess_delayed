@@ -75,22 +75,21 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
         }
         return $result; // Used as a prevent message.
     }
-
     public function description()
     {
         $message = '';
+        global $OUTPUT;
         if ($this->is_pending() && quizaccess_activatedelayedattempt::is_enabled_in_instance($this->quizobj)) {
             if (has_capability('mod/quiz:manage', $this->quizobj->get_context())) {
                 // Show a warning if the quiz is resource intensive.
                 $intensivequizdetection = get_config('quizaccess_activatedelayedattempt', 'showdangerousquiznotice');
                 if ($intensivequizdetection) {
-                    global $OUTPUT;
-                    list($isintensive, $notices) = $this->get_warning_messages($this->quizobj);
-                    foreach ($notices as $notice) {
+                    $diags = $this->get_quiz_diagnosis($this->quizobj);
+                    foreach ($diags->notices as $notice) {
                         $message .= $OUTPUT->notification( $notice, notification::WARNING); // TODO: DANGER message also!
                     }
                     // Show institutional message if the quiz is marked as intensive.
-                    if ($isintensive) {
+                    if ($diags->isintensive) {
                         $message .= format_text(get_config('quizaccess_activatedelayedattempt', 'dangerousquiznotice'));
                     }
                 }
@@ -110,12 +109,11 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
     }
     /**
      * @param quiz $quizobj
-     * @return array(string) Messages to show.
+     * @return stdClass diagnostics and messages to show.
      */
-    protected function get_warning_messages(quiz $quizobj) {
-        $notices = [];
-        $sections = $quizobj->get_sections();
-        $hasquestions = $quizobj->has_questions();
+    protected function get_quiz_diagnosis(quiz $quizobj) {
+        // Forces preload of questions.
+        $quizobj->has_questions();
         // Get preloaded qustions just for counting them.
         $reflection = new ReflectionClass($quizobj);
         $property = $reflection->getProperty('questions');
@@ -123,44 +121,52 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
         $questions = $property->getValue($quizobj); // Sections are not pages?????????
         // Count questions.
         $questioncount = count($questions);
-        // count pages.
-        $pages = 1;
-        $hasrandom = false;
-        foreach ($questions as $question) {
-            if ($pages < $question->page) {
-                $pages = $question->page;
-            }
-            if ($question->qtype == 'random') {
-                $hasrandom = true;
-            }
-        }
-        $timelimit = $quizobj->get_quiz()->timelimit;
-        $timespan = $this->get_time_span($quizobj);
-        $maxdelay = $this->calculate_max_delay();
-        $students = $this->get_student_count($quizobj);
-        $randomdelay = $this->get_user_delay();
-        $rate = get_config('quizaccess_activatedelayedattempt', 'startrate');
-
-        $timeperpage = $timespan / $pages; // if timeperpage < 10 minutes then warning!
         // Data for messages.
         $a = new stdClass();
-        $a->maxdelay = format_time($maxdelay);
-        $a->randomdelay = format_time($randomdelay);
-        $a->timespan = format_time($timespan);
-        $a->timelimit = format_time($timelimit);
-        $a->pages = $pages;
-        $a->students = $students;
-        $tooshortpages = $timeperpage < 600 ;
-        if ($tooshortpages) {
-            $notices[] = get_string('tooshortpagesadvice', 'quizaccess_activatedelayedattempt', $a);
+        $a->notices = [];
+        // count pages.
+        $a->pages = 1;
+        $a->hasrandom = false;
+        foreach ($questions as $question) {
+            if ($a->pages < $question->page) {
+                $a->pages = $question->page;
+            }
+            if ($question->qtype == 'random') {
+                $a->hasrandom = true;
+            }
         }
-        if (($timespan-$timelimit) < ($maxdelay + $timelimit * 0.2) ) {
-            $notices[] = get_string('tooshorttimeguardadvice', 'quizaccess_activatedelayedattempt', $a);
+        $a->timelimit = $quizobj->get_quiz()->timelimit;
+        $a->students = $this->get_student_count($quizobj);
+        $a->timespan = $this->get_time_span($quizobj); 
+        $a->maxdelay = $this->calculate_max_delay();
+        $a->randomdelay = $this->get_user_delay();
+        $a->rate = get_config('quizaccess_activatedelayedattempt', 'startrate');
+        $a->timeperpage = $a->timespan / $a->pages; // if timeperpage < 10 minutes then warning!
+
+        $a->maxdelaystr = format_time($a->maxdelay);
+        $a->randomdelaystr = format_time($a->randomdelay);
+        $a->timespanstr = format_time($a->timespan);
+        $a->timelimitstr = format_time($a->timelimit);
+        
+        // Heuristics for diagnosis.
+        $a->tooshortpages = $a->timeperpage < 600 ;
+        $a->iscriticaltimelimit = ($a->timespan- $a->timelimit) < ($a->maxdelay + $a->timelimit * 0.1);
+        $a->isshorttimed = $a->timelimit > 0 && ($a->iscriticaltimelimit || ($a->timespan / $a->timelimit < 1.2));
+        // A quiz is resource-intensive if:
+        // its short-timed AND
+        // entry rate is greater than startrate students per minute,
+        // has too short pages (multiplies requests)
+        // 
+        $a->isintensive = $a->isshorttimed 
+                            && (($a->students / $a->maxdelay) > $a->rate || $a->tooshortpages);
+        // Advice messages.
+        if ($a->tooshortpages) {
+            $a->notices[] = get_string('tooshortpagesadvice', 'quizaccess_activatedelayedattempt', $a);
         }
-        
-        $isintensive = (($maxdelay/$students) > $rate) || $tooshortpages; // TODO define better the formula.
-        
-        return array($isintensive, $notices);
+        if ($a->iscriticaltimelimit) {
+            $a->notices[] = get_string('tooshorttimeguardadvice', 'quizaccess_activatedelayedattempt', $a);
+        }
+        return $a;
     }
 
     /**

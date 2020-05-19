@@ -49,4 +49,4 @@ $string['delayedattemptlock_help'] = 'When enabled, on loading the quiz page bef
 A countdown period is started (random up to a time set up by your institution). When the countdown ends the start attempt button is re-enabled and the students can initiate the quiz attempt. ';
 $string['explaindelayedattempt'] = 'Sets a random access delay';
 $string['tooshortpagesadvice'] = 'The questionnaire has {$a->pages} pages that are too short. This increases the load on the server severely. Consider putting more questions on each page.';
-$string['tooshorttimeguardadvice'] = 'An availability time of {$a->timespan} is too tight. Please note that some students will be delayed by up to {$a->maxdelay}, they have {$a->timelimit} to take the test and it is advisable to leave a safety margin for other delays at the start of the quiz.';
+$string['tooshorttimeguardadvice'] = 'An availability time of {$a->timespanstr} is too tight. Please note that some students will be delayed by up to {$a->maxdelaystr}, they have {$a->timelimitstr} to take the test and it is advisable to leave a safety margin for other delays at the start of the quiz.';

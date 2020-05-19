@@ -85,7 +85,9 @@ define( ['jquery'], function ($) {
                     }));
             var divsection = $('<div id="activatedelayedattemptnotification"/>')
             .append(divcounter);
-            $(selector).html(divsection).append(form, $('</br>'));
+            divsection.append(form, $('</br>'));
+            // Insert above other buttons and messages.
+            $(selector).prepend(divsection);
             $('#startAttemptButton').prop('disabled', true);
         },
         startCounter: function () {
