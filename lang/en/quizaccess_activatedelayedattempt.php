@@ -37,6 +37,7 @@ $string['quizaccess_activatedelayedattempt_showdangerousquiznotice'] = 'Shows th
 $string['quizaccess_activatedelayedattempt_dangerousquiznotice'] = 'Institutional message displayed if the quiz could be problematic';
 $string['quizaccess_activatedelayedattempt_startrate'] = 'Entry rate (students per minute)';
 $string['quizaccess_activatedelayedattempt_maxdelay'] = 'Maximum delay (minutes)';
+$string['quizaccess_activatedelayedattempt_timelimitpercent'] = 'Maximum delay as a percentage of completion time';
 $string['quizaccess_activatedelayedattempt_notice'] = 'Notice to students';
 $string['quizaccess_activatedelayedattempt_teachernotice'] = 'This quiz will use a phased entry control, which will cause students to enter randomly with up to {$a} minutes of delay.';
 $string['quizaccess_activatedelayedattempt_countertype'] ='Type of coundown to use.';

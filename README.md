@@ -19,6 +19,16 @@ A pseudo-random delay is assigned to each student depending on the number of stu
 An optional message for the students can be defined for all quizzes in the platform.
 An optional check and advice message for teachers can be defined for all quizzes in the platform.
 
+## How the delay is calculated
+- The plugin acts only until the instant of the start of the quiz plus the number of minutes of maximum delay. After that it doesn't work anymore because the critical moment of the start is supposed to be over.
+- The maximum delay is calculated as follows:
+ - Number of students divided by the entry fee specified by the administrator. E.g. with 25 students/minute, if the course has 200 students, the maximum delay will be 8 minutes.
+ - Maximum of 10% of the test duration. We have considered that it is not logical to wait 4 minutes for a 15-minute exam. E.g. 15 minute exam => maximum wait of 1.5 minutes.
+ - Maximum time limit defined by the administrator. This is to put a reasonable limit in the case of large groups at the cost of suffering a higher entry fee. E.g. maximum 4 minutes.
+ - At least 1 minute. This is to ensure that there is always gradual access. With 1 minute, students do not notice the delay because it is in the range of accuracy of the usual clock.
+- With all these limitations, the final entry rate is the one needed to meet all specifications. In this example it would be 200 students/1.5 minutes = 133 students/minute (about 2 per second). If we want to spit out the input rate we will have to give up the absolute limit or the percentage of the completion time. In the UVa we have decided that a long delay is not functionally admissible in the case of short exams, because it would make some students almost finish and others would still be starting.
+
+
 ## Releases
 - v1.2.1 Place advices for the teacher for quizzes that are resource intensives of potentially problematic.
 - v1.2.0 Rule can be enabled/disabled in each instance.

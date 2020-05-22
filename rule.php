@@ -41,7 +41,7 @@ require_once($CFG->dirroot . '/mod/quiz/accessrule/accessrulebase.php');
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
-    // Cache maxdela.
+    // Cache maxdelay in seconds.
     var $maxdelay = null;
     // Cache students count.
     var $students = null;
@@ -138,6 +138,10 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
         $a->timelimit = $quizobj->get_quiz()->timelimit;
         $a->students = $this->get_student_count($quizobj);
         $a->timespan = $this->get_time_span($quizobj); 
+        // Test. TODO: implement in unit tests.
+        // $this->students = 200;
+        // $a->timespan = 95;
+        // $this->maxdelay = null;
         $a->maxdelay = $this->calculate_max_delay();
         $a->randomdelay = $this->get_user_delay();
         $a->rate = get_config('quizaccess_activatedelayedattempt', 'startrate');
@@ -293,10 +297,15 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
             $maxalloweddelay = get_config('quizaccess_activatedelayedattempt', 'maxdelay');
             $numalumns = $this->get_student_count($this->quizobj);
             if ($this->quiz->timelimit > 0 ) {
-                // Timelimit comes in seconds.
-                $maxalloweddelay = max(1, min($maxalloweddelay, $this->quiz->timelimit/60 * 0.1));
+                $percent = get_config('quizaccess_activatedelayedattempt', 'timelimitpercent');
+                if ($percent > 0) {
+                    // Timelimit comes in seconds.
+                    // The maximum delay if percent% of quiz time.
+                    $maxalloweddelay = max(1, min($maxalloweddelay, $this->quiz->timelimit/60 * $percent/100));
+                } else {
+                    $maxalloweddelay = max(1, $maxalloweddelay);
+                }
             } 
-            // The maximum delay if 10% of quiz time.
             // The delay is calculated as "startrate" students per minute in average with maxalloweddelay minutes maximum.
             // The spread of delays is set from 1 to $maxalloweddelay minutes depending on number of students in the quiz.
             $this->maxdelay = min($maxalloweddelay, max(1, $numalumns / $rate )) * 60;

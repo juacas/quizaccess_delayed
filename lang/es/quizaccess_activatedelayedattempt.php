@@ -36,6 +36,7 @@ $string['quizaccess_activatedelayedattempt_showdangerousquznotice'] = 'Muestra a
 $string['quizaccess_activatedelayedattempt_dangerousquiznotice'] = 'Mensaje institucional que se muestra si el cuestionario puede ser problemático';
 $string['quizaccess_activatedelayedattempt_startrate'] = 'Tasa de entrada (alumnos por minuto)';
 $string['quizaccess_activatedelayedattempt_maxdelay'] = 'Máximo retardo (minutos)';
+$string['quizaccess_activatedelayedattempt_timelimitpercent'] = 'Máximo retardo como porcentaje del tiempo de realización';
 $string['quizaccess_activatedelayedattempt_notice'] = 'Aviso para los estudiantes';
 $string['quizaccess_activatedelayedattempt_countertype'] = 'Tipo de contador.';
 $string['quizaccess_activatedelayedattempt_teachernotice'] = 'Este cuestionario aplicará un control de entrada gradual, que hará que los estudiantes entren aleatoriamente hasta con {$a} minutos de retardo.';

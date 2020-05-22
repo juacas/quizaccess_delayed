@@ -67,6 +67,17 @@ if ($hassiteconfig) {
         '10',
         $vals
     ));
+    $vals = [0 => get_string('none')];
+    foreach (range(10, 100, 10) as $val) {
+        $vals[$val] = "$val %";
+    }
+    $settings->add(new admin_setting_configselect(
+        'quizaccess_activatedelayedattempt/timelimitpercent',
+        new lang_string('quizaccess_activatedelayedattempt_timelimitpercent', 'quizaccess_activatedelayedattempt'),
+        '',
+        '10',
+        $vals
+    ));
     $settings->add(new admin_setting_configselect(
         'quizaccess_activatedelayedattempt/countertype',
         new lang_string('quizaccess_activatedelayedattempt_countertype', 'quizaccess_activatedelayedattempt'),
