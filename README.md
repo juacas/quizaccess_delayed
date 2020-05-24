@@ -1,6 +1,8 @@
 # Quiz Access Rule quizaccess_activatedelayedattempt
 Auto Activate the Quiz Attempt Button with a randomized delay to reduce the load at the start of the quizes.
 
+There is a tutorial page at https://juacas.github.io/quizaccess_activatedelayedattempt/index.html
+
 ## Background and Need
 
 1) In a quiz with strict time constraints students tend to refresh the page too often, just to make sure if the attempt is available yet.
@@ -41,10 +43,10 @@ In our experience, a mass quiz is "resource-intensive" aka "problematic" when it
 - The time allotted is too tight.
 - The entry rate of students is too high.
 
-The time is considered too tight if
+The time alloted is considered too tight if
 - The total time allotted is less than:
   - the completion time plus the gradual entry delay plus 10% of the completion time. (An opening of the activity of less than this time does not allow to face the small incidences of any test.)
-  - 20% of the execution time.
+  - not excess a 20% of the execution time.
 
 ## Releases
 - v1.2.1 Place advices for the teacher for quizzes that are resource intensives of potentially problematic.
