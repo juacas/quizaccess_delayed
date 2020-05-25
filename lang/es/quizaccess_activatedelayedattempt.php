@@ -49,3 +49,5 @@ Se activa un contador de tiempo con un plazo aleatorio para cada estudiante (has
 $string['explaindelayedattempt'] = 'Establece una demora aleatoria para comenzar';
 $string['tooshortpagesadvice'] = 'El cuestionario tiene {$a->pages} páginas demasiado cortas. Esto aumenta la carga sobre el servidor gravemente. Considere poner más preguntas en cada página.';
 $string['tooshorttimeguardadvice'] = 'Un tiempo de disponibilidad de {$a->timespanstr} es demasiado ajustado. Tenga en cuenta que se aplicará a algunos estudiantes un retardo de espera de hasta {$a->maxdelaystr}, tiene {$a->timelimitstr} para realizar la prueba y conviene dejar un márgen de seguridad para otros retardos en el inicio del cuestionario.';
+$string['flipdown'] = 'Contador animado de fichas';
+$string['plaintext'] = 'Contador de texto plano';

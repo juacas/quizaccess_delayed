@@ -83,7 +83,10 @@ if ($hassiteconfig) {
         new lang_string('quizaccess_activatedelayedattempt_countertype', 'quizaccess_activatedelayedattempt'),
         '',
         'flipdown',
-        ['flipdown' => 'Flipdown', 'text' => 'Plain text']
+        [
+            'flipdown' => new lang_string('flipdowncounter', 'quizaccess_activatedelayedattempt'),
+            'text' => new lang_string('plaintextcounter', 'quizaccess_activatedelayedattempt')
+            ]
     ));
     // Show the teacher a warning in some circunstances.
     $settings->add(new admin_setting_configcheckbox(

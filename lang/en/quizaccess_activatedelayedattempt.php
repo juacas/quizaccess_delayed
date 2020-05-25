@@ -51,3 +51,5 @@ A countdown period is started (random up to a time set up by your institution). 
 $string['explaindelayedattempt'] = 'Sets a random access delay';
 $string['tooshortpagesadvice'] = 'The questionnaire has {$a->pages} pages that are too short. This increases the load on the server severely. Consider putting more questions on each page.';
 $string['tooshorttimeguardadvice'] = 'An availability time of {$a->timespanstr} is too tight. Please note that some students will be delayed by up to {$a->maxdelaystr}, they have {$a->timelimitstr} to take the test and it is advisable to leave a safety margin for other delays at the start of the quiz.';
+$string['flipdowncounter'] = 'Animated card counter';
+$string['plaintextcounter'] = 'Plain text counter';
