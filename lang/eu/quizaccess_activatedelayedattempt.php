@@ -51,3 +51,5 @@ Atzerako kontaketa bat hasten da (ausazkoa erakundeak zehaztutako denbora-muga b
 $string['explaindelayedattempt'] = 'Sarbiderako ausazko atzerapena ezartzen du';
 $string['tooshortpagesadvice'] = 'Galdetegiak motzak diren {$a->pages} orri dauzka. Honek zerbitzariari gainkarga ezartzen dio. Hausnartu ezazu orri bakoitzean galdera gehiago jartzeko aukeraren inguruan.';
 $string['tooshorttimeguardadvice'] = '{$a->timespanstr}-(e)ko eskuragarritasun-denbora estuegia da. Kontuan izan mesedez ikasleetako batzuk {$a->maxdelaystr}-(e)ko atzerapenarekin hasiko dutela galdetegia eta {$a->timelimitstr} izango dute galdetegia egiteko, eta gomendagarria da galdetegia hasteko bestelako atzerapenentzako segurtasun-tarte bat izatea.';
+$string['flipdowncounter'] = 'Fitxen bidezko atzerako kontaketa animatua';
+$string['plaintextcounter'] = 'Testuzko atzerako kontaketa';
