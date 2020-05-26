@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <XMLDB PATH="mod/quiz/accessrule/delayed/db" VERSION="2018032100" COMMENT="XMLDB file for Moodle mod/quiz/accessrule/delayed"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="../../../../../lib/xmldb/xmldb.xsd"
->
+    xsi:noNamespaceSchemaLocation="../../../../../lib/xmldb/xmldb.xsd">
   <TABLES>
     <TABLE NAME="quizaccess_delayed" COMMENT="Stores the additional setting required by this accessrule">
       <FIELDS>
