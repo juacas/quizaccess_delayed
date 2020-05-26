@@ -15,10 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Strings for the quizaccess_activatedelayedattempt plugin.
- * Based on quizaccess_activateattempt https://github.com/IITBombayWeb/moodle-quizaccess_activatedelayedattempt/tree/v1.0.3
+ * Strings for the quizaccess_delayed plugin.
+ * Based on quizaccess_activateattempt https://github.com/IITBombayWeb/moodle-quizaccess_delayed/tree/v1.0.3
  *
- * @package   quizaccess_activatedelayedattempt
+ * @package   quizaccess_delayed
  * @author    Juan Pablo de Castro <juan.pablo.de.castro@gmail.com>
  * @copyright 2020 Juan Pablo de Castro @University of Valladolid, Spain
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -30,17 +30,17 @@ defined('MOODLE_INTERNAL') || die();
 $string['attemptquiz'] = 'Attempt quiz now';
 $string['quizwillstartinabout'] = 'Your turn for this quiz will start in about';
 $string['quizwillstartinless'] = 'Your turn for this quiz will start in less than a minute';
-$string['quizaccess_activatedelayedattempt_enabled'] = 'Delayed attempt enabled';
-$string['quizaccess_activatedelayedattempt_allowdisable'] = 'The teachers are allowed to disable the rule';
-$string['quizaccess_activatedelayedattempt_enabledbydefault'] = 'New quizzes will use this rule by default';
-$string['quizaccess_activatedelayedattempt_showdangerousquiznotice'] = 'Shows the teacher a warning if their quiz is resource intensive';
-$string['quizaccess_activatedelayedattempt_dangerousquiznotice'] = 'Institutional message displayed if the quiz could be problematic';
-$string['quizaccess_activatedelayedattempt_startrate'] = 'Entry rate (students per minute)';
-$string['quizaccess_activatedelayedattempt_maxdelay'] = 'Maximum delay (minutes)';
-$string['quizaccess_activatedelayedattempt_timelimitpercent'] = 'Maximum delay as a percentage of completion time';
-$string['quizaccess_activatedelayedattempt_notice'] = 'Notice to students';
-$string['quizaccess_activatedelayedattempt_teachernotice'] = 'This quiz will use a phased entry control, which will cause students to enter randomly with up to {$a} minutes of delay.';
-$string['quizaccess_activatedelayedattempt_countertype'] ='Type of coundown to use.';
+$string['quizaccess_delayed_enabled'] = 'Delayed attempt enabled';
+$string['quizaccess_delayed_allowdisable'] = 'The teachers are allowed to disable the rule';
+$string['quizaccess_delayed_enabledbydefault'] = 'New quizzes will use this rule by default';
+$string['quizaccess_delayed_showdangerousquiznotice'] = 'Shows the teacher a warning if their quiz is resource intensive';
+$string['quizaccess_delayed_dangerousquiznotice'] = 'Institutional message displayed if the quiz could be problematic';
+$string['quizaccess_delayed_startrate'] = 'Entry rate (students per minute)';
+$string['quizaccess_delayed_maxdelay'] = 'Maximum delay (minutes)';
+$string['quizaccess_delayed_timelimitpercent'] = 'Maximum delay as a percentage of completion time';
+$string['quizaccess_delayed_notice'] = 'Notice to students';
+$string['quizaccess_delayed_teachernotice'] = 'This quiz will use a phased entry control, which will cause students to enter randomly with up to {$a} minutes of delay.';
+$string['quizaccess_delayed_countertype'] ='Type of coundown to use.';
 $string['pleasewait'] = 'Please wait here';
 $string['noscriptwarning'] = 'This quiz requires a browser that supports JavaScript. If you have a Javascript blocker you will need to disable it.';
 $string['pluginname_desc'] = 'Auto activate quiz attempt button with random delay access rule';

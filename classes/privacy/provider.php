@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Privacy Subsystem implementation for quizaccess_activatedelayedattempt.
+ * Privacy Subsystem implementation for quizaccess_delayed.
  *
- * @package    quizaccess_activatedelayedattempt
+ * @package    quizaccess_delayed
  * @copyright  2020 Juan Pablo de Castro <jpdecastro@tel.uva.es>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -27,7 +27,7 @@ namespace quizaccess_password\privacy;
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Privacy Subsystem for quizaccess_activatedelayedattempt implementing null_provider.
+ * Privacy Subsystem for quizaccess_delayed implementing null_provider.
  *
  * @copyright  2020 Juan Pablo de Castro <jpdecastro@tel.uva.es>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later

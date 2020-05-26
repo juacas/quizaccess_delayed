@@ -17,7 +17,7 @@
 /**
  * Capability definitions for the quiz makeexamlok access rule.
  *
- * @package   quiz_activatedelayedattempt
+ * @package   quiz_delayed
  * @copyright 2014 Enrique Castro @ ULPGC
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 // TODO: this capability is not used!
 $capabilities = array(
-    'quiz/activatedelayedattempt:exempt' => array(
+    'quiz/delayed:exempt' => array(
         'captype' => 'read',
         'contextlevel' => CONTEXT_MODULE,
         'archetypes' => array(

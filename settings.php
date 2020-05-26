@@ -15,10 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Implementaton of the quizaccess_activatedelayedattempt plugin.
- * Based on quizaccess_activateattempt https://github.com/IITBombayWeb/moodle-quizaccess_activatedelayedattempt/tree/v1.0.3
+ * Implementaton of the quizaccess_delayed plugin.
+ * Based on quizaccess_activateattempt https://github.com/IITBombayWeb/moodle-quizaccess_delayed/tree/v1.0.3
  *
- * @package   quizaccess_activatedelayedattempt
+ * @package   quizaccess_delayed
  * @author    Juan Pablo de Castro
  * @copyright 2020 University of Valladolid, Spain
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -28,23 +28,23 @@ defined ( 'MOODLE_INTERNAL' ) || die ();
 if ($hassiteconfig) {
 
     $settings->add(new admin_setting_configcheckbox(
-        'quizaccess_activatedelayedattempt/enabled',
-        new lang_string('quizaccess_activatedelayedattempt_enabled', 'quizaccess_activatedelayedattempt'),
+        'quizaccess_delayed/enabled',
+        new lang_string('quizaccess_delayed_enabled', 'quizaccess_delayed'),
         '',
         1
     ));
 
     // Allow disable the rule per instance.
     $settings->add(new admin_setting_configcheckbox(
-        'quizaccess_activatedelayedattempt/allowdisable',
-        new lang_string('quizaccess_activatedelayedattempt_allowdisable', 'quizaccess_activatedelayedattempt'),
+        'quizaccess_delayed/allowdisable',
+        new lang_string('quizaccess_delayed_allowdisable', 'quizaccess_delayed'),
         '',
         1
     ));
     // Default enabled state in new instances.
     $settings->add(new admin_setting_configcheckbox(
-        'quizaccess_activatedelayedattempt/enabledbydefault',
-        new lang_string('quizaccess_activatedelayedattempt_enabledbydefault', 'quizaccess_activatedelayedattempt'),
+        'quizaccess_delayed/enabledbydefault',
+        new lang_string('quizaccess_delayed_enabledbydefault', 'quizaccess_delayed'),
         '',
         1
     ));
@@ -54,15 +54,15 @@ if ($hassiteconfig) {
         $vals[$val] =$val;
     }
     $settings->add(new admin_setting_configselect(
-        'quizaccess_activatedelayedattempt/startrate',
-        new lang_string('quizaccess_activatedelayedattempt_startrate', 'quizaccess_activatedelayedattempt'),
+        'quizaccess_delayed/startrate',
+        new lang_string('quizaccess_delayed_startrate', 'quizaccess_delayed'),
         '',
         '25',
         $vals
     ));
     $settings->add(new admin_setting_configselect(
-        'quizaccess_activatedelayedattempt/maxdelay',
-        new lang_string('quizaccess_activatedelayedattempt_maxdelay', 'quizaccess_activatedelayedattempt'),
+        'quizaccess_delayed/maxdelay',
+        new lang_string('quizaccess_delayed_maxdelay', 'quizaccess_delayed'),
         '',
         '10',
         $vals
@@ -72,32 +72,32 @@ if ($hassiteconfig) {
         $vals[$val] = "$val %";
     }
     $settings->add(new admin_setting_configselect(
-        'quizaccess_activatedelayedattempt/timelimitpercent',
-        new lang_string('quizaccess_activatedelayedattempt_timelimitpercent', 'quizaccess_activatedelayedattempt'),
+        'quizaccess_delayed/timelimitpercent',
+        new lang_string('quizaccess_delayed_timelimitpercent', 'quizaccess_delayed'),
         '',
         '10',
         $vals
     ));
     $settings->add(new admin_setting_configselect(
-        'quizaccess_activatedelayedattempt/countertype',
-        new lang_string('quizaccess_activatedelayedattempt_countertype', 'quizaccess_activatedelayedattempt'),
+        'quizaccess_delayed/countertype',
+        new lang_string('quizaccess_delayed_countertype', 'quizaccess_delayed'),
         '',
         'flipdown',
         [
-            'flipdown' => new lang_string('flipdowncounter', 'quizaccess_activatedelayedattempt'),
-            'text' => new lang_string('plaintextcounter', 'quizaccess_activatedelayedattempt')
+            'flipdown' => new lang_string('flipdowncounter', 'quizaccess_delayed'),
+            'text' => new lang_string('plaintextcounter', 'quizaccess_delayed')
             ]
     ));
     // Show the teacher a warning in some circunstances.
     $settings->add(new admin_setting_configcheckbox(
-        'quizaccess_activatedelayedattempt/showdangerousquiznotice',
-        new lang_string('quizaccess_activatedelayedattempt_showdangerousquiznotice', 'quizaccess_activatedelayedattempt'),
+        'quizaccess_delayed/showdangerousquiznotice',
+        new lang_string('quizaccess_delayed_showdangerousquiznotice', 'quizaccess_delayed'),
         '',
         1
     ));
     $settings->add(new admin_setting_confightmleditor(
-        'quizaccess_activatedelayedattempt/dangerousquiznotice',
-        new lang_string('quizaccess_activatedelayedattempt_dangerousquiznotice', 'quizaccess_activatedelayedattempt'),
+        'quizaccess_delayed/dangerousquiznotice',
+        new lang_string('quizaccess_delayed_dangerousquiznotice', 'quizaccess_delayed'),
         '',
         '',
         PARAM_RAW,
@@ -105,8 +105,8 @@ if ($hassiteconfig) {
         '8'
     ));
     $settings->add(new admin_setting_confightmleditor(
-        'quizaccess_activatedelayedattempt/notice',
-        new lang_string('quizaccess_activatedelayedattempt_notice', 'quizaccess_activatedelayedattempt'),
+        'quizaccess_delayed/notice',
+        new lang_string('quizaccess_delayed_notice', 'quizaccess_delayed'),
         '',
         '',
         PARAM_RAW,

@@ -14,10 +14,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Implementaton of the quizaccess_activatedelayedattempt timer JScript.
- * Based on quizaccess_activateattempt https://github.com/IITBombayWeb/moodle-quizaccess_activatedelayedattempt/tree/v1.0.3
+ * Implementaton of the quizaccess_delayed timer JScript.
+ * Based on quizaccess_activateattempt https://github.com/IITBombayWeb/moodle-quizaccess_delayed/tree/v1.0.3
  *
- * @package   quizaccess_activatedelayedattempt
+ * @package   quizaccess_delayed
  * @author    Juan Pablo de Castro
  * @copyright 2020 University of Valladolid, Spain
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -37,7 +37,7 @@ define( ['jquery'], function ($) {
          * @param selector for inserting the counter. Defaults '.continuebutton'
          */
         init: function (selector = '.continuebutton', actionlink, cmid, sessionkey, attemptquiz, diffmillisecs, langstrings) {
-            if ($('.quizattempt #activatedelayedattemptnotification').length > 0) {
+            if ($('.quizattempt #delayednotification').length > 0) {
                 return false;
             }
             // Initialize strings to avoid json requests.
@@ -50,9 +50,9 @@ define( ['jquery'], function ($) {
                 .attr({
                     type: 'text/css',
                     rel: 'stylesheet',
-                    href: 'accessrule/activatedelayedattempt/flipdown/flipdown.css'
+                    href: 'accessrule/delayed/flipdown/flipdown.css'
                 });
-            jQuery.getScript('accessrule/activatedelayedattempt/flipdown/flipdown.js', this.startCounter.bind(this));
+            jQuery.getScript('accessrule/delayed/flipdown/flipdown.js', this.startCounter.bind(this));
           
             var divcounter = $('<center>'
                 + langstrings.quizwillstartinabout
@@ -83,7 +83,7 @@ define( ['jquery'], function ($) {
                         'disabled': true,
                         'value': attemptquiz
                     }));
-            var divsection = $('<div id="activatedelayedattemptnotification"/>').append(divcounter);
+            var divsection = $('<div id="delayednotification"/>').append(divcounter);
             divsection.append(form, $('</br>'));
             // Insert above other buttons and messages.
             $(selector).prepend(divsection);
@@ -104,7 +104,7 @@ define( ['jquery'], function ($) {
             var countDownTime = quizOpenTime - currentTime;
             if (countDownTime < 0) {
                 $('#flipdown').hide();
-                $('#activatedelayedattemptnotification').hide();
+                $('#delayednotification').hide();
                 $('#startAttemptButton').show().prop('disabled', false);
             } else {
                 // Retry in case of a small clock drift.

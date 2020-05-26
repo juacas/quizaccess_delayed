@@ -15,10 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Strings for the quizaccess_activatedelayedattempt plugin.
- * Based on quizaccess_activateattempt https://github.com/IITBombayWeb/moodle-quizaccess_activatedelayedattempt/tree/v1.0.3
+ * Strings for the quizaccess_delayed plugin.
+ * Based on quizaccess_activateattempt https://github.com/IITBombayWeb/moodle-quizaccess_delayed/tree/v1.0.3
  *
- * @package   quizaccess_activatedelayedattempt
+ * @package   quizaccess_delayed
  * @author    Juan Pablo de Castro <juan.pablo.de.castro@gmail.com>
  * @copyright 2020 Juan Pablo de Castro @University of Valladolid, Spain
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -30,17 +30,17 @@ defined('MOODLE_INTERNAL') || die();
 $string['attemptquiz'] = 'Saiatu orain galdetegia egiten';
 $string['quizwillstartinabout'] = 'Galdetegi honetako zure txanda epe honetan hasiko da:';
 $string['quizwillstartinless'] = 'Galdetegi honetako zure txanda minutu bat baino gutxiagoan hasiko da';
-$string['quizaccess_activatedelayedattempt_enabled'] = 'Atzeratutako saiakerak gaituta';
-$string['quizaccess_activatedelayedattempt_allowdisable'] = 'Irakasleek araua desgaitu dezakete';
-$string['quizaccess_activatedelayedattempt_enabledbydefault'] = 'Galdetegi berriek arau hau erabiliko dute modu lehenetsian';
-$string['quizaccess_activatedelayedattempt_showdangerousquiznotice'] = 'Irakasleei mezu bat erakutsiko die galdetegiak baliabideen erabilera intentsiboa egingo badu';
-$string['quizaccess_activatedelayedattempt_dangerousquiznotice'] = 'Galdetegia problematikoa izan badaiteke erakusten den mezu instituzionala';
-$string['quizaccess_activatedelayedattempt_startrate'] = 'Sarrera-ratioa (ikasleak minutuko)';
-$string['quizaccess_activatedelayedattempt_maxdelay'] = 'Gehienezko atzerapena (minututan)';
-$string['quizaccess_activatedelayedattempt_timelimitpercent'] = 'Gehienezko atzerapena osaketa-denboraren ehuneko gisa';
-$string['quizaccess_activatedelayedattempt_notice'] = 'Ikasleentzako oharra';
-$string['quizaccess_activatedelayedattempt_teachernotice'] = 'Galdetegi honek sarbide mailakaturako kontrola erabiltzen du, eta honek ikasleak modu mailakatuan gehienezko {$a} minutuko atzerapenarekin ausaz sartzea eragingo du.';
-$string['quizaccess_activatedelayedattempt_countertype'] ='Erabili beharreko atzerako kontaketa mota.';
+$string['quizaccess_delayed_enabled'] = 'Atzeratutako saiakerak gaituta';
+$string['quizaccess_delayed_allowdisable'] = 'Irakasleek araua desgaitu dezakete';
+$string['quizaccess_delayed_enabledbydefault'] = 'Galdetegi berriek arau hau erabiliko dute modu lehenetsian';
+$string['quizaccess_delayed_showdangerousquiznotice'] = 'Irakasleei mezu bat erakutsiko die galdetegiak baliabideen erabilera intentsiboa egingo badu';
+$string['quizaccess_delayed_dangerousquiznotice'] = 'Galdetegia problematikoa izan badaiteke erakusten den mezu instituzionala';
+$string['quizaccess_delayed_startrate'] = 'Sarrera-ratioa (ikasleak minutuko)';
+$string['quizaccess_delayed_maxdelay'] = 'Gehienezko atzerapena (minututan)';
+$string['quizaccess_delayed_timelimitpercent'] = 'Gehienezko atzerapena osaketa-denboraren ehuneko gisa';
+$string['quizaccess_delayed_notice'] = 'Ikasleentzako oharra';
+$string['quizaccess_delayed_teachernotice'] = 'Galdetegi honek sarbide mailakaturako kontrola erabiltzen du, eta honek ikasleak modu mailakatuan gehienezko {$a} minutuko atzerapenarekin ausaz sartzea eragingo du.';
+$string['quizaccess_delayed_countertype'] ='Erabili beharreko atzerako kontaketa mota.';
 $string['pleasewait'] = 'Itxaron ezazu hemen, mesedez';
 $string['noscriptwarning'] = 'Galdetegi honek JavaScript onartzen duen nabigatzaile bat behar du. JavaScript-eko blokeatzailea bat erabiltzen baduzu desgaitu beharko duzu.';
 $string['pluginname_desc'] = 'Aktibatu automatikoki Auto activate quiz attempt button with random delay access rule';

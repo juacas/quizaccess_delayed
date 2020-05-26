@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Backup code for the quizaccess_activatedelayedattempt plugin.
+ * Backup code for the quizaccess_delayed plugin.
  *
- * @package   quizaccess_activatedelayedattempt
+ * @package   quizaccess_delayed
  * @copyright 2020 Enrique Castro @ ULPGC
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -28,32 +28,32 @@ require_once($CFG->dirroot . '/mod/quiz/backup/moodle2/backup_mod_quiz_access_su
 
 
 /**
- * Provides the information to backup the honestycheck quiz access plugin.
+ * Provides the information to backup the delayed quiz access plugin.
  *
  * If this plugin is requires, a single
- * <quizaccess_activatedelayedattempt><required>1</required></quizaccess_activatedelayedattempt> tag
+ * <quizaccess_delayed><required>1</required></quizaccess_delayed> tag
  * will be added to the XML in the appropriate place. Otherwise nothing will be
  * added. This matches the DB structure.
  *
  * @copyright 2020 Enrique Castro @ ULPGC
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class backup_quizaccess_activatedelayedattempt_subplugin extends backup_mod_quiz_access_subplugin {
+class backup_quizaccess_delayed_subplugin extends backup_mod_quiz_access_subplugin {
 
     protected function define_quiz_subplugin_structure() {
 
         // Create XML elements.
         $subplugin = $this->get_subplugin_element();
         $subpluginwrapper = new backup_nested_element($this->get_recommended_name());
-        $subplugintablesettings = new backup_nested_element('quizaccess_activatedelayedattempt',
-                null, array('activatedelayedattempt'));
+        $subplugintablesettings = new backup_nested_element('quizaccess_delayed',
+                null, array('delayed'));
 
         // Connect XML elements into the tree.
         $subplugin->add_child($subpluginwrapper);
         $subpluginwrapper->add_child($subplugintablesettings);
 
         // Set source to populate the data.
-        $subplugintablesettings->set_source_table('quizaccess_delayedattempt',
+        $subplugintablesettings->set_source_table('quizaccess_delayed',
                 array('quizid' => backup::VAR_ACTIVITYID));
 
         return $subplugin;

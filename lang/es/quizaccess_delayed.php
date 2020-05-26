@@ -15,10 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Strings for the quizaccess_activatedelayedattempt plugin.
- * Based on quizaccess_activateattempt https://github.com/IITBombayWeb/moodle-quizaccess_activatedelayedattempt/tree/v1.0.3
+ * Strings for the quizaccess_delayed plugin.
+ * Based on quizaccess_activateattempt https://github.com/IITBombayWeb/moodle-quizaccess_delayed/tree/v1.0.3
  *
- * @package   quizaccess_activatedelayedattempt
+ * @package   quizaccess_delayed
  * @author    Juan Pablo de Castro <juan.pablo.de.castro@gmail.com>
  * @copyright 2020 Juan Pablo de Castro @University of Valladolid, Spain
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -29,17 +29,17 @@ $string['attemptquiz'] = 'Realizar el cuestionario ahora';
 $string['pleasewait'] = 'Por favor, espere en esta página.';
 $string['quizwillstartinabout'] = 'Su turno para completar el cuestionario comenzará en ';
 $string['quizwillstartinless'] = 'Su turno para completar el cuestionario comenzará en menos de un minuto';
-$string['quizaccess_activatedelayedattempt_enabled'] = 'Entrada retardada a los cuestionarios activada';
-$string['quizaccess_activatedelayedattempt_allowdisable'] = 'A los profesores se les permite desactivar la regla';
-$string['quizaccess_activatedelayedattempt_enabledbydefault'] = 'Los nuevos exámenes usarán esta regla por defecto';
-$string['quizaccess_activatedelayedattempt_showdangerousquznotice'] = 'Muestra al profesor un aviso si su cuestionario consume recursos intensamente';
-$string['quizaccess_activatedelayedattempt_dangerousquiznotice'] = 'Mensaje institucional que se muestra si el cuestionario puede ser problemático';
-$string['quizaccess_activatedelayedattempt_startrate'] = 'Tasa de entrada (alumnos por minuto)';
-$string['quizaccess_activatedelayedattempt_maxdelay'] = 'Máximo retardo (minutos)';
-$string['quizaccess_activatedelayedattempt_timelimitpercent'] = 'Máximo retardo como porcentaje del tiempo de realización';
-$string['quizaccess_activatedelayedattempt_notice'] = 'Aviso para los estudiantes';
-$string['quizaccess_activatedelayedattempt_countertype'] = 'Tipo de contador.';
-$string['quizaccess_activatedelayedattempt_teachernotice'] = 'Este cuestionario aplicará un control de entrada gradual, que hará que los estudiantes entren aleatoriamente hasta con {$a} minutos de retardo.';
+$string['quizaccess_delayed_enabled'] = 'Entrada retardada a los cuestionarios activada';
+$string['quizaccess_delayed_allowdisable'] = 'A los profesores se les permite desactivar la regla';
+$string['quizaccess_delayed_enabledbydefault'] = 'Los nuevos exámenes usarán esta regla por defecto';
+$string['quizaccess_delayed_showdangerousquznotice'] = 'Muestra al profesor un aviso si su cuestionario consume recursos intensamente';
+$string['quizaccess_delayed_dangerousquiznotice'] = 'Mensaje institucional que se muestra si el cuestionario puede ser problemático';
+$string['quizaccess_delayed_startrate'] = 'Tasa de entrada (alumnos por minuto)';
+$string['quizaccess_delayed_maxdelay'] = 'Máximo retardo (minutos)';
+$string['quizaccess_delayed_timelimitpercent'] = 'Máximo retardo como porcentaje del tiempo de realización';
+$string['quizaccess_delayed_notice'] = 'Aviso para los estudiantes';
+$string['quizaccess_delayed_countertype'] = 'Tipo de contador.';
+$string['quizaccess_delayed_teachernotice'] = 'Este cuestionario aplicará un control de entrada gradual, que hará que los estudiantes entren aleatoriamente hasta con {$a} minutos de retardo.';
 $string['noscriptwarning'] = 'Este cuestionario necesita un navegador que soporte JavaScript. Si tiene un bloqueador de Javascript necesitará desactivarlo.';
 $string['pluginname_desc'] = 'Auto activa el botón de inicio de cuestionario con un retardo aleatorio.';
 $string['pluginname'] = 'Entrada con retardo aleatorio al cuestionario.';

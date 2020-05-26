@@ -1,7 +1,7 @@
-# Quiz Access Rule quizaccess_activatedelayedattempt
+# Quiz Access Rule quizaccess_delayed
 Auto Activate the Quiz Attempt Button with a randomized delay to reduce the load at the start of the quizes.
 
-There is a tutorial page at https://juacas.github.io/quizaccess_activatedelayedattempt/index.html
+There is a tutorial page at https://juacas.github.io/quizaccess_delayed/index.html
 
 ## Background and Need
 
@@ -57,7 +57,7 @@ The time alloted is considered too tight if
 
 ## Installation
 
-1) Unzip it into /mod/quiz/accessrule/activatedelayedattempt
+1) Unzip it into /mod/quiz/accessrule/delayed
 2) Log in into Moodle
 3) A notification will appear stating “Plugins requiring attention”.
 4) Complete the installation by clicking on “Upgrade Moodle database now”,click on continue after the success 

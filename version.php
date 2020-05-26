@@ -15,11 +15,11 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version information for the quizaccess_activatedelayedattempt plugin.
+ * Version information for the quizaccess_delayed plugin.
  *
- * Based on quizaccess_activatedelayedattempt https://github.com/IITBombayWeb/moodle-quizaccess_activatedelayedattempt/tree/v1.0.3
+ * Based on quizaccess_activateattempt https://github.com/IITBombayWeb/moodle-quizaccess_activateattempt/tree/v1.0.3
  *
- * @package   quizaccess_activatedelayedattempt
+ * @package   quizaccess_delayed
  * @author    Juan Pablo de Castro
  * @copyright 2020 University of Valladolid, Spain
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -30,6 +30,6 @@ defined ( 'MOODLE_INTERNAL' ) || die ();
 
 $plugin->version = 2020051801;
 $plugin->requires = 2017050500;
-$plugin->component = 'quizaccess_activatedelayedattempt';
+$plugin->component = 'quizaccess_delayed';
 $plugin->maturity  = MATURITY_STABLE;
 $plugin->release   = '1.2.1';

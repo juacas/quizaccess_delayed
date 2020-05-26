@@ -16,9 +16,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This file keeps track of upgrades to the activatedelayedattempt module
+ * This file keeps track of upgrades to the delayed module
  *
- * @package    quizaccess_activatedelayedattempt
+ * @package    quizaccess_delayed
  * @copyright  2020 Enrique Castro @ ULPGC
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -26,12 +26,12 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Execute activatedelayedattempt upgrade from the given old version
+ * Execute delayed upgrade from the given old version
  *
  * @param int $oldversion
  * @return bool
  */
-function xmldb_quizaccess_activatedelayedattempt_upgrade($oldversion) {
+function xmldb_quizaccess_delayed_upgrade($oldversion) {
     /** @global moodle_database $DB */
     global $DB;
 
@@ -39,21 +39,21 @@ function xmldb_quizaccess_activatedelayedattempt_upgrade($oldversion) {
 
     if ($oldversion < 2020051500) {
 
-        // create new table: quizaccess_delayedattempt
-        $table = new xmldb_table('quizaccess_delayedattempt');
+        // create new table: quizaccess_delayed
+        $table = new xmldb_table('quizaccess_delayed');
         if (!$dbman->table_exists($table)) {
             $table->add_field('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
             $table->add_field('quizid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
-            $table->add_field('activatedelayedattempt', XMLDB_TYPE_INTEGER, '2', XMLDB_UNSIGNED, null, null, '0');
+            $table->add_field('delayed', XMLDB_TYPE_INTEGER, '2', XMLDB_UNSIGNED, null, null, '0');
     
-            // Add keys to table quizaccess_delayedattempt
+            // Add keys to table quizaccess_delayed
             $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
             $table->add_key('quizid', XMLDB_KEY_FOREIGN, array('quizid'), 'quiz', array('id'));
 
             $dbman->create_table($table);
         }
 
-        upgrade_plugin_savepoint(true, 2020051500, 'quizaccess', 'activatedelayedattempt');
+        upgrade_plugin_savepoint(true, 2020051500, 'quizaccess', 'delayed');
     }
 
     return true;

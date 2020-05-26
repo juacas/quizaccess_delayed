@@ -14,10 +14,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Implementaton of the quizaccess_activatedelayedattempt timer JScript.
- * Based on quizaccess_activateattempt https://github.com/IITBombayWeb/moodle-quizaccess_activatedelayedattempt/tree/v1.0.3
+ * Implementaton of the quizaccess_delayed timer JScript.
+ * Based on quizaccess_activateattempt https://github.com/IITBombayWeb/moodle-quizaccess_delayed/tree/v1.0.3
  *
- * @package   quizaccess_activatedelayedattempt
+ * @package   quizaccess_delayed
  * @author    Juan Pablo de Castro
  * @copyright 2020 University of Valladolid, Spain
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -37,7 +37,7 @@ define( ['jquery'], function ($) {
          * Init function.
          */
         init: function (selector = '.continuebutton', actionlink, cmid, sessionkey, attemptquiz, diffmillisecs, langstrings) {
-            if ($('.quizattempt #activatedelayedattemptnotification').length > 0) {
+            if ($('.quizattempt #delayednotification').length > 0) {
                 return false;
             }
             // Initialize strings to avoid json requests.
@@ -63,7 +63,7 @@ define( ['jquery'], function ($) {
                     'id': 'startAttemptButton',
                     'value': attemptquiz
                 }));
-            var divsection = $('<div id="activatedelayedattemptnotification" />')
+            var divsection = $('<div id="delayednotification" />')
                 .append(
                     $('<p>', {
                         'id': 'activatedelayedtimer'
