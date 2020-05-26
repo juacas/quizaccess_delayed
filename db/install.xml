@@ -7,7 +7,7 @@
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="quizid"/>
         <FIELD NAME="quizid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" COMMENT="Foreign key to quiz.id." PREVIOUS="id" NEXT="delayedrequired"/>
-        <FIELD NAME="delayed" TYPE="int" LENGTH="2" NOTNULL="false" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" COMMENT="Boolean, if true, the check is required." PREVIOUS="quizid"/>
+        <FIELD NAME="delayedattempt" TYPE="int" LENGTH="2" NOTNULL="false" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" COMMENT="Boolean, if true, the check is required." PREVIOUS="quizid"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="quizid"/>

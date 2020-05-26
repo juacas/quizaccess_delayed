@@ -201,11 +201,11 @@ class quizaccess_delayed extends quiz_access_rule_base {
         $allowdisable = get_config('quizaccess_delayed', 'allowdisable');
         if($enabled && $allowdisable) {
             $enabledbydefault = get_config('quizaccess_delayed', 'enabledbydefault');
-            $mform->addElement('advcheckbox', 'delayed',
+            $mform->addElement('advcheckbox', 'delayedattempt',
                     get_string('delayedattemptlock', 'quizaccess_delayed'),
                     get_string('explaindelayedattempt', 'quizaccess_delayed'));
-            $mform->setDefault('delayed', $enabledbydefault);
-            $mform->addHelpButton('delayed',
+            $mform->setDefault('delayedattempt', $enabledbydefault);
+            $mform->addHelpButton('delayedattempt',
                     'delayedattemptlock', 'quizaccess_delayed');
         }
     }
@@ -221,7 +221,7 @@ class quizaccess_delayed extends quiz_access_rule_base {
         global $DB;
         $record = new stdClass();
         $record->quizid = $quiz->id;
-        $record->delayed = $quiz->delayed;
+        $record->delayedattempt = $quiz->delayedattempt;
         $DB->delete_records('quizaccess_delayed', ['quizid' => $record->quizid]);
         $DB->insert_record('quizaccess_delayed', $record);
     }
@@ -260,7 +260,7 @@ class quizaccess_delayed extends quiz_access_rule_base {
      */
     public static function get_settings_sql($quizid) {
         return array(
-            'delayed',
+            'delayedattempt',
             'LEFT JOIN {quizaccess_delayed} delayedattempt ON delayedattempt.quizid = quiz.id',
             array());
     }    
@@ -374,7 +374,7 @@ class quizaccess_delayed extends quiz_access_rule_base {
     {
         $enabled = get_config('quizaccess_delayed', 'enabled');
         $allowdisable = get_config('quizaccess_delayed', 'allowdisable');
-        $locallyenabled = $quizobj->get_quiz()->delayed;
+        $locallyenabled = $quizobj->get_quiz()->delayedattempt;
 
         if ($enabled == true && ($allowdisable == false || $locallyenabled == true)) {
             return true;

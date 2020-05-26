@@ -44,7 +44,7 @@ function xmldb_quizaccess_delayed_upgrade($oldversion) {
         if (!$dbman->table_exists($table)) {
             $table->add_field('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
             $table->add_field('quizid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
-            $table->add_field('delayed', XMLDB_TYPE_INTEGER, '2', XMLDB_UNSIGNED, null, null, '0');
+            $table->add_field('delayedattempt', XMLDB_TYPE_INTEGER, '2', XMLDB_UNSIGNED, null, null, '0');
     
             // Add keys to table quizaccess_delayed
             $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
