@@ -69,7 +69,10 @@ define( ['jquery'], function ($) {
                         'id': 'activatedelayedtimer'
                     }),
                 );
-            $(selector).prepend(divsection.append(form)); // Clean previous message.
+            $(selector).prepend(form, $('</br>'));
+            // Insert above other buttons and messages.
+            $(selector).prepend(divsection);
+          
             $('[id=startAttemptButton]').prop('disabled', true);
 
             quizOpenTime = new Date().getTime() + diffmillisecs;
