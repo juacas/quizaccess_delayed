@@ -90,7 +90,9 @@ class quizaccess_delayed extends quiz_access_rule_base {
                     }
                     // Show institutional message if the quiz is marked as intensive.
                     if ($diags->isintensive) {
-                        $message .= format_text(get_config('quizaccess_delayed', 'dangerousquiznotice'));
+                        $message .= format_text(get_config('quizaccess_delayed', 'dangerousquiznotice'),
+                            FORMAT_MOODLE,
+                            ['trusted' => true, 'noclean' => true, 'newlines' => false, 'allowid' => true]);
                     }
                 }
                 $message .= get_string('quizaccess_delayed_teachernotice',
@@ -102,7 +104,8 @@ class quizaccess_delayed extends quiz_access_rule_base {
             }
         // Show the notice to the students.
            if (has_capability('mod/quiz:attempt', $this->quizobj->get_context())) {
-               $message .=  format_text(get_config('quizaccess_delayed', 'notice'));
+               $message .=  format_text(get_config('quizaccess_delayed', 'notice'), FORMAT_MOODLE, 
+                            ['trusted' => true, 'noclean' => true, 'newlines' => false, 'allowid' => true]);
            }
         }
         return $message;
