@@ -286,7 +286,7 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
      */
     protected function calculate_random_delay($maxdelay) {
         global $USER;
-        $pseudoidx = ($USER->id * $this->quizobj->get_cmid()) % 100;
+        $pseudoidx = ($USER->id + $this->quizobj->get_cmid()) % 100;
         $random = $pseudoidx * $maxdelay / 100;
         return $random;
     }
