@@ -95,9 +95,10 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
                             ['trusted' => true, 'noclean' => true, 'newlines' => false, 'allowid' => true]);
                     }
                 }
-                $message .= get_string('quizaccess_activatedelayedattempt_teachernotice',
-                'quizaccess_activatedelayedattempt',
-                ceil($this->calculate_max_delay()/60));
+                $message .= $output->notification(
+                    get_string('quizaccess_activatedelayedattempt_teachernotice', 'quizaccess_delayed', ceil($this->calculate_max_delay() / 60)),
+                    notification::INFO
+                );
                 $message .= "<noscript>" . get_string('noscriptwarning', 'quizaccess_activatedelayedattempt') . "</noscript>";
             // Show also the counter to the teacher.
                 $this->configure_timerscript('.quizattempt');
