@@ -114,7 +114,7 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
                         && $studentmsg != '' ) {
                 // Show the teachers what the students will see.
                 $message .= $OUTPUT->box(
-                    get_string('quizaccess_delayed_teachernotice2', 'quizaccess_activatedelayedattempt')
+                    get_string('quizaccess_activatedelayedattempt_teachernotice2', 'quizaccess_activatedelayedattempt')
                     . $studentmsg
                 );
             }
