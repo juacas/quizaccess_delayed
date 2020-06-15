@@ -40,6 +40,7 @@ $string['quizaccess_activatedelayedattempt_maxdelay'] = 'Maximum delay (minutes)
 $string['quizaccess_activatedelayedattempt_timelimitpercent'] = 'Maximum delay as a percentage of completion time';
 $string['quizaccess_activatedelayedattempt_notice'] = 'Notice to students';
 $string['quizaccess_activatedelayedattempt_teachernotice'] = 'This quiz will use a phased entry control, which will cause students to enter randomly with up to {$a} minutes of delay.';
+$string['quizaccess_activatedelayedattempt_teachernotice2'] = 'Students will see the following message during the wait:';
 $string['quizaccess_activatedelayedattempt_countertype'] ='Type of coundown to use.';
 $string['pleasewait'] = 'Please wait here';
 $string['noscriptwarning'] = 'This quiz requires a browser that supports JavaScript. If you have a Javascript blocker you will need to disable it.';

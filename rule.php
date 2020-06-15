@@ -99,15 +99,25 @@ class quizaccess_activatedelayedattempt extends quiz_access_rule_base {
                 'quizaccess_activatedelayedattempt',
                 ceil($this->calculate_max_delay()/60));
                 $message .= "<noscript>" . get_string('noscriptwarning', 'quizaccess_activatedelayedattempt') . "</noscript>";
-        // Show also the counter to the teacher.
+            // Show also the counter to the teacher.
                 $this->configure_timerscript('.quizattempt');
             }
-        // Show the notice to the students.
-           if (has_capability('mod/quiz:attempt', $this->quizobj->get_context())) {
-               $message .=  format_text(get_config('quizaccess_activatedelayedattempt', 'notice'),
-                    FORMAT_MOODLE,
-                    ['trusted' => true, 'noclean' => true, 'newlines' => false, 'allowid' => true]);
-           }
+            // Show the notice to the students.
+            $studentmsg =  format_text(
+                get_config('quizaccess_activatedelayedattempt', 'notice'),
+                FORMAT_MOODLE,
+                ['trusted' => true, 'noclean' => true, 'newlines' => false, 'allowid' => true]
+            );
+            if (has_capability('mod/quiz:attempt', $this->quizobj->get_context())) {
+                $message .= $OUTPUT->box($studentmsg);
+            } else if ( has_capability('mod/quiz:manage', $this->quizobj->get_context())
+                        && $studentmsg != '' ) {
+                // Show the teachers what the students will see.
+                $message .= $OUTPUT->box(
+                    get_string('quizaccess_delayed_teachernotice2', 'quizaccess_activatedelayedattempt')
+                    . $studentmsg
+                );
+            }
         }
         return $message;
     }

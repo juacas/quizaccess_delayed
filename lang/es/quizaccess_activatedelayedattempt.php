@@ -40,6 +40,7 @@ $string['quizaccess_activatedelayedattempt_timelimitpercent'] = 'Máximo retardo
 $string['quizaccess_activatedelayedattempt_notice'] = 'Aviso para los estudiantes';
 $string['quizaccess_activatedelayedattempt_countertype'] = 'Tipo de contador.';
 $string['quizaccess_activatedelayedattempt_teachernotice'] = 'Este cuestionario aplicará un control de entrada gradual, que hará que los estudiantes entren aleatoriamente hasta con {$a} minutos de retardo.';
+$string['quizaccess_activatedelayedattempt_teachernotice2'] = 'Los alumnos verán el siguiente mensaje durante la espera:';
 $string['noscriptwarning'] = 'Este cuestionario necesita un navegador que soporte JavaScript. Si tiene un bloqueador de Javascript necesitará desactivarlo.';
 $string['pluginname_desc'] = 'Auto activa el botón de inicio de cuestionario con un retardo aleatorio.';
 $string['pluginname'] = 'Entrada con retardo aleatorio al cuestionario.';
