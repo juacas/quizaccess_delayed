@@ -96,12 +96,12 @@ class quizaccess_delayed extends quiz_access_rule_base {
                     // Show institutional message if the quiz is marked as intensive.
                     if ($diags->isintensive) {
                         $message .= format_text(get_config('quizaccess_delayed', 'dangerousquiznotice'),
-                            FORMAT_MOODLE,
-                            ['trusted' => true, 'noclean' => true, 'newlines' => false, 'allowid' => true]);
+                            FORMAT_MOODLE, ['trusted' => true, 'noclean' => true, 'newlines' => false, 'allowid' => true]);
                     }
                 }
-                $message .= get_string('quizaccess_delayed_teachernotice', 'quizaccess_delayed',
-                                        ceil($this->calculate_max_delay()/60));
+                $message .= $output->notification(
+                                        get_string('quizaccess_delayed_teachernotice', 'quizaccess_delayed', ceil($this->calculate_max_delay()/60)),
+                                        notification::INFO);
                 $message .= "<noscript>" . get_string('noscriptwarning', 'quizaccess_delayed') . "</noscript>";
             // Show also the counter to the teacher.
                 $this->configure_timerscript('.quizattempt');
