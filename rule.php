@@ -75,10 +75,15 @@ class quizaccess_delayed extends quiz_access_rule_base {
         }
         return $result; // Used as a prevent message.
     }
+    /** 
+     * @global moodle_page $PAGE
+     */
     public function description()
     {
         $message = '';
-        global $OUTPUT;
+        global $PAGE;
+        /** @var core_renderer $output */
+        $output = $PAGE->get_renderer('core');
         if ($this->is_pending() && quizaccess_delayed::is_enabled_in_instance($this->quizobj)) {
             if (has_capability('mod/quiz:manage', $this->quizobj->get_context())) {
                 // Show a warning if the quiz is resource intensive.
@@ -86,7 +91,7 @@ class quizaccess_delayed extends quiz_access_rule_base {
                 if ($intensivequizdetection) {
                     $diags = $this->get_quiz_diagnosis($this->quizobj);
                     foreach ($diags->notices as $notice) {
-                        $message .= $OUTPUT->notification( $notice, notification::WARNING); // TODO: DANGER message also!
+                        $message .= $output->notification( $notice, notification::WARNING); // TODO: DANGER message also!
                     }
                     // Show institutional message if the quiz is marked as intensive.
                     if ($diags->isintensive) {
@@ -95,17 +100,25 @@ class quizaccess_delayed extends quiz_access_rule_base {
                             ['trusted' => true, 'noclean' => true, 'newlines' => false, 'allowid' => true]);
                     }
                 }
-                $message .= get_string('quizaccess_delayed_teachernotice',
-                'quizaccess_delayed',
-                ceil($this->calculate_max_delay()/60));
+                $message .= get_string('quizaccess_delayed_teachernotice', 'quizaccess_delayed',
+                                        ceil($this->calculate_max_delay()/60));
                 $message .= "<noscript>" . get_string('noscriptwarning', 'quizaccess_delayed') . "</noscript>";
-        // Show also the counter to the teacher.
+            // Show also the counter to the teacher.
                 $this->configure_timerscript('.quizattempt');
             }
-        // Show the notice to the students.
+            // Show the notice to the students.
+            $studentmsg =  format_text(get_config('quizaccess_delayed', 'notice'),
+                                FORMAT_MOODLE,
+                                ['trusted' => true, 'noclean' => true, 'newlines' => false, 'allowid' => true]
+                            );
            if (has_capability('mod/quiz:attempt', $this->quizobj->get_context())) {
-               $message .=  format_text(get_config('quizaccess_delayed', 'notice'), FORMAT_MOODLE, 
-                            ['trusted' => true, 'noclean' => true, 'newlines' => false, 'allowid' => true]);
+               $message .= $output->box($studentmsg);
+           } else if (has_capability('mod/quiz:manage', $this->quizobj->get_context())
+                && $studentmsg != '') {
+               // Show the teachers what the students will see.
+               $message .= $output->box(
+                                    get_string('quizaccess_delayed_teachernotice2', 'quizaccess_delayed') 
+                                    . $studentmsg);
            }
         }
         return $message;
