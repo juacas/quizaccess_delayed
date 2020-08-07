@@ -18,8 +18,8 @@ This is done by a client side countdown timer (javascript) which is initiated wh
 
 ![Screenshot](pix/screenshot_flipdown_esp.png)
 
-The plugin is implemented as an access-rule plugin overriding the default activity page render.  
-The page, displays the time remaining to start the quiz using an animated countdown. 
+The plugin is implemented as an access-rule plugin overriding the default activity page render.
+The page, displays the time remaining to start the quiz using an animated countdown.
 A pseudo-random delay is assigned to each student depending on the number of students and a set of site-wide parameters as fixed rate of entry, maximum allowable delay.
 An optional message for the students can be defined for all quizzes in the platform.
 An optional check and advice message for teachers can be defined for all quizzes in the platform.
@@ -49,6 +49,7 @@ The time alloted is considered too tight if
   - not excess a 20% of the execution time.
 
 ## Releases
+- v1.2.2 Use Gulp and Babel for IExplorer compatibility.
 - v1.2.1 Place advices for the teacher for quizzes that are resource intensives of potentially problematic.
 - v1.2.0 Rule can be enabled/disabled in each instance.
 - v1.1.1b Management controls in system settings.
@@ -60,12 +61,12 @@ The time alloted is considered too tight if
 1) Unzip it into /mod/quiz/accessrule/delayed
 2) Log in into Moodle
 3) A notification will appear stating “Plugins requiring attention”.
-4) Complete the installation by clicking on “Upgrade Moodle database now”,click on continue after the success 
+4) Complete the installation by clicking on “Upgrade Moodle database now”,click on continue after the success
 notification appears on the page.
 
 ## Usage
 
-If you enable quiz open time in quiz settings, quiz students will no longer have to manually refresh the 
+If you enable quiz open time in quiz settings, quiz students will no longer have to manually refresh the
 page in order to get “Attempt Quiz Now” button at the quiz open timing.
 A random delay up to 10 minutes is assigned to each student for spreading the entry times.
 
