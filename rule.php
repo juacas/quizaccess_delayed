@@ -20,7 +20,7 @@
  *
  * @package   quizaccess_delayed
  * @author    Juan Pablo de Castro
- * @author	  Enrique Castro	
+ * @author    Enrique Castro
  * @copyright 2020 University of Valladolid, Spain
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -42,9 +42,9 @@ require_once($CFG->dirroot . '/mod/quiz/accessrule/accessrulebase.php');
  */
 class quizaccess_delayed extends quiz_access_rule_base {
     // Cache maxdelay in seconds.
-    var $maxdelay = null;
+    protected $maxdelay = null;
     // Cache students count.
-    var $students = null;
+    protected $students = null;
     /** Return an appropriately configured instance of this rule
      * @param quiz $quizobj information about the quiz in question.
      * @param int $timenow the time that should be considered as 'now'.
@@ -52,39 +52,38 @@ class quizaccess_delayed extends quiz_access_rule_base {
      *  time limits by the mod/quiz:ignoretimelimits capability.
      */
     public static function make(quiz $quizobj, $timenow, $canignoretimelimits) {
-        
-        if (quizaccess_delayed::is_enabled_in_instance($quizobj) === false ) {
+
+        if (self::is_enabled_in_instance($quizobj) === false ) {
             return null;
-        } 
-        
+        }
+
         return new self ( $quizobj, $timenow );
     }
-  
+
     /**
      * Whether or not a user should be allowed to start a new attempt at this quiz now.
      * @param int $numattempts the number of previous attempts this user has made.
      * @param object $lastattempt information about the user's last completed attempt.
      */
     public function prevent_access() {
-       
-        $enabled = quizaccess_delayed::is_enabled_in_instance($this->quizobj);
+
+        $enabled = self::is_enabled_in_instance($this->quizobj);
         $result = "";
-        if ($enabled && $this->is_pending()) { 
+        if ($enabled && $this->is_pending()) {
             $this->configure_timerscript('.quizattempt');
             $result .= "<noscript>" . get_string('noscriptwarning', 'quizaccess_delayed') . "</noscript>";
         }
         return $result; // Used as a prevent message.
     }
-    /** 
+    /**
      * @global moodle_page $PAGE
      */
-    public function description()
-    {
+    public function description() {
         $message = '';
         global $PAGE;
         /** @var core_renderer $output */
         $output = $PAGE->get_renderer('core');
-        if ($this->is_pending() && quizaccess_delayed::is_enabled_in_instance($this->quizobj)) {
+        if ($this->is_pending() && self::is_enabled_in_instance($this->quizobj)) {
             if (has_capability('mod/quiz:manage', $this->quizobj->get_context())) {
                 // Show a warning if the quiz is resource intensive.
                 $intensivequizdetection = get_config('quizaccess_delayed', 'showdangerousquiznotice');
@@ -100,7 +99,7 @@ class quizaccess_delayed extends quiz_access_rule_base {
                     }
                 }
                 $message .= $output->notification(
-                                        get_string('quizaccess_delayed_teachernotice', 'quizaccess_delayed', ceil($this->calculate_max_delay()/60)),
+                                        get_string('quizaccess_delayed_teachernotice', 'quizaccess_delayed', ceil($this->calculate_max_delay() / 60)),
                                         notification::INFO);
                 $message .= "<noscript>" . get_string('noscriptwarning', 'quizaccess_delayed') . "</noscript>";
             // Show also the counter to the teacher.
@@ -117,7 +116,7 @@ class quizaccess_delayed extends quiz_access_rule_base {
                 && $studentmsg != '') {
                // Show the teachers what the students will see.
                $message .= $output->box(
-                                    get_string('quizaccess_delayed_teachernotice2', 'quizaccess_delayed') 
+                                    get_string('quizaccess_delayed_teachernotice2', 'quizaccess_delayed')
                                     . $studentmsg);
            }
         }
@@ -153,7 +152,7 @@ class quizaccess_delayed extends quiz_access_rule_base {
         }
         $a->timelimit = $quizobj->get_quiz()->timelimit;
         $a->students = $this->get_student_count($quizobj);
-        $a->timespan = $this->get_time_span($quizobj); 
+        $a->timespan = $this->get_time_span($quizobj);
         // Test. TODO: implement in unit tests.
         // $this->students = 200;
         // $a->timespan = 95;
@@ -167,7 +166,7 @@ class quizaccess_delayed extends quiz_access_rule_base {
         $a->randomdelaystr = format_time($a->randomdelay);
         $a->timespanstr = format_time($a->timespan);
         $a->timelimitstr = format_time($a->timelimit);
-        
+
         // Heuristics for diagnosis.
         $a->tooshortpages = $a->timeperpage < 600 ;
         $a->iscriticaltimelimit = ($a->timespan- $a->timelimit) < ($a->maxdelay + $a->timelimit * 0.1);
@@ -176,8 +175,8 @@ class quizaccess_delayed extends quiz_access_rule_base {
         // its short-timed AND
         // entry rate is greater than startrate students per minute,
         // has too short pages (multiplies requests)
-        // 
-        $a->isintensive = $a->isshorttimed 
+        //
+        $a->isintensive = $a->isshorttimed
                             && (($a->students / $a->maxdelay) > $a->rate || $a->tooshortpages);
         // Advice messages.
         if ($a->tooshortpages) {
@@ -212,7 +211,7 @@ class quizaccess_delayed extends quiz_access_rule_base {
      */
     public static function add_settings_form_fields(
             mod_quiz_mod_form $quizform, MoodleQuickForm $mform) {
-        
+
         $enabled = get_config('quizaccess_delayed', 'enabled');
         $allowdisable = get_config('quizaccess_delayed', 'allowdisable');
         if($enabled && $allowdisable) {
@@ -225,7 +224,7 @@ class quizaccess_delayed extends quiz_access_rule_base {
                     'delayedattemptlock', 'quizaccess_delayed');
         }
     }
-    
+
     /**
      * Save any submitted settings when the quiz settings form is submitted. This
      * is called from {@link quiz_after_add_or_update()} in lib.php.
@@ -279,7 +278,7 @@ class quizaccess_delayed extends quiz_access_rule_base {
             'delayedattempt',
             'LEFT JOIN {quizaccess_delayed} delayedattempt ON delayedattempt.quizid = quiz.id',
             array());
-    }    
+    }
     /**
      * Gets the delay associated to current user.
      * @return int delay in seconds.
@@ -321,7 +320,7 @@ class quizaccess_delayed extends quiz_access_rule_base {
                 } else {
                     $maxalloweddelay = max(1, $maxalloweddelay);
                 }
-            } 
+            }
             // The delay is calculated as "startrate" students per minute in average with maxalloweddelay minutes maximum.
             // The spread of delays is set from 1 to $maxalloweddelay minutes depending on number of students in the quiz.
             $this->maxdelay = min($maxalloweddelay, max(1, $numalumns / $rate )) * 60;
@@ -339,7 +338,7 @@ class quizaccess_delayed extends quiz_access_rule_base {
      */
     protected function is_pending() {
         $randomdelay = $this->get_user_delay();
-        return ($this->timenow < ($this->quiz->timeopen + $randomdelay));   
+        return ($this->timenow < ($this->quiz->timeopen + $randomdelay));
     }
     /**
      *  @global moodle_page $PAGE
@@ -398,4 +397,3 @@ class quizaccess_delayed extends quiz_access_rule_base {
         return false;
     }
 }
-

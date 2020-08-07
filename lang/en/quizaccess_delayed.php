@@ -47,7 +47,7 @@ $string['noscriptwarning'] = 'This quiz requires a browser that supports JavaScr
 $string['pluginname_desc'] = 'Auto activate quiz attempt button with random delay access rule';
 $string['pluginname'] = 'Entry to quiz attempt with random delay';
 $string['delayedattemptlock'] = 'Gradual entry to the quiz';
-$string['delayedattemptlock_help'] = 'When enabled, on loading the quiz page before the quiz start date the start attempt button is disabled transiently. 
+$string['delayedattemptlock_help'] = 'When enabled, on loading the quiz page before the quiz start date the start attempt button is disabled transiently.
 A countdown period is started (random up to a time set up by your institution). When the countdown ends the start attempt button is re-enabled and the students can initiate the quiz attempt. ';
 $string['explaindelayedattempt'] = 'Sets a random access delay';
 $string['tooshortpagesadvice'] = 'The questionnaire has {$a->pages} pages that are too short. This increases the load on the server severely. Consider alloting more time for each page (i.e. putting more questions)';

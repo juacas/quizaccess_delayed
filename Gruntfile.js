@@ -45,11 +45,7 @@ module.exports = function(grunt) {
     // Globbing pattern for matching all AMD JS source files.
     var amdSrc = [inAMD ? cwd + '/src/*.js' : '**/amd/src/*.js'];
     var pathprefix = inAMD ? cwd + '/src/' : '**/amd/src/';
-    var jshintfiles = [pathprefix + 'edit.js',
-                        pathprefix + 'play.js',
-                        pathprefix + 'renewlock.js',
-                        pathprefix + 'tutorial.js',
-                        pathprefix + 'viewgpx.js'];
+    var jshintfiles = [pathprefix + '*.js'];
      /*
      * Function to generate the destination for the uglify task
      * (e.g. build/file.min.js). This function will be passed to
@@ -69,80 +65,100 @@ module.exports = function(grunt) {
 
     // Project configuration.
     grunt.initConfig({
-        jshint: {
-            options: {jshintrc: '.jshintrc'},
-            amd: { src: jshintfiles }
+      babel: {
+        options: {
+          sourceMap: true,
+          presets: ["@babel/preset-env"],
         },
-        terser: {
-            options: {
-                sourceMap: true,
-                mangle: true,
-                compress: true,
+        dist: {
+          files: {
+            "amd/build/timer_flipdown.min.js": "amd/build/timer_flipdown.min.js",
+            "amd/build/timer_text.min.js": "amd/build/timer_text.min.js",
+          },
+        },
+      },
+      jshint: {
+        options: { jshintrc: ".jshintrc" },
+        amd: { src: jshintfiles },
+      },
+      terser: {
+        options: {
+          sourceMap: true,
+          mangle: true,
+          compress: true,
+        },
+        amd: {
+          files: [
+            {
+              expand: true,
+              src: amdSrc,
+              rename: uglify_rename,
             },
-            amd: {
-                files: [{
-                    expand: true,
-                    src: amdSrc,
-                    rename: uglify_rename
-                }]
-            }
+          ],
         },
-        uglify: {
-            options : {
-                sourceMap : true,
-                sourceMapIncludeSources : true,
-                mangle: true,
-                compress: true,
-                beautify: false
+      },
+      uglify: {
+        options: {
+          sourceMap: true,
+          sourceMapIncludeSources: true,
+          mangle: true,
+          compress: true,
+          beautify: false,
+        },
+        amd: {
+          files: [
+            {
+              expand: true,
+              src: amdSrc,
+              rename: uglify_rename,
             },
-            amd: {
-                files: [{
-                    expand: true,
-                    src: amdSrc,
-                    rename: uglify_rename
-                }]
-            }
+          ],
         },
-        copy: {
-            js:{
-                files: [{
-                    expand: true,
-                    src: amdSrc,
-                    rename: uglify_rename
-                }]
-            }
-        },
-        less: {
-            bootstrapbase: {
-                files: {
-                    "theme/bootstrapbase/style/moodle.css": "theme/bootstrapbase/less/moodle.less",
-                    "theme/bootstrapbase/style/editor.css": "theme/bootstrapbase/less/editor.less",
-                },
-                options: {
-                    compress: true
-                }
-            }
-        },
-        watch: {
-            options: {
-                nospawn: true // We need not to spawn so config can be changed dynamically.
+      },
+      copy: {
+        js: {
+          files: [
+            {
+              expand: true,
+              src: amdSrc,
+              rename: uglify_rename,
             },
-            amd: {
-                files: ['**/amd/src/**/*.js'],
-                tasks: ['copy:js']
-            },
+          ],
+        },
+      },
+      less: {
+        bootstrapbase: {
+          files: {
+            "theme/bootstrapbase/style/moodle.css":
+              "theme/bootstrapbase/less/moodle.less",
+            "theme/bootstrapbase/style/editor.css":
+              "theme/bootstrapbase/less/editor.less",
+          },
+          options: {
+            compress: true,
+          },
+        },
+      },
+      watch: {
+        options: {
+          nospawn: true, // We need not to spawn so config can be changed dynamically.
+        },
+        amd: {
+          files: ["**/amd/src/**/*.js"],
+          tasks: ["copy:js"],
+        },
 
-            yui: {
-                files: ['**/yui/src/**/*.js'],
-                tasks: ['shifter']
-            },
+        yui: {
+          files: ["**/yui/src/**/*.js"],
+          tasks: ["shifter"],
         },
-        shifter: {
-            options: {
-                recursive: true,
-                paths: [cwd]
-            }
-        }
+      },
+      shifter: {
+        options: {
+          recursive: true,
+          paths: [cwd],
+        },
+      },
     });
 
     /**
@@ -272,11 +288,12 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks("grunt-contrib-copy");
+    grunt.loadNpmTasks("grunt-babel");
     // Register JS tasks.
     grunt.registerTask('shifter', 'Run Shifter against the current directory', tasks.shifter);
     grunt.registerTask('amdonly', ['terser']);
-    grunt.registerTask('amd', [/*'jshint',*/ 'terser']);
+    grunt.registerTask('amd', ['terser', 'babel']);
     grunt.registerTask('js', ['amdonly', 'shifter']);
     // Register CSS taks.
     grunt.registerTask('css', ['less:bootstrapbase']);

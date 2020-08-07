@@ -43,7 +43,7 @@ define( ['jquery'], function ($) {
             // Initialize strings to avoid json requests.
             this.set_strings(langstrings);
             quizOpenTime = new Date().getTime() + diffmillisecs;
-            
+
             // Load flipboard.
             $('<link>')
                 .appendTo('head')
@@ -53,7 +53,7 @@ define( ['jquery'], function ($) {
                     href: 'accessrule/delayed/flipdown/flipdown.css'
                 });
             jQuery.getScript('accessrule/delayed/flipdown/flipdown.js', this.startCounter.bind(this));
-          
+            // Containes for counter.
             var divcounter = $('<center>'
                 + langstrings.quizwillstartinabout
                 + '<div id="flipdown" class="flipdown"></div>'
