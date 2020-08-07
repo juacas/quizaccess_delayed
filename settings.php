@@ -98,7 +98,7 @@ if ($hassiteconfig) {
     $settings->add(new admin_setting_confightmleditor(
         'quizaccess_delayed/dangerousquiznotice',
         new lang_string('quizaccess_delayed_dangerousquiznotice', 'quizaccess_delayed'),
-        '',
+        new lang_string('quizaccess_delayed_dangerousquiznotice_desc', 'quizaccess_delayed'),
         '',
         PARAM_RAW,
         '60',
@@ -107,11 +107,11 @@ if ($hassiteconfig) {
     $settings->add(new admin_setting_confightmleditor(
         'quizaccess_delayed/notice',
         new lang_string('quizaccess_delayed_notice', 'quizaccess_delayed'),
-        '',
+        new lang_string('quizaccess_delayed_notice_desc', 'quizaccess_delayed'),
         '',
         PARAM_RAW,
         '60',
         '8'
     ));
-   
+
 }
