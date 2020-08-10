@@ -28,28 +28,28 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['attemptquiz'] = 'Saiatu orain galdetegia egiten';
-$string['quizwillstartinabout'] = 'Galdetegi honetako zure txanda epe honetan hasiko da:';
+$string['quizwillstartinabout'] = 'Galdetegi honetako zure txanda atzerako kontaketa amaitzean hasiko da:';
 $string['quizwillstartinless'] = 'Galdetegi honetako zure txanda minutu bat baino gutxiagoan hasiko da';
 $string['quizaccess_delayed_enabled'] = 'Atzeratutako saiakerak gaituta';
 $string['quizaccess_delayed_allowdisable'] = 'Irakasleek araua desgaitu dezakete';
-$string['quizaccess_delayed_enabledbydefault'] = 'Galdetegi berriek arau hau erabiliko dute modu lehenetsian';
+$string['quizaccess_delayed_enabledbydefault'] = 'Erabili arau hau modu lehenetsian galdetegi berrietan';
 $string['quizaccess_delayed_showdangerousquiznotice'] = 'Irakasleei mezu bat erakutsiko die galdetegiak baliabideen erabilera intentsiboa egingo badu';
-$string['quizaccess_delayed_dangerousquiznotice'] = 'Galdetegia problematikoa izan badaiteke erakusten den mezu instituzionala';
+$string['quizaccess_delayed_dangerousquiznotice'] = 'Galdetegia problematikoa izan badaiteke irakasleari erakusten zaion mezu instituzionala';
 $string['quizaccess_delayed_startrate'] = 'Sarrera-ratioa (ikasleak minutuko)';
 $string['quizaccess_delayed_maxdelay'] = 'Gehienezko atzerapena (minututan)';
 $string['quizaccess_delayed_timelimitpercent'] = 'Gehienezko atzerapena osaketa-denboraren ehuneko gisa';
 $string['quizaccess_delayed_notice'] = 'Ikasleentzako oharra';
 $string['quizaccess_delayed_teachernotice'] = 'Galdetegi honek sarbide mailakaturako kontrola erabiltzen du, eta honek ikasleak modu mailakatuan gehienezko {$a} minutuko atzerapenarekin ausaz sartzea eragingo du.';
-$string['quizaccess_delayed_countertype'] ='Erabili beharreko atzerako kontaketa mota.';
+$string['quizaccess_delayed_countertype'] ='Erabili beharreko atzerako kontaketa mota';
 $string['pleasewait'] = 'Itxaron ezazu hemen, mesedez';
 $string['noscriptwarning'] = 'Galdetegi honek JavaScript onartzen duen nabigatzaile bat behar du. JavaScript-eko blokeatzailea bat erabiltzen baduzu desgaitu beharko duzu.';
-$string['pluginname_desc'] = 'Aktibatu automatikoki Auto activate quiz attempt button with random delay access rule';
-$string['pluginname'] = 'Galdetegira ausazko atzerapena duten saiakeren sarbidea';
+$string['pluginname_desc'] = 'Aktibatu automatikoki galdetegiaren saiakera hasteko botoia ausazko atzerapenarekin erakusteko sarbide-araua';
+$string['pluginname'] = 'Galdetegiaren saiakerei ausazko atzerapena ezartzeko sarbide-araua';
 $string['delayedattemptlock'] = 'Galdetegirako sarbide mailakatua';
-$string['delayedattemptlock_help'] = 'Gaituz gero, galdetegiaren hasiera-dataren aurretik saiakera hasteko botoia aldi baterako desgaitzen du. 
+$string['delayedattemptlock_help'] = 'Markatuz gero, galdetegiaren saiakera hasteko botoia ausazko atzerapenarekin erakusten da. 
 Atzerako kontaketa bat hasten da (ausazkoa erakundeak zehaztutako denbora-muga batera arte). Atzerako kontaketa amaitzean saiakera hasteko botoia berriz erakusten da eta ikasleak saiakera hasi ahalko du.';
-$string['explaindelayedattempt'] = 'Sarbiderako ausazko atzerapena ezartzen du';
-$string['tooshortpagesadvice'] = 'Galdetegiak motzak diren {$a->pages} orri dauzka. Honek zerbitzariari gainkarga ezartzen dio. Hausnartu ezazu orri bakoitzean galdera gehiago jartzeko aukeraren inguruan.';
-$string['tooshorttimeguardadvice'] = '{$a->timespanstr}-(e)ko eskuragarritasun-denbora estuegia da. Kontuan izan mesedez ikasleetako batzuk {$a->maxdelaystr}-(e)ko atzerapenarekin hasiko dutela galdetegia eta {$a->timelimitstr} izango dute galdetegia egiteko, eta gomendagarria da galdetegia hasteko bestelako atzerapenentzako segurtasun-tarte bat izatea.';
+$string['explaindelayedattempt'] = 'Ezarri sarbiderako ausazko atzerapena';
+$string['tooshortpagesadvice'] = 'Galdetegi honek laburrak diren {$a->pages} orri dauka. Honek zerbitzariari gainkarga ezartzen dionez, posiblea balitz orri bakoitzean galdera gehiago jartzea gomendagarria litzateke.';
+$string['tooshorttimeguardadvice'] = 'Galdetegia egiteko {$a->timespanstr}ko denbora-tartea estuegia da. Kontuan izan ezazu ikasleetako batzuk {$a->maxdelaystr}ko atzerapenarekin hasiko dutela galdetegia eta {$a->timelimitstr}ko denbora-muga izango dutela galdetegia egiteko. Hori dela eta, gomendagarria da galdetegia egiteko denbora-tarteari gutxienez {$a->maxdelaystr}ko segurtasun-tarte bat gehitzea.';
 $string['flipdowncounter'] = 'Fitxen bidezko atzerako kontaketa animatua';
 $string['plaintextcounter'] = 'Testuzko atzerako kontaketa';
