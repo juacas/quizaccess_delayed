@@ -1,7 +1,7 @@
 {
   "settings": {
     "name": "Delayed Attempt EN",
-    "currentPage": "index.html",
+    "currentPage": "description.html",
     "theme": {
       "name": "mobirise4",
       "title": "Mobirise 4",
@@ -48,14 +48,13 @@
     "favicon": false,
     "noImageResize": true,
     "robotsSwitcher": true,
-    "sitemapSwitcher": false,
-    "sitemapSwitcherAuto": false,
-    "siteUrl": false,
+    "sitemapSwitcher": true,
+    "sitemapSwitcherAuto": "on",
+    "siteUrl": "https://juacas.github.io/quizaccess_delayed/",
     "gdpr": false,
     "robotsText": "User-agent: *\nDisallow: /cgi-bin\n",
     "cookiesAlert": false,
-    "publishType": "local",
-    "publishPath": "file:///C:/desarrollo/workspaces/quizaccess_activatedelayedattempt-gh-pages"
+    "google-analytics": "<!-- Global site tag (gtag.js) - Google Analytics -->\n<script async src=\"https://www.googletagmanager.com/gtag/js?id=UA-17620215-7\"></script>\n<script>\n  window.dataLayer = window.dataLayer || [];\n  function gtag(){dataLayer.push(arguments);}\n  gtag('js', new Date());\n\n  gtag('config', 'UA-17620215-7');\n</script>"
   },
   "pages": {
     "install.html": {
