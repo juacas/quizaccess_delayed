@@ -236,7 +236,7 @@ class quizaccess_delayed extends quiz_access_rule_base {
         global $DB;
         $record = new stdClass();
         $record->quizid = $quiz->id;
-        $record->delayedattempt = $quiz->delayedattempt;
+        $record->delayedattempt = self::is_enabled_in_quiz($quiz);
         $DB->delete_records('quizaccess_delayed', ['quizid' => $record->quizid]);
         $DB->insert_record('quizaccess_delayed', $record);
     }
@@ -387,9 +387,20 @@ class quizaccess_delayed extends quiz_access_rule_base {
      */
     protected static function is_enabled_in_instance(quiz $quizobj)
     {
+        $quiz = $quizobj->get_quiz();
+        return self::is_enabled_in_quiz($quiz);
+    }
+    /**
+     * Apply enablement admin settings over plugin configuration.
+     * @param stdClass $quiz structure with quiz form data.
+     */
+    protected static function is_enabled_in_quiz($quiz) {
         $enabled = get_config('quizaccess_delayed', 'enabled');
         $allowdisable = get_config('quizaccess_delayed', 'allowdisable');
-        $locallyenabled = $quizobj->get_quiz()->delayedattempt;
+        // Issue #21: If the quiz was created before the plugin was installed, we need to apply the defaults.
+        $locallyenabled = isset($quiz->delayedattempt) ?
+            $quiz->delayedattempt :
+            get_config('quizaccess_delayed', 'enabledbydefault');
 
         if ($enabled == true && ($allowdisable == false || $locallyenabled == true)) {
             return true;

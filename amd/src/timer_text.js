@@ -42,7 +42,6 @@ define( ['jquery'], function ($) {
             }
             // Initialize strings to avoid json requests.
             this.set_strings(langstrings);
-           
             var form = $('<form/>', {
                 'method': 'post',
                 'action': actionlink
@@ -72,7 +71,7 @@ define( ['jquery'], function ($) {
             $(selector).prepend(form, $('</br>'));
             // Insert above other buttons and messages.
             $(selector).prepend(divsection);
-          
+
             $('[id=startAttemptButton]').prop('disabled', true);
 
             quizOpenTime = new Date().getTime() + diffmillisecs;
