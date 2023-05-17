@@ -26,12 +26,12 @@
  */
 
 use core\notification;
+use mod_quiz\local\access_rule_base;
+use mod_quiz\quiz_settings;
 use core\output\notification as OutputNotification;
 use core\plugininfo\format;
 
 defined ( 'MOODLE_INTERNAL' ) || die ();
-
-require_once($CFG->dirroot . '/mod/quiz/accessrule/accessrulebase.php');
 
 /**
  * A rule implementing auto-appearance of “Attempt quiz now” button at quiz open timing
@@ -40,18 +40,18 @@ require_once($CFG->dirroot . '/mod/quiz/accessrule/accessrulebase.php');
  * @copyright  2020 University of Valladolid, Spain
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class quizaccess_delayed extends quiz_access_rule_base {
+class quizaccess_delayed extends access_rule_base {
     // Cache maxdelay in seconds.
     protected $maxdelay = null;
     // Cache students count.
     protected $students = null;
     /** Return an appropriately configured instance of this rule
-     * @param quiz $quizobj information about the quiz in question.
+     * @param mod_quiz\quiz_settings $quizobj information about the quiz in question.
      * @param int $timenow the time that should be considered as 'now'.
      * @param bool $canignoretimelimits whether the current user is exempt from
      *  time limits by the mod/quiz:ignoretimelimits capability.
      */
-    public static function make(quiz $quizobj, $timenow, $canignoretimelimits) {
+    public static function make(quiz_settings $quizobj, $timenow, $canignoretimelimits) {
 
         if (self::is_enabled_in_instance($quizobj) === false ) {
             return null;
@@ -123,10 +123,10 @@ class quizaccess_delayed extends quiz_access_rule_base {
         return $message;
     }
     /**
-     * @param quiz $quizobj
+     * @param mod_quiz\quiz_settings $quizobj
      * @return stdClass diagnostics and messages to show.
      */
-    protected function get_quiz_diagnosis(quiz $quizobj) {
+    protected function get_quiz_diagnosis(quiz_settings $quizobj) {
         // Forces preload of questions.
         $quizobj->has_questions();
         // Get preloaded qustions just for counting them.
@@ -385,7 +385,7 @@ class quizaccess_delayed extends quiz_access_rule_base {
     /**
      * Determines if this instance should apply the rule.
      */
-    protected static function is_enabled_in_instance(quiz $quizobj)
+    protected static function is_enabled_in_instance(quiz_settings $quizobj)
     {
         $quiz = $quizobj->get_quiz();
         return self::is_enabled_in_quiz($quiz);
