@@ -2,5 +2,4 @@
 /.vscode
 *.code-workspace
 *.bak
-package-lock.json
 amd/build/*.map
