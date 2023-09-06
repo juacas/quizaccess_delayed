@@ -82,7 +82,7 @@ class quizaccess_delayed extends quiz_access_rule_base {
         $result = "";
         if ($enabled && $this->is_pending()) {
             $this->configure_timerscript('.quizattempt');
-            $result .= "<noscript>" . get_string('noscriptwarning', 'quizaccess_delayed') . "</noscript>";
+            $result .= get_string('quizaccess_delayed_teachernotice', 'quizaccess_delayed', ceil($this->calculate_max_delay() / 60));
         }
         return $result; // Used as a prevent message.
     }
