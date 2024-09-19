@@ -50,7 +50,7 @@ if ($hassiteconfig) {
     ));
 
     $vals = [];
-    foreach( range(1,100) as $val) {
+    foreach( range(1,200) as $val) {
         $vals[$val] =$val;
     }
     $settings->add(new admin_setting_configselect(
