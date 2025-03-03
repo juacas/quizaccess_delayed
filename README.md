@@ -49,6 +49,7 @@ The time alloted is considered too tight if
   - not excess a 20% of the execution time.
 
 ## Releases
+- v1.2.6 Increase entry rates.
 - v1.2.2 Use Gulp and Babel for IExplorer compatibility.
 - v1.2.1 Place advices for the teacher for quizzes that are resource intensives of potentially problematic.
 - v1.2.0 Rule can be enabled/disabled in each instance.
