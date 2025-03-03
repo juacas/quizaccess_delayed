@@ -25,6 +25,9 @@
  */
 defined ( 'MOODLE_INTERNAL' ) || die ();
 
+/**
+ * @var admin_settingpage $settings
+ */
 if ($hassiteconfig) {
 
     $settings->add(new admin_setting_configcheckbox(
@@ -48,11 +51,15 @@ if ($hassiteconfig) {
         '',
         1
     ));
-
+    /**
+     * @var mixed[] $vals
+     * Set of values that increases by 1 from 1 to 10, by 5 from 10 to 100 and by 50 from 100 to 1000.
+     */
     $vals = [];
-    foreach( range(1,100) as $val) {
-        $vals[$val] =$val;
-    }
+    $vals = array_merge($vals, range(1, 10));
+    $vals = array_merge($vals, range(10, 100, 5));
+    $vals = array_merge($vals, range(150, 1000, 50));
+    
     $settings->add(new admin_setting_configselect(
         'quizaccess_delayed/startrate',
         new lang_string('quizaccess_delayed_startrate', 'quizaccess_delayed'),
