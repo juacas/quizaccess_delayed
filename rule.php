@@ -94,6 +94,7 @@ class quizaccess_delayed extends quiz_access_rule_base {
         global $PAGE;
         /** @var core_renderer $output */
         $output = $PAGE->get_renderer('core');
+        $PAGE->requires->jquery();
         if ($this->is_pending() && self::is_enabled_in_instance($this->quizobj)) {
             if (has_capability('mod/quiz:manage', $this->quizobj->get_context())) {
                 // Show a warning if the quiz is resource intensive.
