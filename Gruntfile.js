@@ -129,10 +129,10 @@ module.exports = function(grunt) {
       less: {
         bootstrapbase: {
           files: {
-            "theme/bootstrapbase/style/moodle.css":
-              "theme/bootstrapbase/less/moodle.less",
-            "theme/bootstrapbase/style/editor.css":
-              "theme/bootstrapbase/less/editor.less",
+            // "theme/bootstrapbase/style/moodle.css":
+            //   "theme/bootstrapbase/less/moodle.less",
+            // "theme/bootstrapbase/style/editor.css":
+            //   "theme/bootstrapbase/less/editor.less",
           },
           options: {
             compress: true,

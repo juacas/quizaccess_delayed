@@ -78,7 +78,7 @@ define( ['jquery'], function ($) {
                     }),
                     $('<input>', {
                         'type': 'submit',
-                        'class': 'btn btn-secondary',
+                        'class': 'btn btn-primary',
                         'id': 'startAttemptButton',
                         'disabled': true,
                         'value': attemptquiz
@@ -103,9 +103,13 @@ define( ['jquery'], function ($) {
             var currentTime = new Date().getTime();
             var countDownTime = quizOpenTime - currentTime;
             if (countDownTime < 0) {
-                $('#flipdown').hide();
-                $('#delayednotification').hide();
-                $('#startAttemptButton').show().prop('disabled', false);
+                // As #35 entry button in quiz can change implementation from version to version. Also has some extra logic,
+                // hence just reload the entry page to allow quiz to re-check conditions.
+                // $('#flipdown').hide();
+                // $('#delayednotification').hide();
+                // $('#startAttemptButton').show().prop('disabled', false);
+                // Reload page to activate quiz.
+                location.reload();
             } else {
                 // Retry in case of a small clock drift.
                 setTimeout(this.activateAttempt, 1000);

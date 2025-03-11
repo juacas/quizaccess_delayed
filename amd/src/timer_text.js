@@ -88,9 +88,13 @@ define( ['jquery'], function ($) {
                 this.get_string('pleasewait');
 
             if (countDownTime < 0) {
-                $('#activatedelayedtimer').hide();
-                $('#startAttemptButton').show().prop('disabled', false);
+                // As #35 entry button in quiz can change and have complex logic,
+                // hence just reload the page to allow quiz to re-check conditions.
+                // $('#activatedelayedtimer').hide();
+                // $('#startAttemptButton').show().prop('disabled', false);
                 clearInterval(interval);
+                // Reload page to show the quiz.
+                location.reload();
             }
         },
         /**
