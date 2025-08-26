@@ -29,15 +29,16 @@ An optional check and advice message for teachers can be defined for all quizzes
 
 ## How the delay is calculated
 - The plugin acts only until the instant of the start of the quiz plus the number of minutes of maximum delay. After that it doesn't work anymore because the critical moment of the start is supposed to be over.
-- The maximum delay is calculated as follows:
-  - Number of students divided by the entry rate specified by the administrator. E.g. with 25 students/minute, if the course has 200 students, the maximum delay will be 8 minutes.
-  - Maximum of 10% of the test duration. We have considered that it is not logical to wait 4 minutes for a 15-minute exam. E.g. 15 minute exam => maximum wait of 1.5 minutes.
+- The maximum delay is calculated using:
+  - Number of students divided by the entry rate specified by the administrator. E.g. with 25 students/minute, if the course has 200 students, the maximum delay will be 8 minutes. Students can be counted from the course or from all the courses with simultaneous quizzes.
+  - Maximum delay as a configured percentage of the test duration. We considered that may not be logical to wait 4 minutes for a 15-minute exam. E.g. 10% of a 15 minute exam => maximum wait of 1.5 minutes.
   - Maximum time limit defined by the administrator. This is to put a reasonable limit in the case of large groups at the cost of suffering a higher entry fee. E.g. maximum 4 minutes.
   - At least 1 minute. This is to ensure that there is always gradual access. With 1 minute, students do not notice the delay because it is in the range of accuracy of the usual clock.
 - With all these limitations, the final entry rate is the one needed to meet all specifications. In this example it would be 200 students/1.5 minutes = 133 students/minute (about 2 per second). If we want to spit out the input rate we will have to give up the absolute limit or the percentage of the completion time. In the UVa we have decided that a long delay is not functionally admissible in the case of short exams, because it would make some students almost finish and others would still be starting.
 
 ## How a quiz is marked as "resource-intensive" or "problematic"
 
+This mark is only used to show a warning to the teacher when editing the quiz. Does not affect the functioning of the quiz.
 In our experience, a mass quiz is "resource-intensive" aka "problematic" when it meets these characteristics:
 - It's paged so that each page will last less than 10 minutes.
 - The time allotted is too tight.

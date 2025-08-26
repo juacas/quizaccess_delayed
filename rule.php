@@ -374,12 +374,46 @@ class quizaccess_delayed extends quiz_access_rule_base {
      */
     protected function get_student_count($quizobj) {
         if ($this->students == null) {
-            $this->students = count_enrolled_users(
-                $quizobj->get_context(), // phpcs:ignore PHP0406
-                'mod/quiz:attempt',
-                0,
-                true
-            );
+            $quizzes = [];
+            if (get_config('quizaccess_delayed', 'sitewidecount')) {
+                // Get quizzes that are about to start. Current quiz should be included.
+                $timeopen = $this->quiz->timeopen;
+                $maxalloweddelay = get_config('quizaccess_delayed', 'maxdelay') * 60;
+                global $DB;
+                $quizzes = $DB->get_records_select(
+                    'quiz',
+                    'timeopen >= ?
+                    AND timeopen <= ?',
+                    [$timeopen - $maxalloweddelay, $timeopen + $maxalloweddelay]
+                );
+            } else {
+                // Just this quiz.
+                $quizzes = [$quizobj];
+            }
+            $count = 0; // Accumulate potential students.
+            $countedcourses = []; // Avoid counting courses twice.
+            foreach ($quizzes as $quiz) {
+                if ($quiz instanceof quiz) {
+                    $quizobjtemp = $quiz;
+                } else {
+                    // Load quiz object if needed.
+                    [$course, $cm] = get_course_and_cm_from_instance($quiz, 'quiz');
+                    $quizobjtemp = new quiz($quiz, $cm, $course);
+                }
+                if ($countedcourses[$quizobjtemp->get_courseid()] ?? false) {
+                    // Course already counted.
+                    continue;
+                }
+                $count += count_enrolled_users(
+                    $quizobjtemp->get_context(), // phpcs:ignore PHP0406
+                    'mod/quiz:attempt',
+                    0,
+                    true
+                );
+                // Mark course as counted.
+                $countedcourses[$quizobjtemp->get_courseid()] = true;
+            }
+            $this->students = $count;
         }
         return $this->students;
     }

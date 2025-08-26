@@ -58,14 +58,21 @@ if ($hassiteconfig) {
     $settings->add(new admin_setting_configselect(
         'quizaccess_delayed/startrate',
         new lang_string('quizaccess_delayed_startrate', 'quizaccess_delayed'),
-        '',
+        new lang_string('quizaccess_delayed_startrate_desc', 'quizaccess_delayed'),
         '25',
         $vals
+    ));
+    // Checkbox to choose site-wide student count or only per quiz.
+    $settings->add(new admin_setting_configcheckbox(
+        'quizaccess_delayed/sitewidecount',
+        new lang_string('quizaccess_delayed_sitewidecount', 'quizaccess_delayed'),
+        new lang_string('quizaccess_delayed_sitewidecount_desc', 'quizaccess_delayed'),
+        0
     ));
     $settings->add(new admin_setting_configselect(
         'quizaccess_delayed/maxdelay',
         new lang_string('quizaccess_delayed_maxdelay', 'quizaccess_delayed'),
-        '',
+        new lang_string('quizaccess_delayed_maxdelay_desc', 'quizaccess_delayed'),
         '10',
         $vals
     ));
@@ -76,7 +83,7 @@ if ($hassiteconfig) {
     $settings->add(new admin_setting_configselect(
         'quizaccess_delayed/timelimitpercent',
         new lang_string('quizaccess_delayed_timelimitpercent', 'quizaccess_delayed'),
-        '',
+        new lang_string('quizaccess_delayed_timelimitpercent_desc', 'quizaccess_delayed'),
         '10',
         $vals
     ));
