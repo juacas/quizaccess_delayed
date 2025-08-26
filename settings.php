@@ -23,13 +23,10 @@
  * @copyright 2020 University of Valladolid, Spain
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-defined ( 'MOODLE_INTERNAL' ) || die ();
+defined('MOODLE_INTERNAL') || die();
 
-/**
- * @var admin_settingpage $settings
- */
 if ($hassiteconfig) {
-
+    /** @var admin_settingpage $settings */
     $settings->add(new admin_setting_configcheckbox(
         'quizaccess_delayed/enabled',
         new lang_string('quizaccess_delayed_enabled', 'quizaccess_delayed'),
@@ -51,15 +48,13 @@ if ($hassiteconfig) {
         '',
         1
     ));
-    /**
-     * @var mixed[] $vals
-     * Set of values that increases by 1 from 1 to 10, by 5 from 10 to 100 and by 50 from 100 to 1000.
-     */
+
+    /** @var mixed[] $vals Set of values that increases by 1 from 1 to 10, by 5 from 10 to 100 and by 50 from 100 to 1000. */
     $vals = [];
     $vals = array_merge($vals, range(1, 10));
-    $vals = array_merge($vals, range(10, 100, 5));
+    $vals = array_merge($vals, range(15, 100, 5));
     $vals = array_merge($vals, range(150, 1000, 50));
-    
+
     $settings->add(new admin_setting_configselect(
         'quizaccess_delayed/startrate',
         new lang_string('quizaccess_delayed_startrate', 'quizaccess_delayed'),
@@ -92,7 +87,7 @@ if ($hassiteconfig) {
         'flipdown',
         [
             'flipdown' => new lang_string('flipdowncounter', 'quizaccess_delayed'),
-            'text' => new lang_string('plaintextcounter', 'quizaccess_delayed')
+            'text' => new lang_string('plaintextcounter', 'quizaccess_delayed'),
             ]
     ));
     // Show the teacher a warning in some circunstances.
@@ -120,5 +115,4 @@ if ($hassiteconfig) {
         '60',
         '8'
     ));
-
 }
