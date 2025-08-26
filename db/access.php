@@ -23,14 +23,5 @@
  */
 
 defined('MOODLE_INTERNAL') || die();
-// TODO: this capability is not used!
-$capabilities = array(
-    'quiz/delayed:exempt' => array(
-        'captype' => 'read',
-        'contextlevel' => CONTEXT_MODULE,
-        'archetypes' => array(
-            'editingteacher' => CAP_ALLOW,
-            'manager' => CAP_ALLOW
-        ),
-    ),
-);
+$capabilities = [
+];
