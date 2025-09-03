@@ -54,13 +54,17 @@ if ($hassiteconfig) {
     $vals = array_merge($vals, range(1, 10));
     $vals = array_merge($vals, range(15, 100, 5));
     $vals = array_merge($vals, range(150, 1000, 50));
+    $options = [];
+    foreach ($vals as $val) {
+        $options[$val] = $val;
+    }
 
     $settings->add(new admin_setting_configselect(
         'quizaccess_delayed/startrate',
         new lang_string('quizaccess_delayed_startrate', 'quizaccess_delayed'),
         new lang_string('quizaccess_delayed_startrate_desc', 'quizaccess_delayed'),
         '25',
-        $vals
+        $options
     ));
     // Checkbox to choose site-wide student count or only per quiz.
     $settings->add(new admin_setting_configcheckbox(
@@ -74,7 +78,7 @@ if ($hassiteconfig) {
         new lang_string('quizaccess_delayed_maxdelay', 'quizaccess_delayed'),
         new lang_string('quizaccess_delayed_maxdelay_desc', 'quizaccess_delayed'),
         '10',
-        $vals
+        $options
     ));
     $vals = [0 => get_string('none')];
     foreach (range(10, 100, 10) as $val) {
