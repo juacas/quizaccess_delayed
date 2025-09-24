@@ -82,7 +82,7 @@ class quizaccess_delayed extends quiz_access_rule_base {
      * Whether or not a user should be allowed to start a new attempt at this quiz now.
      */
     public function prevent_access() {
-
+        // Check if the rule is enabled for this instance and if we are pending.
         $enabled = self::is_enabled_in_instance($this->quizobj);
         $result = "";
         if ($enabled && $this->is_pending()) {
@@ -375,7 +375,7 @@ class quizaccess_delayed extends quiz_access_rule_base {
     protected function get_student_count($quizobj) {
         if ($this->students == null) {
             $quizzes = [];
-            if (get_config('quizaccess_delayed', 'sitewidecount')) {
+            if (get_config('quizaccess_delayed', 'sitewidecount') && $quizobj->get_quiz()->timeopen > 0) {
                 // Get quizzes that are about to start. Current quiz should be included.
                 $timeopen = $this->quiz->timeopen;
                 $maxalloweddelay = get_config('quizaccess_delayed', 'maxdelay') * 60;
@@ -482,6 +482,10 @@ class quizaccess_delayed extends quiz_access_rule_base {
      * @return bool true if the rule is enabled for this instance.
      */
     protected static function is_enabled_in_instance(quiz $quizobj) {
+        if ($quizobj->get_quiz()->timeopen == 0) {
+            // No delay if the quiz is always open.
+            return false;
+        }
         $quiz = $quizobj->get_quiz();
         return self::is_enabled_in_quiz($quiz);
     }
