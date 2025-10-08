@@ -348,7 +348,7 @@ class quizaccess_delayed extends quiz_access_rule_base {
         if ($this->maxdelay == null) {
             // Entries per minute.
             $rate = get_config('quizaccess_delayed', 'startrate');
-            /** @var int $maxalloweddelay in minutes.*/
+            /** @var int $maxalloweddelay in minutes.*/ // phpcs:ignore
             $maxalloweddelay = get_config('quizaccess_delayed', 'maxdelay');
             $numalumns = $this->get_student_count($this->quizobj);
             if ($this->quiz->timelimit > 0) {

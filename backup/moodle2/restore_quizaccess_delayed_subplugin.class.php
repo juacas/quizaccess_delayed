@@ -39,10 +39,15 @@ require_once($CFG->dirroot . '/mod/quiz/backup/moodle2/restore_mod_quiz_access_s
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class restore_quizaccess_delayed_subplugin extends restore_mod_quiz_access_subplugin {
-
+    /**
+     * Returns the paths to be handled by the subplugin at quiz level
+     * (i.e. in the quiz XML file).
+     *
+     * @return array of restore_path_element
+     */
     protected function define_quiz_subplugin_structure() {
 
-        $paths = array();
+        $paths = [];
 
         $elename = $this->get_namefor('');
         $elepath = $this->get_pathfor('/quizaccess_delayed');

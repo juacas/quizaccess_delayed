@@ -39,22 +39,32 @@ require_once($CFG->dirroot . '/mod/quiz/backup/moodle2/backup_mod_quiz_access_su
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class backup_quizaccess_delayed_subplugin extends backup_mod_quiz_access_subplugin {
-
+    /**
+     * Returns the information to attach to the quiz element in
+     * the backup XML.
+     *
+     * @return backup_nested_element
+     */
     protected function define_quiz_subplugin_structure() {
 
         // Create XML elements.
         $subplugin = $this->get_subplugin_element();
         $subpluginwrapper = new backup_nested_element($this->get_recommended_name());
-        $subplugintablesettings = new backup_nested_element('quizaccess_delayed',
-                null, array('delayed'));
+        $subplugintablesettings = new backup_nested_element(
+            'quizaccess_delayed',
+            null,
+            ['delayedattempt']
+        );
 
         // Connect XML elements into the tree.
         $subplugin->add_child($subpluginwrapper);
         $subpluginwrapper->add_child($subplugintablesettings);
 
         // Set source to populate the data.
-        $subplugintablesettings->set_source_table('quizaccess_delayed',
-                array('quizid' => backup::VAR_ACTIVITYID));
+        $subplugintablesettings->set_source_table(
+            'quizaccess_delayed',
+            ['quizid' => backup::VAR_ACTIVITYID]
+        );
 
         return $subplugin;
     }

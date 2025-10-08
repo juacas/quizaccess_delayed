@@ -50,6 +50,7 @@ The time alloted is considered too tight if
   - not excess a 20% of the execution time.
 
 ## Releases
+- v1.2.12 Fix bug #41. Activation state nor backed up/restored.
 - v1.2.9 Support site-wide student counting.
 - v1.2.8 Fix Attempt button not behaving as native quiz's one.
 - v1.2.7 Fix missing jquery declaration for Moodle 4.5
