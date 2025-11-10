@@ -22,22 +22,18 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Execute delayed upgrade from the given old version
- * @global moodle_database $DB
  * @param int $oldversion
  * @return bool
  */
 function xmldb_quizaccess_delayed_upgrade($oldversion) {
-    /** @global moodle_database $DB */
+    /** @global moodle_database $DB */ // phpcs:ignore
     global $DB;
 
     $dbman = $DB->get_manager(); // Loads ddl manager and xmldb classes.
 
     if ($oldversion < 2020051500) {
-
         // Create new table: quizaccess_delayed.
         $table = new xmldb_table('quizaccess_delayed');
         if (!$dbman->table_exists($table)) {
@@ -46,8 +42,8 @@ function xmldb_quizaccess_delayed_upgrade($oldversion) {
             $table->add_field('delayedattempt', XMLDB_TYPE_INTEGER, '2', XMLDB_UNSIGNED, null, null, '0');
 
             // Add keys to table quizaccess_delayed.
-            $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
-            $table->add_key('quizid', XMLDB_KEY_FOREIGN, array('quizid'), 'quiz', array('id'));
+            $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+            $table->add_key('quizid', XMLDB_KEY_FOREIGN, ['quizid'], 'quiz', ['id']);
 
             $dbman->create_table($table);
         }

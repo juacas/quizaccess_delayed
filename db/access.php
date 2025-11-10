@@ -17,7 +17,7 @@
 /**
  * Capability definitions for the quiz makeexamlok access rule.
  *
- * @package   quiz_delayed
+ * @package   quizaccess_delayed
  * @copyright 2014 Enrique Castro @ ULPGC
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

@@ -49,7 +49,7 @@ if ($hassiteconfig) {
         1
     ));
 
-    /** @var mixed[] $vals Set of values that increases by 1 from 1 to 10, by 5 from 10 to 100 and by 50 from 100 to 1000. */
+    /** @var mixed[] $vals Set of values that increases by 1 from 1 to 10, by 5 from 10 to 100 and by 50 from 100 to 1000. */ // phpcs:ignore
     $vals = [];
     $vals = array_merge($vals, range(1, 10));
     $vals = array_merge($vals, range(15, 100, 5));

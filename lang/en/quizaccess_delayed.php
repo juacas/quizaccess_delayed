@@ -38,6 +38,7 @@ $string['plaintextcounter'] = 'Plain text counter';
 $string['pleasewait'] = 'Please wait here';
 $string['pluginname'] = 'Entry to quiz attempt with random delay';
 $string['pluginname_desc'] = 'Auto activate quiz attempt button with random delay access rule';
+$string['privacy:metadata'] = 'The quizaccess_delayed plugin does not store any personal data.';
 $string['quizaccess_delayed_allowdisable'] = 'The teachers are allowed to disable the rule';
 $string['quizaccess_delayed_countertype'] = 'Type of coundown to use.';
 $string['quizaccess_delayed_dangerousquiznotice'] = 'Institutional message displayed if the quiz could be problematic';

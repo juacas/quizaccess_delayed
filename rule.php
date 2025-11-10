@@ -422,13 +422,6 @@ class quizaccess_delayed extends quiz_access_rule_base {
      */
     protected function is_pending() {
         // Check if this user has done the quiz already.
-        // global $USER;
-        // $numattempts = count(quiz_get_user_attempts([$this->quiz->id], $USER->id));
-        // $maxattempts = $this->quizobj->get_num_attempts_allowed();
-        // $maxattempts = $maxattempts == 0 ? PHP_INT_MAX : $maxattempts;
-        // if ($numattempts >= $maxattempts) {
-        // return false;
-        // }.
         $randomdelay = $this->get_user_delay();
         return $this->timenow < ($this->quiz->timeopen + $randomdelay);
     }
