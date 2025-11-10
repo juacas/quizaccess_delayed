@@ -150,6 +150,10 @@ class quizaccess_delayed extends quiz_access_rule_base {
                 );
             }
         }
+        // If called by a web service, return plain text only.
+        if (defined('WS_SERVER') && WS_SERVER) {
+            return trim(strip_tags($message));
+        }
         return $message;
     }
     /**
