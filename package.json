@@ -10,7 +10,7 @@
 	"contributor": "Juan Pablo de Castro <jpdecastro@tel.uva.es>",
 	"license": "GPL-3.0",
 	"devDependencies": {
-		"@babel/core": "7.17.5",
+		"@babel/core": "7.29.6",
 		"@babel/eslint-parser": "^7.21.3",
 		"@babel/eslint-plugin": "7.19.1",
 		"@babel/preset-env": "7.16.11",
