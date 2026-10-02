@@ -7,165 +7,74 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle. If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Implementaton of the quizaccess_delayed timer JScript.
- * Based on quizaccess_activateattempt https://github.com/IITBombayWeb/moodle-quizaccess_delayed/tree/v1.0.3
+ * Text countdown for delayed quiz access.
  *
- * @package   quizaccess_delayed
- * @author    Juan Pablo de Castro
+ * @module quizaccess_delayed/timer_text
  * @copyright 2020 University of Valladolid, Spain
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-define( ['jquery'], function ($) {
-    var strings;
-    var quizOpenTime;
-    var interval;
-    return {
-        get_string: function (key, component, param = null) {
-            return strings[key];
-        },
-        set_strings: function (strs) {
-            strings = strs;
-        },
-        /**
-         * Init function.
-         */
-        init: function (selector = '.continuebutton', actionlink, cmid, sessionkey, attemptquiz, diffmillisecs, langstrings) {
-            if ($('.quizattempt #delayednotification').length > 0) {
-                return false;
+define(['jquery'], function($) {
+    /**
+     * Display a duration using the two largest nonzero units.
+     *
+     * @param {Number} seconds Remaining seconds.
+     * @param {Object} strings Translated labels.
+     * @returns {String} Human readable duration.
+     */
+    function formatDuration(seconds, strings) {
+        var units = [
+            [86400, 'day', 'days'],
+            [3600, 'hour', 'hours'],
+            [60, 'minute', 'minutes'],
+            [1, 'second', 'seconds']
+        ];
+        var parts = [];
+        units.forEach(function(unit) {
+            var count = Math.floor(seconds / unit[0]);
+            if (count > 0 && parts.length < 2) {
+                parts.push(count + ' ' + strings[count === 1 ? unit[1] : unit[2]]);
+                seconds -= count * unit[0];
             }
-            // Initialize strings to avoid json requests.
-            this.set_strings(langstrings);
-            var form = $('<form/>', {
-                'method': 'post',
-                'action': actionlink
-            }).append(
-                $('<input>', {
-                    'type': 'hidden',
-                    'name': 'cmid',
-                    'value': cmid
-                }),
-                $('<input>', {
-                    'type': 'hidden',
-                    'name': 'sesskey',
-                    'value': sessionkey
-                }),
-                $('<input>', {
-                    'type': 'submit',
-                    'class': 'btn btn-secondary',
-                    'id': 'startAttemptButton',
-                    'value': attemptquiz
-                }));
-            var divsection = $('<div id="delayednotification" />')
-                .append(
-                    $('<p>', {
-                        'id': 'activatedelayedtimer'
-                    }),
-                );
-            $(selector).prepend(form, $('</br>'));
-            // Insert above other buttons and messages.
-            $(selector).prepend(divsection);
-
-            $('[id=startAttemptButton]').prop('disabled', true);
-
-            quizOpenTime = new Date().getTime() + diffmillisecs;
-            interval = setInterval(this.update_time.bind(this), 1000);
-        },
-        update_time: function () {
-            var currentTime = new Date().getTime();
-            var countDownTime = quizOpenTime - currentTime;
-
-            var datetxt = this.get_nice_duration(countDownTime / 1000, true, false, 2);
-            document.getElementById('activatedelayedtimer').innerHTML =
-                this.get_string('quizwillstartinabout') + ' ' +
-                datetxt + ' ' +
-                this.get_string('pleasewait');
-
-            if (countDownTime < 0) {
-                // As #35 entry button in quiz can change and have complex logic,
-                // hence just reload the page to allow quiz to re-check conditions.
-                // $('#activatedelayedtimer').hide();
-                // $('#startAttemptButton').show().prop('disabled', false);
-                clearInterval(interval);
-                // Reload page to show the quiz.
-                location.reload();
-            }
-        },
-        /**
-         * Format a human-readable format for a duration in months or days and below.
-         * calculates from seconds to months.
-         * trim the details to the two more significant units
-         * @param int durationinseconds
-         * @param boolean usemonths if false render in days.
-         * @param boolean shortprecission if true only the most significative unit.
-         * @return string
-         */
-        get_nice_duration: function (durationinseconds, usemonths = true, shortprecission = false, depth = 2) {
-            var durationstring = '';
-            var durationproms = [];
-            var stop = false;
-            var durationinseconds;
-            var months;
-            if (usemonths) {
-                months = Math.floor(durationinseconds / (3600 * 24 * 30));
-                durationinseconds -= months * (3600 * 24 * 30);
-            }
-            var days = Math.floor(durationinseconds / (3600 * 24));
-            durationinseconds -= days * 3600 * 24;
-            var hours = Math.floor(durationinseconds / 3600);
-            durationinseconds -= hours * 3600;
-            var minutes = Math.floor(durationinseconds / 60);
-            var seconds = Math.round(durationinseconds - minutes * 60);
-
-            if (usemonths && months > 0) {
-                durationproms.push(months + this.get_string('month' + (months > 1 ? 's' : '')));
-                hours = 0;
-                minutes = 0;
-                seconds = 0;
-                if (shortprecission) {
-                    stop = true;
-                }
-            }
-            if (days > 0 && stop === false) {
-                durationproms.push(' ' + days + ' ' + this.get_string('day' + (days > 1 ? 's' : '')));
-                // Trim details less significant.
-                if (depth < 2) {
-                    minutes = 0;
-                    seconds = 0;
-                }
-                if (shortprecission) {
-                    stop = true;
-                }
-            }
-            if (hours > 0 && stop === false) {
-                durationproms.push(' ' + hours + ' ' + this.get_string('hour' + (hours > 1 ? 's' : '')));
-                if (depth < 2) {
-                    seconds = false;
-                }
-                if (shortprecission) {
-                    stop = true;
-                }
-            }
-            if (minutes > 0 && stop === false) {
-                durationproms.push(' ' + minutes + ' ' + this.get_string('minute' + (minutes > 1 ? 's' : '')));
-                if (shortprecission) {
-                    stop = true;
-                }
-            }
-            if (seconds > 0 && stop === false) {
-                durationproms.push(' ' + seconds + ' s.');
-            }
-            if (durationproms.length === 0) {
-                durationproms.push('-');
-            }
-            return durationproms.join('');
-        }
+        });
+        return parts.join(' ');
     }
-}
-);
+
+    return {
+        /**
+         * Start the countdown and reload when the server should allow entry.
+         *
+         * @param {String} selector Container selector.
+         * @param {Number} delayms Time remaining in milliseconds.
+         * @param {Object} strings Translated labels.
+         */
+        init: function(selector, delayms, strings) {
+            var container = $(selector);
+            if (!container.length || $('#delayednotification').length) {
+                return;
+            }
+            var message = $('<p>', {id: 'delayednotification', 'class': 'delayednotification'});
+            container.prepend(message);
+            var deadline = Date.now() + Math.max(0, delayms);
+            var interval;
+            var update = function() {
+                var remaining = Math.ceil((deadline - Date.now()) / 1000);
+                if (remaining <= 0) {
+                    clearInterval(interval);
+                    window.location.reload();
+                    return;
+                }
+                message.text(strings.quizwillstartinabout + ' ' +
+                    formatDuration(remaining, strings) + ' ' + strings.pleasewait);
+            };
+            interval = setInterval(update, 1000);
+            update();
+        }
+    };
+});

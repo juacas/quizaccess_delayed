@@ -50,6 +50,7 @@ The time alloted is considered too tight if
   - not excess a 20% of the execution time.
 
 ## Releases
+- v1.2.13 Harden countdown rendering and release workflow; build AMD with Moodle's root Grunt.
 - v1.2.12 Fix bug #41. Activation state nor backed up/restored.
 - v1.2.9 Support site-wide student counting.
 - v1.2.8 Fix Attempt button not behaving as native quiz's one.
@@ -69,6 +70,17 @@ The time alloted is considered too tight if
 3) A notification will appear stating “Plugins requiring attention”.
 4) Complete the installation by clicking on “Upgrade Moodle database now”,click on continue after the success
 notification appears on the page.
+
+## Building the AMD modules
+
+From the Moodle root, run:
+
+```sh
+node_modules/.bin/grunt amd --root=public/mod/quiz/accessrule/delayed
+```
+
+The resulting files in `amd/build` are included with the plugin. No plugin-local
+Node.js dependencies or build configuration are needed.
 
 ## Usage
 

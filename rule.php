@@ -28,8 +28,6 @@
  */
 
 use core\notification;
-use core\output\notification as OutputNotification;
-use core\plugininfo\format;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -104,7 +102,6 @@ class quizaccess_delayed extends quiz_access_rule_base {
         global $PAGE;
         /** @var core_renderer $output */
         $output = $PAGE->get_renderer('core');
-        $PAGE->requires->jquery();
         if ($this->is_pending() && self::is_enabled_in_instance($this->quizobj)) {
             if (has_capability('mod/quiz:manage', $this->quizobj->get_context())) { // phpcs:ignore PHP0406
                 // Show a warning if the quiz is resource intensive.
@@ -119,7 +116,7 @@ class quizaccess_delayed extends quiz_access_rule_base {
                         $message .= format_text(
                             get_config('quizaccess_delayed', 'dangerousquiznotice'),
                             FORMAT_MOODLE,
-                            ['trusted' => true, 'noclean' => true, 'newlines' => false, 'allowid' => true]
+                            ['newlines' => false]
                         );
                     }
                 }
@@ -135,7 +132,7 @@ class quizaccess_delayed extends quiz_access_rule_base {
             $studentmsg = format_text(
                 get_config('quizaccess_delayed', 'notice'),
                 FORMAT_MOODLE,
-                ['trusted' => true, 'noclean' => true, 'newlines' => false, 'allowid' => true]
+                ['newlines' => false]
             );
             if (has_capability('mod/quiz:attempt', $this->quizobj->get_context())) { // phpcs:ignore PHP0406
                 $message .= $output->box($studentmsg);
@@ -166,27 +163,16 @@ class quizaccess_delayed extends quiz_access_rule_base {
      * @return stdClass diagnostics and messages to show.
      */
     protected function get_quiz_diagnosis(quiz $quizobj) {
-        // Forces preload of questions.
         $quizobj->has_questions();
-        // Get preloaded qustions just for counting them.
-        $reflection = new ReflectionClass($quizobj);
-        $property = $reflection->getProperty('questions');
-        $property->setAccessible(true);
-        $questions = $property->getValue($quizobj); // Sections are not pages?????????
-        // Count questions.
-        $questioncount = count($questions);
+        $questions = $quizobj->get_questions(null, false);
         // Data for messages.
         $a = new stdClass();
         $a->notices = [];
         // Count pages.
         $a->pages = 1;
-        $a->hasrandom = false;
         foreach ($questions as $question) {
             if ($a->pages < $question->page) {
                 $a->pages = $question->page;
-            }
-            if ($question->qtype == 'random') {
-                $a->hasrandom = true;
             }
         }
         $a->timelimit = $quizobj->get_quiz()->timelimit;
@@ -194,12 +180,10 @@ class quizaccess_delayed extends quiz_access_rule_base {
         $a->timespan = $this->get_time_span($quizobj);
 
         $a->maxdelay = $this->calculate_max_delay();
-        $a->randomdelay = $this->get_user_delay();
-        $a->rate = get_config('quizaccess_delayed', 'startrate');
+        $a->rate = max(1, (int)get_config('quizaccess_delayed', 'startrate'));
         $a->timeperpage = $a->timespan / $a->pages; // Remember that if timeperpage < 10 minutes then warning!
 
         $a->maxdelaystr = format_time($a->maxdelay);
-        $a->randomdelaystr = format_time($a->randomdelay);
         $a->timespanstr = format_time($a->timespan);
         $a->timelimitstr = format_time($a->timelimit);
 
@@ -209,7 +193,7 @@ class quizaccess_delayed extends quiz_access_rule_base {
         $a->isshorttimed = $a->timelimit > 0 && ($a->iscriticaltimelimit || ($a->timespan / $a->timelimit < 1.2));
 
         $a->isintensive = $a->isshorttimed
-                            && (($a->students / $a->maxdelay) > $a->rate || $a->tooshortpages);
+                            && (($a->students * 60 / max(1, $a->maxdelay)) > $a->rate || $a->tooshortpages);
         // Advice messages.
         if ($a->tooshortpages) {
             $a->notices[] = get_string('tooshortpagesadvice', 'quizaccess_delayed', $a);
@@ -316,8 +300,8 @@ class quizaccess_delayed extends quiz_access_rule_base {
      */
     public static function get_settings_sql($quizid) {
         return [
-            'delayedattempt',
-            'LEFT JOIN {quizaccess_delayed} delayedattempt ON delayedattempt.quizid = quiz.id',
+            'quizaccess_delayed_rule.delayedattempt AS delayedattempt',
+            'LEFT JOIN {quizaccess_delayed} quizaccess_delayed_rule ON quizaccess_delayed_rule.quizid = quiz.id',
             []];
     }
     /**
@@ -340,7 +324,7 @@ class quizaccess_delayed extends quiz_access_rule_base {
         global $USER;
         $pseudoidx = ($USER->id + $this->quizobj->get_cmid()) % 100;
         $random = $pseudoidx * $maxdelay / 100;
-        return $random;
+        return (int)floor($random);
     }
     /**
      * Gets an upper limit for the delay (in seconds).
@@ -349,11 +333,11 @@ class quizaccess_delayed extends quiz_access_rule_base {
      * @return int max delay in seconds.
      */
     protected function calculate_max_delay() {
-        if ($this->maxdelay == null) {
+        if ($this->maxdelay === null) {
             // Entries per minute.
-            $rate = get_config('quizaccess_delayed', 'startrate');
+            $rate = max(1, (int)get_config('quizaccess_delayed', 'startrate'));
             /** @var int $maxalloweddelay in minutes.*/ // phpcs:ignore
-            $maxalloweddelay = get_config('quizaccess_delayed', 'maxdelay');
+            $maxalloweddelay = max(1, (int)get_config('quizaccess_delayed', 'maxdelay'));
             $numalumns = $this->get_student_count($this->quizobj);
             if ($this->quiz->timelimit > 0) {
                 $percent = get_config('quizaccess_delayed', 'timelimitpercent');
@@ -367,7 +351,7 @@ class quizaccess_delayed extends quiz_access_rule_base {
             }
             // The delay is calculated as "startrate" students per minute in average with maxalloweddelay minutes maximum.
             // The spread of delays is set from 1 to $maxalloweddelay minutes depending on number of students in the quiz.
-            $this->maxdelay = min($maxalloweddelay, max(1, $numalumns / $rate)) * 60;
+            $this->maxdelay = (int)round(min($maxalloweddelay, max(1, $numalumns / $rate)) * 60);
         }
         return $this->maxdelay;
     }
@@ -377,7 +361,7 @@ class quizaccess_delayed extends quiz_access_rule_base {
      * @return int number of students.
      */
     protected function get_student_count($quizobj) {
-        if ($this->students == null) {
+        if ($this->students === null) {
             $quizzes = [];
             if (get_config('quizaccess_delayed', 'sitewidecount') && $quizobj->get_quiz()->timeopen > 0) {
                 // Get quizzes that are about to start. Current quiz should be included.
@@ -435,16 +419,14 @@ class quizaccess_delayed extends quiz_access_rule_base {
      * @global moodle_page $PAGE
      */
     protected function configure_timerscript($selector) {
-        global $PAGE, $CFG;
+        global $PAGE;
         $countertype = get_config('quizaccess_delayed', 'countertype');
+        if (!in_array($countertype, ['flipdown', 'text'], true)) {
+            $countertype = 'text';
+        }
 
-        $actionlink = "$CFG->wwwroot/mod/quiz/startattempt.php";
-        $sessionkey = sesskey();
-        $attemptquiz = get_string('attemptquiz', 'quizaccess_delayed');
-        // Pass strigns to JScript.
+        // Pass strings to JavaScript.
         $langstrings = [
-            'months' => get_string('months'),
-            'month' => get_string('month'),
             'days' => get_string('days'),
             'day' => get_string('day'),
             'hours' => get_string('hours'),
@@ -456,22 +438,19 @@ class quizaccess_delayed extends quiz_access_rule_base {
             'quizwillstartinabout' => get_string('quizwillstartinabout', 'quizaccess_delayed'),
         ];
         // Gets the delay associated to current user.
-        $randomdelay = $this->get_user_delay();
-        $diff = ($this->quiz->timeopen) - ($this->timenow) + $randomdelay;
+        $diff = ($this->quiz->timeopen) - ($this->timenow) + $this->get_user_delay();
         $diffmillisecs = $diff * 1000;
-        // Inject some info for debugging and testing.
-        $langstrings['debug_maxdelay'] = $this->calculate_max_delay();
-        $langstrings['debug_randomdebug'] = 'Random delay is ' . $randomdelay . ' seconds.';
+        $args = [$selector, $diffmillisecs, $langstrings];
+        if ($countertype === 'flipdown') {
+            $PAGE->requires->css(new moodle_url('/mod/quiz/accessrule/delayed/flipdown/flipdown.css'));
+            $args[] = (new moodle_url('/mod/quiz/accessrule/delayed/flipdown/flipdown.min.js'))->out(false);
+        }
         $PAGE->requires->js_call_amd(
             "quizaccess_delayed/timer_$countertype",
             'init',
-            [
-                $selector,
-                $actionlink, $this->quizobj->get_cmid(), $sessionkey, $attemptquiz, $diffmillisecs,
-                $langstrings,
-            ]
+            $args
         );
-        $PAGE->requires->css('/mod/quiz/accessrule/delayed/styles.css'); // Discouraged.
+        $PAGE->requires->css(new moodle_url('/mod/quiz/accessrule/delayed/styles.css'));
     }
     /**
      * Determines if this instance should apply the rule.

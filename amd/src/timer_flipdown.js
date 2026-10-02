@@ -7,114 +7,56 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle. If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Implementaton of the quizaccess_delayed timer JScript.
- * Based on quizaccess_activateattempt https://github.com/IITBombayWeb/moodle-quizaccess_delayed/tree/v1.0.3
+ * Animated countdown for delayed quiz access.
  *
- * @package   quizaccess_delayed
- * @author    Juan Pablo de Castro
+ * @module quizaccess_delayed/timer_flipdown
  * @copyright 2020 University of Valladolid, Spain
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-define( ['jquery'], function ($) {
-    var strings;
-    var quizOpenTime;
+define(['jquery'], function($) {
     return {
-        get_string: function (key, component, param = null) {
-            return strings[key];
-        },
-        set_strings: function (strs) {
-            strings = strs;
-        },
         /**
-         * Init function.
-         * @param selector for inserting the counter. Defaults '.continuebutton'
+         * Start the countdown and reload when the server should allow entry.
+         *
+         * @param {String} selector Container selector.
+         * @param {Number} delayms Time remaining in milliseconds.
+         * @param {Object} strings Translated labels.
+         * @param {String} scripturl Absolute URL of the FlipDown library.
          */
-        init: function (selector = '.continuebutton', actionlink, cmid, sessionkey, attemptquiz, diffmillisecs, langstrings) {
-            if ($('.quizattempt #delayednotification').length > 0) {
-                return false;
+        init: function(selector, delayms, strings, scripturl) {
+            var container = $(selector);
+            if (!container.length || $('#delayednotification').length) {
+                return;
             }
-            // Initialize strings to avoid json requests.
-            this.set_strings(langstrings);
-            quizOpenTime = new Date().getTime() + diffmillisecs;
+            var deadline = Date.now() + Math.max(0, delayms);
+            var notification = $('<div>', {id: 'delayednotification', 'class': 'delayednotification'});
+            notification.append($('<p>').text(strings.quizwillstartinabout));
+            notification.append($('<div>', {id: 'flipdown', 'class': 'flipdown'}));
+            notification.append($('<p>').text(strings.pleasewait));
+            container.prepend(notification);
 
-            // Load flipboard.
-            $('<link>')
-                .appendTo('head')
-                .attr({
-                    type: 'text/css',
-                    rel: 'stylesheet',
-                    href: 'accessrule/delayed/flipdown/flipdown.css'
-                });
-            jQuery.getScript('accessrule/delayed/flipdown/flipdown.js', this.startCounter.bind(this));
-            // Containes for counter.
-            var divcounter = $('<center>'
-                + langstrings.quizwillstartinabout
-                + '<div id="flipdown" class="flipdown"></div>'
-                + '<p>' + langstrings.pleasewait + '</p>'
-                + '</center>');
-            var form = $('<form/>', {
-                'method': 'post',
-                'action': actionlink
-                }).append(
-                    $('<input>', {
-                        'type': 'hidden',
-                        'name': 'cmid',
-                        'value': cmid
-                    }),
-                    $('<input>', {
-                        'type': 'hidden',
-                        'name': 'sesskey',
-                        'value': sessionkey
-                    }),
-                    $('<p>', {
-                        'id': 'activatedelayedtimer'
-                    }),
-                    $('<input>', {
-                        'type': 'submit',
-                        'class': 'btn btn-primary',
-                        'id': 'startAttemptButton',
-                        'disabled': true,
-                        'value': attemptquiz
-                    }));
-            var divsection = $('<div id="delayednotification"/>').append(divcounter);
-            $(selector).prepend(form, $('</br>'));
-            // Insert above other buttons and messages.
-            $(selector).prepend(divsection);
-            $('[id=startAttemptButton]').prop('disabled', true);
-        },
-        startCounter: function () {
-            new FlipDown(quizOpenTime / 1000, {
-                theme: 'dark',
-                headings: ['', '', '', '']
-            })
-                .start()
-                .ifEnded(this.activateAttempt);
-            // Adjust div width.
-            $("#flipdown").width($("#flipdown").find(".rotor").length * 32);
-        },
-        activateAttempt: function () {
-            var currentTime = new Date().getTime();
-            var countDownTime = quizOpenTime - currentTime;
-            if (countDownTime < 0) {
-                // As #35 entry button in quiz can change implementation from version to version. Also has some extra logic,
-                // hence just reload the entry page to allow quiz to re-check conditions.
-                // $('#flipdown').hide();
-                // $('#delayednotification').hide();
-                // $('#startAttemptButton').show().prop('disabled', false);
-                // Reload page to activate quiz.
-                location.reload();
-            } else {
-                // Retry in case of a small clock drift.
-                setTimeout(this.activateAttempt, 1000);
-            }
+            // Reload independently of the animation, including when its script cannot load.
+            var reload = function() {
+                if (Date.now() >= deadline) {
+                    window.location.reload();
+                } else {
+                    setTimeout(reload, Math.min(60000, deadline - Date.now()));
+                }
+            };
+            setTimeout(reload, Math.min(60000, Math.max(0, delayms)));
+            $.getScript(scripturl).done(function() {
+                new window.FlipDown(Math.ceil(deadline / 1000), {
+                    theme: 'dark',
+                    headings: ['', '', '', '']
+                }).start();
+            });
         }
-    }
-}
-);
+    };
+});

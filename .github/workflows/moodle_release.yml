@@ -26,17 +26,16 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PLUGIN: quizaccess_delayed
-      CURL: curl -s
       ENDPOINT: https://moodle.org/webservice/rest/server.php
-      TOKEN: ${{ secrets.MOODLE_ORG_TOKEN }}
       FUNCTION: local_plugins_add_version
+      TAG_INPUT: ${{ github.event.inputs.tag }}
+      TOKEN: ${{ secrets.MOODLE_ORG_TOKEN }}
 
     steps:
-      - name: Call the service function
-        id: add-version
+      - name: Publish plugin version
         run: |
-          if [[ ! -z "${{ github.event.inputs.tag }}" ]]; then
-            TAGNAME="${{ github.event.inputs.tag }}"
+          if [[ -n "$TAG_INPUT" ]]; then
+            TAGNAME="$TAG_INPUT"
           elif [[ $GITHUB_REF = refs/tags/* ]]; then
             TAGNAME="${GITHUB_REF##*/}"
           fi
@@ -45,7 +44,7 @@ jobs:
             exit 1
           fi
           ZIPURL="https://api.github.com/repos/${{ github.repository }}/zipball/${TAGNAME}"
-          RESPONSE=$(${CURL} ${ENDPOINT} --data-urlencode "wstoken=${TOKEN}" \
+          RESPONSE=$(curl --fail --silent --show-error "$ENDPOINT" --data-urlencode "wstoken=${TOKEN}" \
                                          --data-urlencode "wsfunction=${FUNCTION}" \
                                          --data-urlencode "moodlewsrestformat=json" \
                                          --data-urlencode "frankenstyle=${PLUGIN}" \
@@ -55,11 +54,4 @@ jobs:
                                          --data-urlencode "vcstag=${TAGNAME}" \
                                          --data-urlencode "changelogurl=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commits/${TAGNAME}" \
                                          --data-urlencode "altdownloadurl=${ZIPURL}")
-          echo "::set-output name=response::${RESPONSE}"
-      - name: Evaluate the response
-        id: evaluate-response
-        env:
-          RESPONSE: ${{ steps.add-version.outputs.response }}
-        run: |
-          jq <<< ${RESPONSE}
-          jq --exit-status ".id" <<< ${RESPONSE} > /dev/null
+          jq --exit-status '.id' <<< "$RESPONSE" > /dev/null
